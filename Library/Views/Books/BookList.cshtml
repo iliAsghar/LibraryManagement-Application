@@ -1,0 +1,153 @@
+﻿@{
+    ViewData["Title"] = "لیست کتاب ها";
+}
+
+<style>
+    main {
+        font-family: "Vazir", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    table {
+        width: min(55rem, 100%);
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-collapse: collapse;
+        overflow: hidden;
+        text-decoration: rtl;
+    }
+
+    thead {
+        background-color: #DC5F00;
+        color: white;
+        text-align: center;
+    }
+
+    th, td {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        direction: rtl !important;
+    }
+
+    tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    th {
+        font-weight: bold;
+        font-size: 1.2rem;
+        white-space: nowrap;
+    }
+
+    td {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .title-list {
+        font-family: "Lalezar", sans-serif;
+        font-size: 3rem;
+        margin-bottom: .5rem;
+        margin-top: 2rem;
+    }
+
+    .quantity-input {
+        width: 50px;
+        text-align: center;
+    }
+
+    .add-to-transaction-btn {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        background-color: #DC5F00;
+        color: white;
+        border: none;
+        border-radius: 0 0 5px 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+        .add-to-transaction-btn:hover {
+            background-color: #b94d00;
+        }
+
+    .quantity-input {
+        width: 100%;
+        text-align: center;
+        padding: 0.3rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px 5px 0 0;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+        .quantity-input:hover {
+            border-color: #DC5F00;
+        }
+
+        .quantity-input:focus {
+            border-color: #b94d00;
+            box-shadow: 0 0 5px rgba(220, 95, 0, 0.5);
+        }
+
+    .book-title {
+        white-space: nowrap;
+    }
+</style>
+
+<h2 class="title-list">لیست کتاب ها</h2>
+<table>
+    <thead>
+        <tr>
+            <th>عنوان</th>
+            <th>نویسنده</th>
+            <th>توضیحات</th>
+            <th>تصویر جلد</th>
+            <th>اضافه کردن</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td class="book-title">@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Description</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(book.CoverPath))
+                    {
+                        <img src="@book.CoverPath" alt="@book.Title" style="display: block; width: 60px; height: auto; border-radius: 3px; margin-inline: auto;" />
+                    }
+                    else
+                    {
+                        <span>تصویری یافت نشد!</span>
+                    }
+                </td>
+                <td>
+                    <form method="post" action="/transactions/AddBookToTransaction">
+                        <input type="hidden" name="bookId" value="@book.Id" />
+                        <input type="number" name="quantity" class="quantity-input" value="1" min="1" />
+                        <button type="submit" class="add-to-transaction-btn">اضافه کردن</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var alertMessage = TempData["AlertMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(alertMessage))
+{
+    <script>
+        alert('کتاب جدید با موفقیت اضافه شد!');
+    </script>
+}

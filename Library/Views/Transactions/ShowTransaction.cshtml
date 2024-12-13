@@ -1,0 +1,162 @@
+﻿@{
+    ViewData["Title"] = "مشاهده امانت";
+}
+
+<style>
+
+    .inline-link {
+        color: blue;
+        text-decoration: underline;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .inline-link:hover {
+            color: darkblue;
+            text-decoration: none;
+        }
+
+    main {
+        font-family: "Vazir", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 2rem;
+    }
+
+    .details-container {
+        width: min(55rem, 100%);
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        text-align: rtl;
+        font-size: 1rem;
+        color: #333;
+    }
+
+        .details-container h1 {
+            font-family: "Lalezar", sans-serif;
+            font-size: 2.5rem;
+            color: #DC5F00;
+            margin-bottom: 1rem;
+        }
+
+        .details-container p {
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+
+        .details-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .details-container li {
+            background-color: #f9f9f9;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+            .details-container li img {
+                width: 20%;
+                height: auto;
+                margin-left: 1rem;
+            }
+
+            .details-container li span {
+                font-weight: bold;
+                color: #333;
+            }
+
+        .details-container ul li:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+
+        .details-container p span {
+            font-weight: bold;
+        }
+
+        .details-container h2 {
+            margin-top: 2rem;
+            font-size: 1.3rem;
+        }
+
+    .finalize-button {
+        margin-top: 2rem;
+        padding: 0.75rem 1.5rem;
+        background-color: #DC5F00;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+        .finalize-button:disabled {
+            background-color: #b0b0b0;
+            cursor: not-allowed;
+        }
+
+        .finalize-button:hover:not(:disabled) {
+            background-color: #b94b00;
+        }
+</style>
+
+<div class="details-container">
+    <h1>جزئیات امانت</h1>
+
+    @if (TempData["NoActiveTransaction"] != null)
+    {
+        <p style="color: red;">@TempData["NoActiveTransaction"] - <a class="inline-link">کتاب انتخاب کنید...</a></p>
+    }
+    else if (Model.Transaction == null)
+    {
+        <p>هیچ امانتی یافت نشد.</p>
+    }
+    else
+    {
+        <p><span>شماره امانت:</span> @Model.Transaction.Id</p>
+        <p><span>وضعیت:</span> @(Model.Transaction.IsFinalized ? "تایید شده / بسته" : "در انتظار تایید / باز")</p>
+        <p><span>تاریخ شروع امانت:</span> @(Model.Transaction.TransactionDate.ToString("yyyy/MM/dd")) </p>
+
+        <h2>لیست کتاب‌ها</h2>
+        @if (Model.TransactionItems != null && Model.TransactionItems.Count > 0)
+        {
+            <ul>
+                @foreach (var item in Model.TransactionItems)
+                {
+                    <li>
+                        <img src="@(item.Book.CoverPath ?? "/images/default-cover.jpg")" alt="Book Cover" />
+                        <div>
+                            <p><span>کتاب:</span> @item.Book.Title</p>
+                            <p><span>نویسنده:</span> @item.Book.Author</p>
+                            <p><span>تعداد:</span> @item.Quantity</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>هیچ کتابی در این امانت وجود ندارد.</p>
+        }
+
+        <form method="post" action="/Transactions/FinalizeTransaction">
+            <input type="hidden" name="transactionId" value="@Model.Transaction.Id" />
+            <button type="submit"
+                    class="finalize-button"
+            @(Model.Transaction.IsFinalized ? "disabled" : "")
+                    title="@(Model.Transaction.IsFinalized ? "این امانت قبلاً نهایی شده است" : "")">
+                نهایی کردن امانت
+            </button>
+        </form>
+    }
+</div>

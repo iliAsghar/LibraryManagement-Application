@@ -1,0 +1,302 @@
+﻿@model Library.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "ورود";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - بخوان</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Library.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+            *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        * {
+            margin: 0;
+        }
+
+        body {
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img, picture, video, canvas, svg {
+            display: block;
+            max-width: 100%;
+        }
+
+        input, button, textarea, select {
+            font: inherit;
+        }
+
+        p, h1, h2, h3, h4, h5, h6 {
+            overflow-wrap: break-word;
+        }
+
+        p {
+            text-wrap: pretty;
+            margin: 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-wrap: balance;
+        }
+
+        #root, #__next {
+            isolation: isolate;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+        .main-title {
+            cursor: pointer;
+        }
+
+        body {
+            font-family: "Vazirmatn", sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: .5rem 2.5rem;
+            background-color: #373A40;
+            color: white;
+        }
+
+            header a {
+                color: inherit;
+                text-decoration: none;
+            }
+            header a:hover {
+                color: inherit;
+            }
+
+        .title {
+            font-family: "Lalezar", sans-serif;
+            font-size: 1.25rem;
+            font-weight: 100;
+            margin: 0;
+        }
+
+            .title span {
+                font-family: inherit;
+                font-size: 2.5rem;
+                color: #DC5F00;
+            }
+
+        .nav-list {
+            display: flex;
+            gap: 2rem;
+        }
+
+            .nav-list li {
+                cursor: pointer;
+                transition: all ease-in-out 200ms;
+                font-weight:500;
+            }
+
+                .nav-list li:hover {
+                    color: #DC5F00;
+                    transition: all ease-in-out 50ms;
+                }
+
+        main {
+            padding: 1rem 0;
+        }
+
+        footer {
+            font-family: "Noto Sans", sans-serif;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            background-color: gray;
+            background-color: #686D76;
+            color: white;
+            padding: .5rem;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: #f4f4f4;
+            padding: 2rem;
+        }
+
+        .login-form {
+            font-family: "Vazir", sans-serif;
+            width: min(40rem, 100%);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            margin-inline: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 10px;
+        }
+
+            .login-form h1 {
+                font-family: "Lalezar", sans-serif;
+                font-size: 3rem;
+                font-weight: 300;
+                text-align: center;
+                border-bottom: 1px solid #DC5F00;
+            }
+
+            .login-form h4 {
+                font-size: 1.5rem;
+                text-align: center;
+                color: #333;
+            }
+
+            .login-form hr {
+                border: 0;
+                border-top: 1px solid #DC5F00;
+            }
+
+            .login-form .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .login-form label {
+                font-size: 1rem;
+                color: #333;
+            }
+
+            .login-form input[type="text"],
+            .login-form input[type="password"],
+            .login-form input[type="email"],
+            .login-form input[type="checkbox"] {
+                border-radius: 4px;
+                border: 1px solid gray;
+                padding: 0.5rem;
+                font-size: 1rem;
+                direction: ltr;
+                text-align: left;
+            }
+
+            .login-form input[type="submit"] {
+                border: none;
+                border-radius: 5px;
+                background-color: white;
+                padding: 0.5rem 1rem;
+                font-size: 1.25rem;
+                background-color: #e6e6e6;
+                transition: all ease-in-out 200ms;
+                cursor: pointer;
+            }
+
+                .login-form input[type="submit"]:hover {
+                    background-color: #DC5F00;
+                    color: white;
+                    transition: all ease-in-out 50ms;
+                }
+
+            .login-form .form-check {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .login-form .form-check-label {
+                font-size: 1rem;
+                color: #333;
+                cursor: pointer !important;
+            }
+
+            .login-form .text-danger {
+                font-size: 0.875rem;
+                color: #ff4d4d;
+            }
+
+            .form-check-input {
+                margin: 0;
+                cursor: pointer !important;
+            }
+
+
+        .form-group.other {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+            .form-group.other a {
+                display: inline-block;
+                cursor: pointer;
+                transition: all ease-in-out 200ms;
+            }
+
+                .form-group.other a:hover {
+                    color: #DC5F00;
+                    transform: scale(1.06);
+                    transition: all ease-in-out 50ms;
+                }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a onclick="window.location='@Url.Action("","Home")';" class="main-title">
+            <h1 class="title">سامانه مدیریت کتابخوانهء <span>بخوان</span></h1>
+        </a>
+    </header>
+
+    <main>
+        <form asp-action="Login" class="login-form">
+            <h1>ورود</h1>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="RememberMe" />
+                    @Html.DisplayNameFor(model => model.RememberMe)
+                </label>
+            </div>
+
+            <input type="submit" value="ورود" />
+
+            <div class="form-group other">
+                <p>اکانت ندارید؟ <a onclick="window.location='@Url.Action("Register","Account")';">ثبت نام کنید</a></p>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>Made in a hurry, by AliAsghar Zare (4006213069)</p>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/81541dc3f8.js" crossorigin="anonymous"></script>
+</body>
+</html>

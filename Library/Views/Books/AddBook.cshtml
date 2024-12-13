@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "افزودن کتاب";
+}
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #f4f4f4;
+    }
+
+    .add-book-form {
+        font-family: "Vazir", sans-serif;
+        width: min(50rem, 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1rem;
+        gap: 1rem;
+        margin-inline: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .add-book-form h3 {
+        font-family: "Lalezar", sans-serif;
+        font-size: 3rem;
+        font-weight: 300;
+        text-align: center;
+        border-bottom: 1px solid #DC5F00;
+        align-self: center;
+    }
+
+    .add-book-form div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add-book-form input, .add-book-form textarea {
+        border-radius: 4px;
+        border: 1px solid gray;
+        padding: 0.5rem;
+        resize: none;
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .file-container {
+        display: flex;
+        align-items: center;
+        border: 1px solid gray;
+        border-radius: 4px;
+        overflow: hidden;
+        flex-direction: row-reverse !important;
+    }
+
+    .custom-file-label, .file-info span {
+        width: 50%;
+        padding: 0.5rem;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .custom-file-label {
+        background-color: #f9f9f9;
+        color: #333;
+        border-right: 1px solid gray;
+    }
+
+    .file-container span {
+        width: 50%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-inline: 1rem;
+        color: #878787;
+    }
+
+    .add-book-form button {
+        margin-top: 1rem;
+        border: none;
+        border-radius: 5px;
+        background-color: white;
+        padding: 0.5rem 1rem;
+        font-size: 1.25rem;
+        background-color: #e6e6e6;
+        transition: all ease-in-out 200ms;
+    }
+
+    .add-book-form button:hover {
+        background-color: #DC5F00;
+        color: white;
+        transition: all ease-in-out 50ms;
+    }
+</style>
+<form asp-action="AddBook" asp-controller="Books" class="add-book-form" method="post" enctype="multipart/form-data">
+    <h3>افزودن کتاب</h3>
+    <div>
+        <label for="Title">نام کتاب</label>
+        <input type="text" id="Title" name="Title" required />
+    </div>
+
+    <div>
+        <label for="Description">توضیحات</label>
+        <textarea id="Description" name="Description" required rows="6"></textarea>
+    </div>
+
+    <div>
+        <label for="Author">نویسنده</label>
+        <input type="text" id="Author" name="Author" required />
+    </div>
+
+    <div>
+        <label for="Cover">تصویر جلد</label>
+        <input type="file" id="Cover" class="file-input" name="CoverImage" accept="image/*" required />
+        <div class="file-container">
+            <label for="Cover" class="custom-file-label">انتخاب تصویر</label>
+            <span id="file-name">فایلی انتخاب نشده</span>
+        </div>
+    </div>
+
+    <div>
+        <label for="TotalQuantity">تعداد موجودی</label>
+        <input type="number" id="TotalQuantity" name="TotalQuantity" />
+    </div>
+
+    <button type="submit">اضافه کردن</button>
+</form>
+
+<script>
+    document.getElementById('Cover').addEventListener('change', function () {
+        const fileName = this.files[0]?.name || 'فایلی انتخاب نشده';
+        document.getElementById('file-name').textContent = fileName;
+    });
+</script>

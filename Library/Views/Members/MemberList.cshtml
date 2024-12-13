@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "لیست اعضا";
+}
+
+<style>
+    main {
+        font-family: "Vazir", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    table {
+        width: min(55rem, 100%);
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-collapse: collapse;
+        overflow: hidden;
+    }
+
+    thead {
+        background-color: #DC5F00;
+        color: white;
+        text-align: center;
+    }
+
+    th, td {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        direction: rtl !important;
+    }
+
+    tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    th {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    td {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .title-list {
+        font-family: "Lalezar", sans-serif;
+        font-size: 3rem;
+        margin-bottom: .5rem;
+        margin-top: 2rem;
+    }
+
+    .add-member-row {
+        background-color: #f0f0f0 !important
+    }
+
+    .add-member-btn {
+        text-align: center;
+        padding: .5rem;
+        cursor: pointer;
+    }
+
+        .add-member-btn:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+
+<h2 class="title-list">لیست اعضا</h2>
+<table>
+    <thead>
+        <tr>
+            <th>کد ملی</th>
+            <th>نام</th>
+            <th>نام خانوادگی</th>
+            <th>پست الکترونیک</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model)
+        {
+            <tr>
+                <td>@member.NationalId</td>
+                <td>@member.Name</td>
+                <td>@member.Lastname</td>
+                <td>@member.Email</td>
+            </tr>
+        }
+
+        <tr onclick="window.location='/Members/AddMember';" class="add-member-row">
+            <td class="add-member-btn" colspan="4">
+                <a>افزودن عضو جدید</a>
+            </td>
+        </tr>
+
+        <tr style=" background-color: #818185;">
+            <td style="padding: 0.25rem" colspan="4"> </td>
+        </tr>
+    </tbody>
+</table>
+
+@{
+    var alertMessage = TempData["AlertMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(alertMessage))
+{
+    <script>
+        alert('عضو جدید با موفقیت اضافه شد!');
+    </script>
+}

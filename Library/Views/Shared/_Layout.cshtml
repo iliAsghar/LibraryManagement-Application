@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - بخوان</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Library.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <a onclick="window.location='@Url.Action("","Home")';" class="main-title">
+          <h1 class="title">سامانه مدیریت کتابخوانهء <span>بخوان</span></h1>
+        </a>
+
+        <ul class="nav-list">
+          <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
+          <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
+          <li><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
+          <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
+          <li><a onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
+        </ul>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>Made in a hurry, by AliAsghar Zare (4006213069)</p>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/81541dc3f8.js" crossorigin="anonymous"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

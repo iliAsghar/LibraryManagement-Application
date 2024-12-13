@@ -1,0 +1,109 @@
+﻿*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+input, button, textarea, select {
+    font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+}
+
+#root, #__next {
+    isolation: isolate;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.main-title {
+    cursor: pointer;
+}
+
+body {
+    font-family: "Vazirmatn", sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem 2.5rem;
+    background-color: #373A40;
+    color: white;
+}
+
+    header a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+.title {
+    font-family: "Lalezar", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 100;
+}
+
+    .title span {
+        font-family: inherit;
+        font-size: 2.5rem;
+        color: #DC5F00;
+    }
+
+.nav-list {
+    display: flex;
+    gap: 2rem;
+}
+
+    .nav-list li {
+        cursor: pointer;
+        transition: all ease-in-out 200ms;
+        font-weight:500;
+    }
+
+        .nav-list li:hover {
+            color: #DC5F00;
+            transition: all ease-in-out 50ms;
+        }
+
+main {
+    padding: 1rem 0;
+}
+
+footer {
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    padding: .5rem;
+    background-color: gray;
+    background-color: #686D76;
+    color: white;
+}

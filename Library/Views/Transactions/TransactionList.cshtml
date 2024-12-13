@@ -1,0 +1,177 @@
+﻿@model List<Library.Models.Transaction>
+
+@{
+    ViewData["Title"] = "لیست امانت ها";
+}
+
+<style>
+    main {
+        font-family: "Vazir", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .filter-section {
+        width: min(55rem, 100%);
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1rem;
+        text-align: rtl;
+    }
+
+        .filter-section label {
+            margin-right: 1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .filter-section input[type="date"] {
+            padding: .5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .filter-section button {
+            background-color: #DC5F00;
+            color: white;
+            padding: .5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+            .filter-section button:hover {
+                background-color: #b94b00;
+            }
+
+    table {
+        width: min(55rem, 100%);
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-collapse: collapse;
+        overflow: hidden;
+        text-align: rtl;
+    }
+
+    thead {
+        background-color: #DC5F00;
+        color: white;
+        text-align: center;
+    }
+
+    th, td {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        direction: rtl !important;
+    }
+
+    tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    th {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    td {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .title-list {
+        font-family: "Lalezar", sans-serif;
+        font-size: 3rem;
+        margin-bottom: .5rem;
+        margin-top: 2rem;
+    }
+
+    .add-transaction-row {
+        background-color: #f0f0f0 !important;
+    }
+
+    .add-transaction-btn {
+        text-align: center;
+        padding: .5rem;
+        cursor: pointer;
+    }
+
+        .add-transaction-btn:hover {
+            background-color: #e0e0e0;
+        }
+</style>
+
+<h2 class="title-list">لیست امانت‌ها</h2>
+
+@*
+<div class="filter-section">
+    <form method="get" action="/Transactions/TransactionList/">
+        <label for="filterDate">نمایش امانت‌ها پس از تاریخ:</label>
+        <input type="date" id="filterDate" name="filterDate" />
+        <button type="submit">فیلتر</button>
+    </form>
+</div>
+*@
+
+<table>
+    <thead>
+        <tr>
+            <th>شماره امانت</th>
+            <th>کتاب ها</th>
+            <th>تاریخ تراکنش</th>
+            <th>وضعیت</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any(t => !t.IsFinalized))
+        {
+            var unfinalizedTransaction = Model.FirstOrDefault(t => !t.IsFinalized);
+            <tr onclick="window.location.href='/transactions/showtransaction/@unfinalizedTransaction.Id'" style="background-color: #ffefcc; cursor: pointer;">
+                <td>@unfinalizedTransaction.Id</td>
+                <td>
+                    <ul>
+                        @foreach (var item in unfinalizedTransaction.TransactionItems)
+                        {
+                            <li>@item.Book?.Title * @item.Quantity</li>
+                        }
+                    </ul>
+                </td>
+                <td>@unfinalizedTransaction.TransactionDate?.ToString("yyyy/MM/dd")</td>
+                <td>در انتظار تایید / باز</td>
+            </tr>
+        }
+
+        @foreach (var transaction in Model.Where(t => t.IsFinalized))
+        {
+            <tr onclick="window.location.href='/transactions/showtransaction/@transaction.Id'" style="cursor: pointer;">
+                <td>@transaction.Id</td>
+                <td>
+                    <ul>
+                        @foreach (var item in transaction.TransactionItems)
+                        {
+                            <li>@item.Book?.Title * @item.Quantity</li>
+                        }
+                    </ul>
+                </td>
+                <td>@transaction.TransactionDate?.ToString("yyyy/MM/dd")</td>
+                <td>تایید شده / بسته</td>
+            </tr>
+        }
+
+        <tr style="background-color: #818185;">
+            <td style="padding: 0.25rem" colspan="5"></td>
+        </tr>
+    </tbody>
+</table>
