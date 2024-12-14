@@ -50,7 +50,7 @@ namespace Library.Controllers
                         .ThenInclude(ti => ti.Book)
                     .FirstOrDefaultAsync(t =>
                     t.UserId == userId &&
-                    t.IsFinalized == false);
+                    t.Status == "Unfinalized");
 
                 if ( transaction != null )
                 {
@@ -195,6 +195,31 @@ namespace Library.Controllers
             if (transaction != null)
             {
                 transaction.Status = "Rejected";
+            }
+
+            if (transaction == null)
+            {
+                TempData["ErrorMessage"] = "No transaction with id: " + id;
+                return RedirectToAction("TransactionList", "Transactions");
+            }
+
+            _context.Transactions.Update(transaction);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Transaction Rejected!";
+            return RedirectToAction("TransactionList", "Transactions");
+        }
+        
+        [Authorize(policy: "BookKeeper")]
+        public async Task<IActionResult> ReturnTransaction(int id)
+        {
+            var transaction = await _context.Transactions
+                            .FirstOrDefaultAsync(t =>
+                            t.Id == id);
+
+            if (transaction != null)
+            {
+                transaction.Status = "Returned";
             }
 
             if (transaction == null)
