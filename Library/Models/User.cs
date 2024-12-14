@@ -10,8 +10,7 @@ namespace Library.Models
         public required string Name { get; set; }
         public required string Lastname { get; set; }
         public required string NationalId { get; set; }
-        public bool IsAdmin { get; set; }
-
+        public required string Role {  get; set; }
         public List<Transaction>? Transactions { get; set; }
     }
 }

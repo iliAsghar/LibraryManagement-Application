@@ -28,7 +28,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("NormalUser", policy => policy.RequireClaim("Role", "User"));
+        options.AddPolicy("BookKeeper", policy => policy.RequireClaim("Role", "BookKeeper", "Admin"));
+        options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
+    });
 
 
 var app = builder.Build();
