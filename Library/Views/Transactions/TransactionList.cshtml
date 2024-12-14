@@ -135,9 +135,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.Any(t => !t.IsFinalized))
+       @* @if (Model.Any(t => t.Status == "Unfinalized"))
         {
-            var unfinalizedTransaction = Model.FirstOrDefault(t => !t.IsFinalized);
+            var unfinalizedTransaction = Model.FirstOrDefault(t => t.Status == "Unfinalized");
             <tr onclick="window.location.href='/transactions/showtransaction/@unfinalizedTransaction.Id'" style="background-color: #ffefcc; cursor: pointer;">
                 <td>@unfinalizedTransaction.Id</td>
                 <td>
@@ -151,9 +151,9 @@
                 <td>@unfinalizedTransaction.TransactionDate?.ToString("yyyy/MM/dd")</td>
                 <td>در انتظار تایید / باز</td>
             </tr>
-        }
+        }*@
 
-        @foreach (var transaction in Model.Where(t => t.IsFinalized))
+        @foreach (var transaction in Model)
         {
             <tr onclick="window.location.href='/transactions/showtransaction/@transaction.Id'" style="cursor: pointer;">
                 <td>@transaction.Id</td>
@@ -166,7 +166,28 @@
                     </ul>
                 </td>
                 <td>@transaction.TransactionDate?.ToString("yyyy/MM/dd")</td>
-                <td>تایید شده / بسته</td>
+                <td>
+                    @if (transaction.Status == "Unfinalized")
+                    {
+                        <p> نهایی نشدهه</p>
+                    }
+                    else if (transaction.Status == "PendingApproval")
+                    {
+                        <p> در انتظار تایید</p>
+                    }
+                    else if (transaction.Status == "Approved")
+                    {
+                        <p>تایید شده</p>
+                    }
+                    else if (transaction.Status == "Rejected")
+                    {
+                        <p>رد شده</p>
+                    }
+                    else if (transaction.Status == "Rturned")
+                    {
+                        <p>بازگردانده شده</p>
+                    }
+                </td>
             </tr>
         }
 
