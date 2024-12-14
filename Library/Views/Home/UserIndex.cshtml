@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "صفحه اصلی کاربر";
+}
+
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #f4f4f4;
+    }
+
+</style>
+
+<div class="index-main">
+    <h4>خوش آمدید!</h4>
+    <div class="panel">
+        <h2 class="panel-title">دسترسی سریع</h2>
+        <div class="panel-list">
+            @*
+            <div class="panel-list-item" onclick="window.location='@Url.Action("AddMember", "Members")';">
+            <i class="fa-solid fa-user-plus"></i>
+            <p>افزودن عضو</p>
+            </div>
+            *@
+
+
+
+
+            <div class="panel-list-item" onclick="window.location='@Url.Action("AddTransaction", "Transactions")';">
+                <i class="fa-solid fa-receipt"></i>
+                <p>تعریف امانت</p>
+            </div>
+
+        </div>
+    </div>
+</div>

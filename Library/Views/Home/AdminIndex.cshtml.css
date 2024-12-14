@@ -1,0 +1,72 @@
+﻿.index-main {
+    width: min(50rem, 100%);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-family: "Vazir", sans-serif;
+}
+
+h4 {
+    align-self: center;
+    border-bottom: solid 1px black;
+}
+
+.panel {
+    margin-bottom: 5rem;
+}
+
+.panel-title {
+    font-family: "Lalezar", sans-serif;
+    font-size: 3rem;
+    margin-bottom: .5rem;
+}
+
+.panel-list {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.panel-list-item {
+    padding: 1rem .5rem .5rem;
+    border: 1px solid #DC5F00;
+    border-radius: 5px;
+    flex: 1;
+    display: flex;
+    gap: .5rem;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all ease-in-out 100ms;
+    color: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 10px;
+}
+
+.panel-list-item:hover {
+    background-color: #DC5F00;
+    transition: all ease-in-out 200ms;
+    color: white;
+    scale: 1.02;
+}
+
+.panel-list-item:hover i {
+    color: white;
+    transition: all ease-in-out 200ms;
+}
+
+.panel-list-item i {
+    font-size: 5rem;
+    color: #DC5F00;
+}
+
+.panel-list-item p {
+    padding: .25rem;
+    margin: 0;
+    font-size: 1.2rem;
+}
