@@ -38,7 +38,7 @@ namespace Library.Controllers
                 Name = model.Name,
                 Lastname = model.LastName,
                 NationalId = model.NationalId,
-                IsAdmin = false
+                Role = "User"
             };
 
             _context.Users.Add(newMember);
@@ -70,10 +70,11 @@ namespace Library.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim("IsAdmin", user.IsAdmin.ToString())
+                new Claim("Role", user.Role)
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
             var principal = new ClaimsPrincipal(identity);
 
             var properties = new AuthenticationProperties
@@ -82,11 +83,6 @@ namespace Library.Controllers
             };
 
             HttpContext.SignInAsync(principal, properties);
-
-            if(user.IsAdmin)
-            {
-                return RedirectToAction("AdminDashboard", "Admin");
-            }
 
             return RedirectToAction("Index", "Home");
         }

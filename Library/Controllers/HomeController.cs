@@ -17,7 +17,17 @@ namespace Library.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Admin"))
+            {
+                return View("AdminIndex");
+            }
+
+            else if (User.IsInRole("BookKeeper"))
+            {
+                return View("BookKeeperIndex");
+            }
+
+            return View("NormalUserIndex");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

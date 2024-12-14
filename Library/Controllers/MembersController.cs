@@ -19,11 +19,24 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [Authorize(policy: "BookKeeper")]
         public IActionResult MemberList()
         {
             var members = _context.Users.
-                Where(u => !u.IsAdmin).ToList();
+                Where(u => u.Role == "User")
+                .ToList();
+
             return View(members);
+        }
+
+        [Authorize(policy: "Admin")]
+        public IActionResult UserList()
+        {
+            var users = _context.Users.
+                Where(u => u.Role == "User" || u.Role == "BookKeeper")
+                .ToList();
+
+            return View(users);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
