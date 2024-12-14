@@ -89,15 +89,16 @@ namespace Library.Controllers
             var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(t =>
                 t.UserId == userId &&
-                !t.IsFinalized);
+                t.Status == "Unfinalized");
 
             if (transaction == null)
             {
+                // First we should check if the user has a pending transaction
                 transaction = new Transaction
                 {
                     UserId = userId,
                     TransactionDate = DateTime.Now,
-                    IsFinalized = false
+                    Status = "Unfinalized"
                 };
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
