@@ -18,12 +18,14 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [Authorize(policy: "BookKeeper")]
         public IActionResult BookList()
         {
             var books = _context.Books.ToList();
             return View(books);
         }
 
+        [Authorize(policy: "BookKeeper")]
         public async Task<IActionResult> AddBook(Book book, IFormFile coverImage)
         {
             if(!ModelState.IsValid)
