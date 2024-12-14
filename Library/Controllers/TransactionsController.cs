@@ -20,6 +20,8 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [Authorize(policy: "NormalUser")]
+        [Authorize(policy: "BookKeeper")]
         public async Task<IActionResult> TransactionList()
         {
             var userId = GetLoggedInUserId();
@@ -32,6 +34,9 @@ namespace Library.Controllers
 
             return View(transactions);
         }
+        
+        [Authorize(policy: "NormalUser")]
+        [Authorize(policy: "BookKeeper")]
         public async Task<IActionResult> ShowTransaction(int id)
         {
             var userId = GetLoggedInUserId();
@@ -76,6 +81,7 @@ namespace Library.Controllers
             return View(model);
         }
 
+        [Authorize(policy: "NormalUser")]
         public async Task<IActionResult> AddBookToTransaction(int bookId, int quantity)
         {
             var userId = GetLoggedInUserId();
@@ -126,6 +132,7 @@ namespace Library.Controllers
             return RedirectToAction("BookList", "Books");
         }
 
+        [Authorize(policy: "NormalUser")]
         public async Task<IActionResult> FinalizeTransaction()
         {
             var userId = GetLoggedInUserId();
@@ -151,6 +158,33 @@ namespace Library.Controllers
             return RedirectToAction("TransactionList", "Transactions");
         }
 
+        [Authorize(policy: "BookKeeper")]
+        public async Task<IActionResult> ApproveTransaction(int id)
+        {
+            var transaction = await _context.Transactions
+                .FirstOrDefaultAsync(t =>
+                t.Id == id);
+
+            if (transaction != null)
+            {
+                
+            }
+
+            if (transaction == null)
+            {
+                TempData["ErrorMessage"] = "No transaction to finalize.";
+                return RedirectToAction("TransactionList", "Transactions");
+            }
+
+            transaction.IsFinalized = true;
+            //transaction.TransactionDate = DateTime.Now;
+
+            _context.Transactions.Update(transaction);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Transaction Finalized!";
+            return RedirectToAction("TransactionList", "Transactions");
+        }
         private int GetLoggedInUserId()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());

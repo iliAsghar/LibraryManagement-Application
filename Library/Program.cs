@@ -28,13 +28,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
     });
 
-builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy("NormalUser", policy => policy.RequireClaim("Role", "User"));
-        options.AddPolicy("BookKeeper", policy => policy.RequireClaim("Role", "BookKeeper", "Admin"));
-        options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
-    });
-
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("NormalUser", policy => policy.RequireClaim("Role", "User"))
+    .AddPolicy("BookKeeper", policy => policy.RequireClaim("Role", "BookKeeper", "Admin"))
+    .AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin"));
 
 var app = builder.Build();
 
@@ -64,7 +61,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "members",
-    pattern: "{controller=Members}/{action=MemberList}/{id?}");
+    pattern: "{controller=Users}/{action=MemberList}/{id?}");
 
 app.MapControllerRoute(
     name: "transactions",

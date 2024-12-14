@@ -8,12 +8,12 @@ using System.Diagnostics;
 namespace Library.Controllers
 {
     [Authorize]
-    public class MembersController : Controller
+    public class UsersController : Controller
     {
-        private readonly ILogger<MembersController> _logger;
+        private readonly ILogger<UsersController> _logger;
         private readonly MyDBContext _context;
 
-        public MembersController(ILogger<MembersController> logger, MyDBContext context)
+        public UsersController(ILogger<UsersController> logger, MyDBContext context)
         {
             _logger = logger;
             _context = context;
@@ -27,6 +27,16 @@ namespace Library.Controllers
                 .ToList();
 
             return View(members);
+        }
+
+        [Authorize(policy: "Admin")]
+        public IActionResult BookKeeperList()
+        {
+            var bookkeepers = _context.Users.
+                Where(u => u.Role == "BookKeeper")
+                .ToList();
+
+            return View(bookkeepers);
         }
 
         [Authorize(policy: "Admin")]
