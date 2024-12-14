@@ -102,12 +102,12 @@
                 <td>@member.Email</td>
                 <td>
                     @member.Role
-                    @if (User.IsInRole("Admin"))
-                    {
+                    <authorize policy="Admin">
+
                         <form method="post" action="">
                             <button type="submit" class="add-to-transaction-btn">تغییر سطح دسترسی</button>
                         </form>
-                    }
+                   </authorize>
                 </td>
             </tr>
         }
