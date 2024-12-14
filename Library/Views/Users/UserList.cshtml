@@ -69,7 +69,18 @@
     }
 </style>
 
-<h2 class="title-list">لیست اعضا</h2>
+@if (ViewData["ViewType"] as string == "UserList")
+    {
+        <h2>لیست کاربرهای </h2>
+    }
+    else if (ViewData["ViewType"] as string == "MemberList")
+    {
+        <h2>لیست اعضا</h2>
+    }
+    else if (ViewData["ViewType"] as string == "BookKeeperList")
+    {
+        <h2>لیست کتابدار ها</h2>
+    }
 <table>
     <thead>
         <tr>
@@ -77,6 +88,8 @@
             <th>نام</th>
             <th>نام خانوادگی</th>
             <th>پست الکترونیک</th>
+            <th> سطح کاربر</th>
+
         </tr>
     </thead>
     <tbody>
@@ -87,6 +100,15 @@
                 <td>@member.Name</td>
                 <td>@member.Lastname</td>
                 <td>@member.Email</td>
+                <td>
+                    @member.Role
+                    @if (User.IsInRole("Admin"))
+                    {
+                    <form method="post" action="">
+                            <button type="submit" class="add-to-transaction-btn">تغییر سطح دسترسی</button>
+                        </form>
+                    }
+                </td>
             </tr>
         }
 
@@ -100,6 +122,7 @@
             <td style="padding: 0.25rem" colspan="4"> </td>
         </tr>
     </tbody>
+    
 </table>
 
 @{
