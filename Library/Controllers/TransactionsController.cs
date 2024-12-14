@@ -140,7 +140,7 @@ namespace Library.Controllers
             var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(t =>
                 t.UserId == userId &&
-                !t.IsFinalized);
+                t.Status == "Unfinalized");
 
             if (transaction == null)
             {
@@ -148,7 +148,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.IsFinalized = true;
+            transaction.Status = "PendingApproval";
             //transaction.TransactionDate = DateTime.Now;
 
             _context.Transactions.Update(transaction);
@@ -167,22 +167,46 @@ namespace Library.Controllers
 
             if (transaction != null)
             {
-                
+                transaction.Status = "Approved"; 
             }
 
             if (transaction == null)
             {
-                TempData["ErrorMessage"] = "No transaction to finalize.";
+                TempData["ErrorMessage"] = "No transaction with id: " + id;
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.IsFinalized = true;
             //transaction.TransactionDate = DateTime.Now;
 
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Transaction Finalized!";
+            TempData["SuccessMessage"] = "Transaction Approved!";
+            return RedirectToAction("TransactionList", "Transactions");
+        }
+
+        [Authorize(policy: "BookKeeper")]
+        public async Task<IActionResult> RejectTransaction(int id)
+        {
+            var transaction = await _context.Transactions
+                            .FirstOrDefaultAsync(t =>
+                            t.Id == id);
+
+            if (transaction != null)
+            {
+                transaction.Status = "Rejected";
+            }
+
+            if (transaction == null)
+            {
+                TempData["ErrorMessage"] = "No transaction with id: " + id;
+                return RedirectToAction("TransactionList", "Transactions");
+            }
+
+            _context.Transactions.Update(transaction);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Transaction Rejected!";
             return RedirectToAction("TransactionList", "Transactions");
         }
         private int GetLoggedInUserId()
