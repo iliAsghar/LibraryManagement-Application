@@ -26,7 +26,8 @@ namespace Library.Controllers
                 Where(u => u.Role == "User")
                 .ToList();
 
-            return View(members);
+            ViewData["ViewType"] = "MemberList";
+            return View("UserList", members);
         }
 
         [Authorize(policy: "Admin")]
@@ -36,7 +37,8 @@ namespace Library.Controllers
                 Where(u => u.Role == "BookKeeper")
                 .ToList();
 
-            return View(bookkeepers);
+            ViewData["ViewType"] = "AdminList";
+            return View("UserList", bookkeepers);
         }
 
         [Authorize(policy: "Admin")]
@@ -46,7 +48,8 @@ namespace Library.Controllers
                 Where(u => u.Role == "User" || u.Role == "BookKeeper")
                 .ToList();
 
-            return View(users);
+            ViewData["ViewType"] = "UserList";
+            return View("UserList", users);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
