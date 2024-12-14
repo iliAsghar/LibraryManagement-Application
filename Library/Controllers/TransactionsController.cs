@@ -20,6 +20,8 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [Authorize(policy: "NormalUser")]
+        [Authorize(policy: "BookKeeper")]
         public async Task<IActionResult> TransactionList()
         {
             var userId = GetLoggedInUserId();
@@ -32,6 +34,9 @@ namespace Library.Controllers
 
             return View(transactions);
         }
+        
+        [Authorize(policy: "NormalUser")]
+        [Authorize(policy: "BookKeeper")]
         public async Task<IActionResult> ShowTransaction(int id)
         {
             var userId = GetLoggedInUserId();
@@ -76,6 +81,7 @@ namespace Library.Controllers
             return View(model);
         }
 
+        [Authorize(policy: "NormalUser")]
         public async Task<IActionResult> AddBookToTransaction(int bookId, int quantity)
         {
             var userId = GetLoggedInUserId();
@@ -126,6 +132,7 @@ namespace Library.Controllers
             return RedirectToAction("BookList", "Books");
         }
 
+        [Authorize(policy: "NormalUser")]
         public async Task<IActionResult> FinalizeTransaction()
         {
             var userId = GetLoggedInUserId();
@@ -133,7 +140,7 @@ namespace Library.Controllers
             var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(t =>
                 t.UserId == userId &&
-                !t.IsFinalized);
+                t.Status == "Unfinalized");
 
             if (transaction == null)
             {
@@ -141,7 +148,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.IsFinalized = true;
+            transaction.Status = "PendingApproval";
             //transaction.TransactionDate = DateTime.Now;
 
             _context.Transactions.Update(transaction);
@@ -151,6 +158,57 @@ namespace Library.Controllers
             return RedirectToAction("TransactionList", "Transactions");
         }
 
+        [Authorize(policy: "BookKeeper")]
+        public async Task<IActionResult> ApproveTransaction(int id)
+        {
+            var transaction = await _context.Transactions
+                .FirstOrDefaultAsync(t =>
+                t.Id == id);
+
+            if (transaction != null)
+            {
+                transaction.Status = "Approved"; 
+            }
+
+            if (transaction == null)
+            {
+                TempData["ErrorMessage"] = "No transaction with id: " + id;
+                return RedirectToAction("TransactionList", "Transactions");
+            }
+
+            //transaction.TransactionDate = DateTime.Now;
+
+            _context.Transactions.Update(transaction);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Transaction Approved!";
+            return RedirectToAction("TransactionList", "Transactions");
+        }
+
+        [Authorize(policy: "BookKeeper")]
+        public async Task<IActionResult> RejectTransaction(int id)
+        {
+            var transaction = await _context.Transactions
+                            .FirstOrDefaultAsync(t =>
+                            t.Id == id);
+
+            if (transaction != null)
+            {
+                transaction.Status = "Rejected";
+            }
+
+            if (transaction == null)
+            {
+                TempData["ErrorMessage"] = "No transaction with id: " + id;
+                return RedirectToAction("TransactionList", "Transactions");
+            }
+
+            _context.Transactions.Update(transaction);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Transaction Rejected!";
+            return RedirectToAction("TransactionList", "Transactions");
+        }
         private int GetLoggedInUserId()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());

@@ -8,12 +8,12 @@ using System.Diagnostics;
 namespace Library.Controllers
 {
     [Authorize]
-    public class MembersController : Controller
+    public class UsersController : Controller
     {
-        private readonly ILogger<MembersController> _logger;
+        private readonly ILogger<UsersController> _logger;
         private readonly MyDBContext _context;
 
-        public MembersController(ILogger<MembersController> logger, MyDBContext context)
+        public UsersController(ILogger<UsersController> logger, MyDBContext context)
         {
             _logger = logger;
             _context = context;
@@ -26,7 +26,19 @@ namespace Library.Controllers
                 Where(u => u.Role == "User")
                 .ToList();
 
-            return View(members);
+            ViewData["ViewType"] = "MemberList";
+            return View("UserList", members);
+        }
+
+        [Authorize(policy: "Admin")]
+        public IActionResult BookKeeperList()
+        {
+            var bookkeepers = _context.Users.
+                Where(u => u.Role == "BookKeeper")
+                .ToList();
+
+            ViewData["ViewType"] = "AdminList";
+            return View("UserList", bookkeepers);
         }
 
         [Authorize(policy: "Admin")]
@@ -36,7 +48,8 @@ namespace Library.Controllers
                 Where(u => u.Role == "User" || u.Role == "BookKeeper")
                 .ToList();
 
-            return View(users);
+            ViewData["ViewType"] = "UserList";
+            return View("UserList", users);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

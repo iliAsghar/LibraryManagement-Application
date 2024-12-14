@@ -1,7 +1,6 @@
 ﻿@{
-    ViewData["Title"] = " صفحه اصلی ادمین";
+    ViewData["Title"] = "صفحه اصلی";
 }
-
 
 <style>
     main {
@@ -20,7 +19,7 @@
         <h2 class="panel-title">دسترسی سریع</h2>
         <div class="panel-list">
             
-            <div class="panel-list-item" onclick="window.location='@Url.Action("AddMember", "Members")';">
+            <div class="panel-list-item" onclick="window.location='@Url.Action("AddMember", "Users")';">
             <i class="fa-solid fa-user-plus"></i>
             <p>افزودن عضو</p>
             </div>
