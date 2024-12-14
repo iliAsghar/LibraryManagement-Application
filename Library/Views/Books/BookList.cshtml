@@ -109,7 +109,6 @@
             <th>نویسنده</th>
             <th>توضیحات</th>
             <th>تصویر جلد</th>
-            <th>اضافه کردن</th>
         </tr>
     </thead>
     <tbody>
@@ -128,13 +127,6 @@
                     {
                         <span>تصویری یافت نشد!</span>
                     }
-                </td>
-                <td>
-                    <form method="post" action="/transactions/AddBookToTransaction">
-                        <input type="hidden" name="bookId" value="@book.Id" />
-                        <input type="number" name="quantity" class="quantity-input" value="1" min="1" />
-                        <button type="submit" class="add-to-transaction-btn">اضافه کردن</button>
-                    </form>
                 </td>
             </tr>
         }
