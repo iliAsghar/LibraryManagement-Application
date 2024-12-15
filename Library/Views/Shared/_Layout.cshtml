@@ -20,23 +20,26 @@
             <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
 
             
-                <authorize policy="Admin">
-                    <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
-                    <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
-                    <li><a onclick="window.location='@Url.Action("","Transactions")';">کاربر ها</a></li>
-                </authorize>
-            
-            <authorize policy="BookKeeper">
+            @if (User.HasClaim("Role","Admin"))
+            {
                 <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
                 <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
                 <li><a onclick="window.location='@Url.Action("","Transactions")';">کاربر ها</a></li>
-            </authorize>
+            }
+            
+            @if (User.HasClaim("Role", "BookKeeper"))
+            {
+                <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
+                <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
+                <li><a onclick="window.location='@Url.Action("","Transactions")';">کاربر ها</a></li>
+            }
 
-            <authorize policy="NormalUser">
+            @if (User.HasClaim("Role", "NormalUser"))
+            {
                 <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
                 <li><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
                 <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
-            </authorize>
+            }
 
             <li><a onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
         </ul>
