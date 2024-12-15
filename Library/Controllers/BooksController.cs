@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Library.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Controllers
 {
@@ -24,6 +25,20 @@ namespace Library.Controllers
         {
             var books = _context.Books.ToList();
             return View(books);
+        }
+
+        public async Task<ActionResult> ShowBook(int id)
+        {
+            var book = await _context.Books
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (book == null)
+            {
+                // todo do something here
+                return View();
+            }
+
+            return View(book);
         }
 
         [Authorize(policy: "BookKeeper")]

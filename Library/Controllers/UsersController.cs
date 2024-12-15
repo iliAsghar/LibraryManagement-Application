@@ -19,6 +19,73 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [Authorize(policy: "Admin")]
+        [Authorize(policy: "BookKeeper")]
+        public async Task<ActionResult> ShowUser(int id)
+        {
+            var user = await _context.Users
+                .Include(x => x.Transactions)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                // todo do something here
+                return View();
+            } 
+
+            return View(user);
+        }
+
+        [Authorize(policy: "Admin")]
+        public async Task<ActionResult> PromoteToBookKeeper(int id)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                // todo do something here
+                return View(user);
+            }
+
+            if (user.Role == "BookKeeper")
+            {
+                // todo do something here
+                return View(user);
+            }
+
+            user.Role = "BookKeeper";
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return View(user);
+        }
+
+        [Authorize(policy: "Admin")]
+        public async Task<ActionResult> DemoteToMember(int id)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                // todo do something here
+                return View(user);
+            }
+
+            if (user.Role == "User")
+            {
+                // todo do something here
+                return View(user);
+            }
+
+            user.Role = "User";
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return View(user);
+        }
+
         [Authorize(policy: "BookKeeper")]
         public IActionResult MemberList()
         {
