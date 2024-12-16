@@ -7,6 +7,6 @@
         public required string LastName { get; set; }
         public required string Email { get; set; }
         public required string Role { get; set; }
-        public List<Library.Models.Transaction>? Transactions { get; set; }
+        public List<Models.Transaction>? Transactions { get; set; }
     }
 }

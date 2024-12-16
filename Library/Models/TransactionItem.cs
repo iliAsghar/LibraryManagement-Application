@@ -9,7 +9,6 @@ namespace Library.Models
         public int TransactionId { get; set; }
         public int BookId { get; set; }
         public int Quantity { get; set; }
-
         public Book? Book { get; set; }
         public Transaction? Transaction { get; set; }
     }

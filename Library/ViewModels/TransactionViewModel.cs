@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public required string UserNationalId { get; set; }
         public DateTime? TransactionDate { get; set; }
-        public required string Status { get; set; }
+        public required Models.TransactionStatus Status { get; set; }
         public List<TransactionItemViewModel> Items { get; set; }
 
         public TransactionViewModel()
