@@ -8,7 +8,7 @@ namespace Library.Models
         public int UserId { get; set; }
         public DateTime? TransactionDate { get; set; }
         public string Status { get; set; }
-    public User? User { get; set; }
+        public User? User { get; set; }
         public List<TransactionItem> TransactionItems { get; set; }
 
         public Transaction() 
