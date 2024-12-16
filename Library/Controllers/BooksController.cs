@@ -4,6 +4,9 @@ using System.Diagnostics;
 using Library.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Threading.Tasks;
+using Library.ViewModels;
 
 namespace Library.Controllers
 {
@@ -19,8 +22,8 @@ namespace Library.Controllers
             _context = context;
         }
 
-        [Authorize(policy: "BookKeeper")]
-        [Authorize(policy: "NormalUser")]
+        [Authorize(Policy = "BookKeeper")]
+        [Authorize(Policy = "NormalUser")]
         public IActionResult BookList()
         {
             var books = _context.Books.ToList();
@@ -34,33 +37,39 @@ namespace Library.Controllers
 
             if (book == null)
             {
-                // todo do something here
-                return View();
+                TempData["ErrorMessage"] = "کتاب مورد نظر یافت نشد!";
+                return RedirectToAction("BookList");
             }
 
             return View(book);
         }
 
-        [Authorize(policy: "BookKeeper")]
+        [Authorize(Policy = "BookKeeper")]
         public async Task<IActionResult> AddBook(Book book, IFormFile coverImage)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(book);
             }
 
-            if (coverImage !=  null && coverImage.Length > 0)
+            if (coverImage != null && coverImage.Length > 0)
             {
-                var upleadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
 
-                if (!Directory.Exists(upleadPath))
+                if (!Directory.Exists(uploadPath))
                 {
-                    Directory.CreateDirectory(upleadPath);
+                    Directory.CreateDirectory(uploadPath);
                 }
 
                 var uniqueFileName = $"{book.Id}-{book.Title}{Path.GetExtension(coverImage.FileName)}";
 
-                var filePath = Path.Combine(upleadPath, uniqueFileName);
+                var filePath = Path.Combine(uploadPath, uniqueFileName);
+
+                if (!IsValidImage(coverImage))
+                {
+                    ModelState.AddModelError("CoverImage", "فایل باید یک تصویر باشد!");
+                    return View(book);
+                }
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -75,6 +84,14 @@ namespace Library.Controllers
 
             TempData["AlertMessage"] = "کتاب جدید با موفقیت ثبت شد!";
             return RedirectToAction("Index", "Books");
+        }
+
+        private bool IsValidImage(IFormFile file)
+        {
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var extension = Path.GetExtension(file.FileName).ToLower();
+
+            return allowedExtensions.Contains(extension);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
