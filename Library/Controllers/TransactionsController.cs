@@ -22,6 +22,30 @@ namespace Library.Controllers
 
         [Authorize(policy: "NormalUser")]
         [Authorize(policy: "BookKeeper")]
+        //public async Task<IActionResult> TransactionList()
+        //{
+        //    IQueryable<Transaction> transactions;
+
+        //    if (User.IsInRole("BookKeeper"))
+        //    {
+        //        transactions = _context.Transactions
+        //            .Include(t => t.TransactionItems)
+        //                .ThenInclude(ti => ti.Book);
+        //    }
+        //    else
+        //    {
+        //        var userId = GetLoggedInUserId();
+
+        //        transactions = _context.Transactions
+        //            .Where(t => t.UserId == userId)
+        //            .Include(t => t.TransactionItems)
+        //                .ThenInclude(ti => ti.Book);
+        //    }
+
+        //    var transactionList = await transactions.ToListAsync();
+
+        //    return View(transactionList);
+        //}
         public async Task<IActionResult> TransactionList()
         {
             IQueryable<Transaction> transactions;
@@ -30,7 +54,8 @@ namespace Library.Controllers
             {
                 transactions = _context.Transactions
                     .Include(t => t.TransactionItems)
-                        .ThenInclude(ti => ti.Book);
+                        .ThenInclude(ti => ti.Book)
+                    .OrderByDescending(t => t.TransactionDate); // مرتب‌سازی نزولی بر اساس تاریخ
             }
             else
             {
@@ -39,14 +64,16 @@ namespace Library.Controllers
                 transactions = _context.Transactions
                     .Where(t => t.UserId == userId)
                     .Include(t => t.TransactionItems)
-                        .ThenInclude(ti => ti.Book);
+                        .ThenInclude(ti => ti.Book)
+                    .OrderByDescending(t => t.TransactionDate); // مرتب‌سازی نزولی بر اساس تاریخ
             }
 
             var transactionList = await transactions.ToListAsync();
 
             return View(transactionList);
         }
-        
+
+
         [Authorize(policy: "NormalUser")]
         [Authorize(policy: "BookKeeper")]
         public async Task<IActionResult> ShowTransaction(int id)

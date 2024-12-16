@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "جزئیات کتاب";
+}
+@model Library.Models.Book
+
+<div class="book-details">
+    <h1>جزئیات کتاب</h1>
+
+    <div class="book-info">
+        <h2>@Model.Title</h2>
+        <p><strong>نویسنده:</strong> @Model.Author</p>
+        <p><strong>توضیحات:</strong> @Model.Description</p>
+        <p><strong>تعداد موجودی:</strong> @Model.TotalQuantity</p>
+
+        @if (!string.IsNullOrEmpty(Model.CoverPath))
+        {
+            <div class="book-cover">
+                <img src="@Url.Content(Model.CoverPath)" alt="@Model.Title" style="max-width: 200px;" />
+            </div>
+        }
+        else
+        {
+            <p><em>تصویر کاور موجود نیست.</em></p>
+        }
+    </div>
+
+    <div class="book-actions">
+        <a href="/Books" class="btn btn-secondary">بازگشت</a>
+        <form method="post" action="/transactions/AddBookToTransaction">
+            <input type="hidden" name="bookId" value="@Model.Id" />
+            <input type="number" name="quantity" class="quantity-input" value="1" min="1" />
+            <button type="submit" class="add-to-transaction-btn">اضافه کردن</button>
+        </form>
+    </div>
+</div>
+
+<td>
+    
+</td>

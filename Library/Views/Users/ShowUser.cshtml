@@ -1,0 +1,37 @@
+﻿@{
+}
+
+<div class="user-details">
+    <h2>جزئیات کاربر</h2>
+    <table class="table table-striped">
+        <tbody>
+            <
+            <tr>
+                <th>ایمیل:</th>
+                <td>@Model.Email</td>
+            </tr>
+            <tr>
+                <th>نام:</th>
+                <td>@Model.Name</td>
+            </tr>
+            <tr>
+                <th>نام خانوادگی:</th>
+                <td>@Model.Lastname</td>
+            </tr>
+            <tr>
+                <th>کد ملی:</th>
+                <td>@Model.NationalId</td>
+            </tr>
+            <tr>
+                <th>نقش:</th>
+                <td>@Model.Role</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="actions">
+        <a href="/Users/Edit/@Model.Id" class="btn btn-primary">ویرایش اطلاعات</a>
+        <a href="/Users/Delete/@Model.Id" class="btn btn-danger" onclick="return confirm('آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟');">حذف کاربر</a>
+        <a href="/Users" class="btn btn-secondary">بازگشت به لیست کاربران</a>
+    </div>
+</div>

@@ -188,6 +188,12 @@
                         <p>بازگردانده شده</p>
                     }
                 </td>
+                @if (User.HasClaim("Role", "BookKeeper"))
+                {
+                    <td>
+                       @transaction.User.NationalId
+                    </td>
+                }
             </tr>
         }
 
