@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
 {
@@ -19,6 +20,7 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [Authorize]
         public async Task<IActionResult> Profile()
         {
             var userId = GetLoggedInUserId();
