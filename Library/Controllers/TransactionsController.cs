@@ -15,7 +15,7 @@ namespace Library.Controllers
         private readonly ILogger<Transactions> _logger;
         private readonly MyDBContext _context;
 
-        public Transactions(ILogger<Transactions> logger, MyDBContext context, IStringLocalizer<Transactions> localizer)
+        public Transactions(ILogger<Transactions> logger, MyDBContext context)
         {
             _logger = logger;
             _context = context;
@@ -69,7 +69,7 @@ namespace Library.Controllers
                     transaction = await _context.Transactions
                         .Include (t => t.User)
                         .Include(t => t.TransactionItems)
-                            .ThenInclude(ti => ti.Book)
+                            .ThenInclude (ti => ti.Book)
                         .FirstOrDefaultAsync(t =>
                         t.UserId == userId &&
                         t.Status == TransactionStatus.UnFinalized);
@@ -79,24 +79,38 @@ namespace Library.Controllers
                     transaction = await _context.Transactions
                         .Include(t => t.User)
                         .Include(t => t.TransactionItems)
-                            .ThenInclude(ti => ti.Book)
+                            .ThenInclude (ti => ti.Book)
                         .FirstOrDefaultAsync(t =>
                         t.UserId == userId &&
                         t.Id == id);
                 }
             }
 
+            TransactionItemViewModel? itemModel = null;
+
+            TransactionViewModel? model = null;
+
             if (transaction != null)
             {
-                TransactionViewModel model = new TransactionViewModel(transaction.User.NationalId, transaction.Status);
+                var items = new List<TransactionItemViewModel>();
+                foreach (var item in transaction.TransactionItems)
+                {
+                    var itemViewModel = new TransactionItemViewModel
+                    {
+                        Id = item.Id,
+                        BookTitle = item.Book.Title,
+                        Quantity = item.Quantity,
+                        Description = item.Book.Description
+                    };
 
-                model.Transaction = transaction;
-                model.TransactionItems = transaction?.TransactionItems;
-                model.Books = transaction?.TransactionItems?.Select(ti => ti.Book).ToList();
-            }
-            else
-            {
-                TempData["NoActiveTransaction"] = _localizer["No active transaction found!"]; // Localization message
+                    items.Add(itemViewModel);
+                }
+
+
+                model = new TransactionViewModel(transaction.User.NationalId, transaction.Status)
+                {
+                    Items = items
+                };
             }
 
             return View(model);
@@ -116,15 +130,13 @@ namespace Library.Controllers
             var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(t =>
                 t.UserId == userId &&
-                t.Status == "Unfinalized");
+                t.Status == TransactionStatus.UnFinalized);
 
             if (transaction == null)
             {
                 transaction = new Transaction
                 {
                     UserId = userId,
-                    TransactionDate = DateTime.Now,
-                    Status = "Unfinalized"
                 };
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
@@ -165,14 +177,14 @@ namespace Library.Controllers
             var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(t =>
                 t.UserId == userId &&
-                t.Status == "Unfinalized");
+                t.Status == TransactionStatus.UnFinalized);
 
             if (transaction == null)
             {
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.Status = "PendingApproval";
+            transaction.Status = TransactionStatus.PendingApproval;
 
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
@@ -192,7 +204,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.Status = "Approved";
+            transaction.Status = TransactionStatus.Approved;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
@@ -211,7 +223,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.Status = "Rejected";
+            transaction.Status = TransactionStatus.Rejected;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
@@ -230,7 +242,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.Status = "Returned";
+            transaction.Status = TransactionStatus.Returned;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 

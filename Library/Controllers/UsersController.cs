@@ -19,8 +19,7 @@ namespace Library.Controllers
             _context = context;
         }
 
-        [Authorize(policy: "Admin")]
-        [Authorize(policy: "BookKeeper")]
+        [Authorize(Policy = "BookKeeper")]
         public async Task<ActionResult> ShowUser(int id)
         {
             var user = await _context.Users
@@ -29,14 +28,13 @@ namespace Library.Controllers
 
             if (user == null)
             {
-                // todo do something here
                 return View();
-            } 
+            }
 
             return View(user);
         }
 
-        [Authorize(policy: "Admin")]
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult> PromoteToBookKeeper(int id)
         {
             var user = await _context.Users
@@ -44,13 +42,11 @@ namespace Library.Controllers
 
             if (user == null)
             {
-                // todo do something here
                 return View(user);
             }
 
             if (user.Role == "BookKeeper")
             {
-                // todo do something here
                 return View(user);
             }
 
@@ -61,7 +57,7 @@ namespace Library.Controllers
             return View(user);
         }
 
-        [Authorize(policy: "Admin")]
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult> DemoteToMember(int id)
         {
             var user = await _context.Users
@@ -69,13 +65,11 @@ namespace Library.Controllers
 
             if (user == null)
             {
-                // todo do something here
                 return View(user);
             }
 
             if (user.Role == "User")
             {
-                // todo do something here
                 return View(user);
             }
 
@@ -86,33 +80,33 @@ namespace Library.Controllers
             return View(user);
         }
 
-        [Authorize(policy: "BookKeeper")]
+        [Authorize(Policy = "BookKeeper")]
         public IActionResult MemberList()
         {
-            var members = _context.Users.
-                Where(u => u.Role == "User")
+            var members = _context.Users
+                .Where(u => u.Role == "User")
                 .ToList();
 
             ViewData["ViewType"] = "MemberList";
             return View("UserList", members);
         }
 
-        [Authorize(policy: "Admin")]
+        [Authorize(Policy = "Admin")]
         public IActionResult BookKeeperList()
         {
-            var bookkeepers = _context.Users.
-                Where(u => u.Role == "BookKeeper")
+            var bookkeepers = _context.Users
+                .Where(u => u.Role == "BookKeeper")
                 .ToList();
 
             ViewData["ViewType"] = "AdminList";
             return View("UserList", bookkeepers);
         }
 
-        [Authorize(policy: "Admin")]
+        [Authorize(Policy = "Admin")]
         public IActionResult UserList()
         {
-            var users = _context.Users.
-                Where(u => u.Role == "User" || u.Role == "BookKeeper")
+            var users = _context.Users
+                .Where(u => u.Role == "User" || u.Role == "BookKeeper")
                 .ToList();
 
             ViewData["ViewType"] = "UserList";
@@ -122,7 +116,7 @@ namespace Library.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ViewModels.ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

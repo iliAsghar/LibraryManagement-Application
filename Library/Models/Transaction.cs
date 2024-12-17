@@ -6,13 +6,14 @@ namespace Library.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public required DateTime TransactionDate { get; set; }
+        public DateTime TransactionDate { get; set; }
         public TransactionStatus Status { get; set; }
         public User? User { get; set; }
         public List<TransactionItem> TransactionItems { get; set; }
 
         public Transaction() 
         {
+            TransactionDate = DateTime.Now;
             Status = TransactionStatus.UnFinalized;
             TransactionItems = new List<TransactionItem>();
         }
