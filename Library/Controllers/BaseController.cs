@@ -18,11 +18,11 @@ public class BaseController : Controller
     // Example: Get the user's role from claims
     private string GetUserRole()
     {
-        if (User.IsInRole("Admin"))
+        if (User.HasClaim("Role", "Admin"))
             return "Admin";
-        else if (User.IsInRole("BookKeeper"))
+        else if (User.HasClaim("Role", "BookKeeper"))
             return "BookKeeper";
-        else if (User.IsInRole("NormalUser"))
+        else if (User.HasClaim("Role", "NormalUser"))
             return "NormalUser";
         else
             return "Unknown";  // Default if no role is found
