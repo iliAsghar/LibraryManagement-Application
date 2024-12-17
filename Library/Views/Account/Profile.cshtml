@@ -1,4 +1,4 @@
-﻿@model UserViewModel
+﻿@model Library.ViewModels.UserViewModel
 
 @{
     ViewData["Title"] = "User Profile";
@@ -23,7 +23,7 @@
                 <tr>
                     <th>Transaction ID</th>
                     <th>Date</th>
-                    <th>Total Amount</th>
+                    @*<th>Total Amount</th>*@
                     <th>Book</th>
                 </tr>
             </thead>
@@ -32,8 +32,8 @@
                 {
                     <tr>
                         <td>@transaction.Id</td>
-                        <td>@transaction.Date</td>
-                        <td>@transaction.TotalAmount</td>
+                        <td>@transaction.TransactionDate</td>
+                        @*<td>@transaction.TotalAmount</td>*@
                         <td>
                             @foreach (var item in transaction.TransactionItems)
                             {

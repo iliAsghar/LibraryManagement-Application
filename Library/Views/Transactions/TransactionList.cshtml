@@ -25,7 +25,7 @@
         justify-content: space-between;
         align-items: center;
         font-size: 1rem;
-        text-align: rtl;
+        direction: rtl;
     }
 
         .filter-section label {
@@ -62,7 +62,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-collapse: collapse;
         overflow: hidden;
-        text-align: rtl;
+        direction: rtl;
     }
 
     thead {
@@ -139,23 +139,23 @@
                 </td>
                 <td>@transaction.TransactionDate?.ToString("yyyy/MM/dd")</td>
                 <td>
-                    @if (transaction.Status == Models.TransactionStatus.Unfinalized)
+                    @if (transaction.Status == Library.Models.TransactionStatus.UnFinalized)
                     {
                         <p> نهایی نشدهه</p>
                     }
-                    else if (transaction.Status == Models.TransactionStatus.PendingApproval)
+                    else if (transaction.Status == Library.Models.TransactionStatus.PendingApproval)
                     {
                         <p> در انتظار تایید</p>
                     }
-                    else if (transaction.Status == Models.TransactionStatus.Approved)
+                    else if (transaction.Status == Library.Models.TransactionStatus.Approved)
                     {
                         <p>تایید شده</p>
                     }
-                    else if (transaction.Status == Models.TransactionStatus.Rejected)
+                    else if (transaction.Status == Library.Models.TransactionStatus.Rejected)
                     {
                         <p>رد شده</p>
                     }
-                    else if (transaction.Status == Models.TransactionStatus.Returned)
+                    else if (transaction.Status == Library.Models.TransactionStatus.Returned)
                     {
                         <p>بازگردانده شده</p>
                     }

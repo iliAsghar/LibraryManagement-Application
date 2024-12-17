@@ -43,6 +43,7 @@ namespace Library.Controllers
 
             BookViewModel model = new BookViewModel()
             {
+                Id = book.Id,
                 Title = book.Title,
                 Description = book.Description,
                 Author = book.Author,
