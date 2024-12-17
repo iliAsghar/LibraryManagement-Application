@@ -1,5 +1,6 @@
 ﻿using Library.Data;
 using Library.Models;
+using Library.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,16 +23,30 @@ namespace Library.Controllers
         [Authorize(Policy = "BookKeeper")]
         public async Task<ActionResult> ShowUser(int id)
         {
+
             var user = await _context.Users
-                .Include(x => x.Transactions)
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .Where(u => u.Id == id)
+                .Include(u => u.Transactions)
+                    .ThenInclude(t => t.TransactionItems)
+                        .ThenInclude(ti => ti.Book)
+                .FirstOrDefaultAsync();
 
             if (user == null)
             {
-                return View();
+                return NotFound();
             }
 
-            return View(user);
+            UserViewModel model = new UserViewModel()
+            {
+                NationalId = user.NationalId,
+                Name = user.Name,
+                LastName = user.Lastname,
+                Email = user.Email,
+                Role = user.Role,
+                Transactions = user.Transactions
+            };
+
+            return View(model);
         }
 
         [Authorize(Policy = "Admin")]

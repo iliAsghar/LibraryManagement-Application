@@ -2,11 +2,11 @@
 {
     public class UserViewModel
     {
-        public int NationalId { get; set; }
-        public required string Name { get; set; }
-        public required string LastName { get; set; }
-        public required string Email { get; set; }
-        public required string Role { get; set; }
+        public string? NationalId { get; set; }
+        public string? Name { get; set; }
+        public string? LastName { get; set; }
+        public string? Email { get; set; }
+        public string? Role { get; set; }
         public List<Models.Transaction>? Transactions { get; set; }
     }
 }

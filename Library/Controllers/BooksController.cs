@@ -41,7 +41,16 @@ namespace Library.Controllers
                 return RedirectToAction("BookList");
             }
 
-            return View(book);
+            BookViewModel model = new BookViewModel()
+            {
+                Title = book.Title,
+                Description = book.Description,
+                Author = book.Author,
+                CoverPath = book.CoverPath,
+                TotalQuantity = book.TotalQuantity
+            };
+
+            return View(model);
         }
 
         [Authorize(Policy = "BookKeeper")]

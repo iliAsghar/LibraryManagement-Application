@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Controllers
 {
@@ -16,6 +17,35 @@ namespace Library.Controllers
         public AccountController(MyDBContext context)
         {
             _context = context;
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            var userId = GetLoggedInUserId();
+
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Transactions)
+                    .ThenInclude(t => t.TransactionItems)
+                        .ThenInclude(ti => ti.Book)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            UserViewModel model = new UserViewModel()
+            {
+                NationalId = user.NationalId,
+                Name = user.Name,
+                LastName = user.Lastname,
+                Email = user.Email,
+                Role = user.Role,
+                Transactions = user.Transactions
+            };
+
+            return View(model);
         }
 
         public IActionResult Register(RegisterViewModel model)
@@ -92,6 +122,12 @@ namespace Library.Controllers
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
+        }
+
+        private int GetLoggedInUserId()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());
+            return userId;
         }
 
     }
