@@ -117,44 +117,39 @@
     {
         <p style="color: red;">@TempData["NoActiveTransaction"] - <a class="inline-link">کتاب انتخاب کنید...</a></p>
     }
-    else if (Model.Transaction == null)
+    else if (Model == null || Model.Items == null || !Model.Items.Any())
     {
         <p>هیچ امانتی یافت نشد.</p>
     }
     else
     {
-        <p><span>شماره امانت:</span> @Model.Transaction.Id</p>
-        <p><span>وضعیت:</span> @(Model.Transaction.IsFinalized ? "تایید شده / بسته" : "در انتظار تایید / باز")</p>
-        <p><span>تاریخ شروع امانت:</span> @(Model.Transaction.TransactionDate.ToString("yyyy/MM/dd")) </p>
+        <p><span>شماره امانت:</span> @Model.Id</p>
+        <p><span>وضعیت:</span> @(Model.Status)</p>
+        <p><span>تاریخ شروع امانت:</span> @(Model.TransactionDate.ToString("yyyy/MM/dd")) </p>
 
         <h2>لیست کتاب‌ها</h2>
-        @if (Model.TransactionItems != null && Model.TransactionItems.Count > 0)
-        {
-            <ul>
-                @foreach (var item in Model.TransactionItems)
-                {
-                    <li>
-                        <img src="@(item.Book.CoverPath ?? "/images/default-cover.jpg")" alt="Book Cover" />
-                        <div>
-                            <p><span>کتاب:</span> @item.Book.Title</p>
-                            <p><span>نویسنده:</span> @item.Book.Author</p>
-                            <p><span>تعداد:</span> @item.Quantity</p>
-                        </div>
-                    </li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>هیچ کتابی در این امانت وجود ندارد.</p>
-        }
+        <ul>
+            @foreach (var item in Model.Items)
+            {
+                <li>
+                    <img src="@(item.BookCoverPath ?? "/images/default-cover.jpg")" alt="Book Cover" />
+                    <div>
+                        <p><span>کتاب:</span> @item.BookTitle</p>
+                        <p><span>نویسنده:</span> @item.Author</p>
+                        <p><span>تعداد:</span> @item.Quantity</p>
+                        <p><span>توضیحات:</span> @item.Description</p>
+                    </div>
+                </li>
+            }
+        </ul>
 
         <form method="post" action="/Transactions/FinalizeTransaction">
-            <input type="hidden" name="transactionId" value="@Model.Transaction.Id" />
+            <input type="hidden" name="transactionId" value="@Model.TransactionId" />
             <button type="submit"
                     class="finalize-button"
-            @(Model.Transaction.IsFinalized ? "disabled" : "")
-                    title="@(Model.Transaction.IsFinalized ? "این امانت قبلاً نهایی شده است" : "")">
+             ?
+            @(Model.Status != TransactionStatus.UnFinalized) ? "disabled" : "" ))
+                    title="@(Model.Status != TransactionStatus.UnFinalized) ? "این امانت قبلاً نهایی شده است" : "")">
                 نهایی کردن امانت
             </button>
         </form>

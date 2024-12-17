@@ -1,4 +1,4 @@
-﻿@model List<Library.Models.Transaction>
+﻿@model List<Library.ViewModels.TransactionViewModel>
 
 @{
     ViewData["Title"] = "لیست امانت ها";
@@ -25,7 +25,7 @@
         justify-content: space-between;
         align-items: center;
         font-size: 1rem;
-        text-align: rtl;
+        direction: rtl;
     }
 
         .filter-section label {
@@ -62,7 +62,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-collapse: collapse;
         overflow: hidden;
-        text-align: rtl;
+        direction: rtl;
     }
 
     thead {
@@ -115,16 +115,6 @@
 
 <h2 class="title-list">لیست امانت‌ها</h2>
 
-@*
-<div class="filter-section">
-    <form method="get" action="/Transactions/TransactionList/">
-        <label for="filterDate">نمایش امانت‌ها پس از تاریخ:</label>
-        <input type="date" id="filterDate" name="filterDate" />
-        <button type="submit">فیلتر</button>
-    </form>
-</div>
-*@
-
 <table>
     <thead>
         <tr>
@@ -135,64 +125,44 @@
         </tr>
     </thead>
     <tbody>
-       @* @if (Model.Any(t => t.Status == "Unfinalized"))
-        {
-            var unfinalizedTransaction = Model.FirstOrDefault(t => t.Status == "Unfinalized");
-            <tr onclick="window.location.href='/transactions/showtransaction/@unfinalizedTransaction.Id'" style="background-color: #ffefcc; cursor: pointer;">
-                <td>@unfinalizedTransaction.Id</td>
-                <td>
-                    <ul>
-                        @foreach (var item in unfinalizedTransaction.TransactionItems)
-                        {
-                            <li>@item.Book?.Title * @item.Quantity</li>
-                        }
-                    </ul>
-                </td>
-                <td>@unfinalizedTransaction.TransactionDate?.ToString("yyyy/MM/dd")</td>
-                <td>در انتظار تایید / باز</td>
-            </tr>
-        }*@
-
         @foreach (var transaction in Model)
         {
             <tr onclick="window.location.href='/transactions/showtransaction/@transaction.Id'" style="cursor: pointer;">
                 <td>@transaction.Id</td>
                 <td>
                     <ul>
-                        @foreach (var item in transaction.TransactionItems)
+                        @foreach (var item in transaction.Items)
                         {
-                            <li>@item.Book?.Title * @item.Quantity</li>
+                            <li>@item.BookTitle * @item.Quantity</li>
                         }
                     </ul>
                 </td>
                 <td>@transaction.TransactionDate?.ToString("yyyy/MM/dd")</td>
                 <td>
-                    @if (transaction.Status == "Unfinalized")
+                    @if (transaction.Status == Library.Models.TransactionStatus.UnFinalized)
                     {
                         <p> نهایی نشدهه</p>
                     }
-                    else if (transaction.Status == "PendingApproval")
+                    else if (transaction.Status == Library.Models.TransactionStatus.PendingApproval)
                     {
                         <p> در انتظار تایید</p>
                     }
-                    else if (transaction.Status == "Approved")
+                    else if (transaction.Status == Library.Models.TransactionStatus.Approved)
                     {
                         <p>تایید شده</p>
                     }
-                    else if (transaction.Status == "Rejected")
+                    else if (transaction.Status == Library.Models.TransactionStatus.Rejected)
                     {
                         <p>رد شده</p>
                     }
-                    else if (transaction.Status == "Rturned")
+                    else if (transaction.Status == Library.Models.TransactionStatus.Returned)
                     {
                         <p>بازگردانده شده</p>
                     }
                 </td>
                 @if (User.HasClaim("Role", "BookKeeper"))
                 {
-                    <td>
-                       @transaction.User.NationalId
-                    </td>
+                    <td>@transaction.UserNationalId</td>
                 }
             </tr>
         }

@@ -21,8 +21,7 @@ namespace Library.Controllers
             _context = context;
         }
 
-        [Authorize(policy: "NormalUser")]
-        [Authorize(policy: "BookKeeper")]
+        [Authorize(Roles = "User, BookKeeper")]
         public async Task<IActionResult> TransactionList()
         {
             IQueryable<Transaction> transactions;
@@ -45,13 +44,28 @@ namespace Library.Controllers
 
             var transactionList = await transactions.ToListAsync();
 
-            return View(transactionList);
+            var transactionViewModels = transactionList.Select(t => new TransactionViewModel(
+                t.User.NationalId,
+                t.Status)
+            {
+                Id = t.Id,
+                TransactionDate = t.TransactionDate,
+                Items = t.TransactionItems.Select(ti => new TransactionItemViewModel
+                {
+                    Description = ti.Book?.Description,
+                    BookTitle = ti.Book?.Title,
+                    Quantity = ti.Quantity
+                }).ToList()
+            }).ToList();
+
+            return View(transactionViewModels);
         }
-        
+
         [Authorize(policy: "NormalUser")]
         [Authorize(policy: "BookKeeper")]
         public async Task<IActionResult> ShowTransaction(int id)
         {
+            var userId = GetLoggedInUserId();
             Transaction? transaction = null;
 
             if (User.IsInRole("BookKeeper"))
@@ -60,41 +74,57 @@ namespace Library.Controllers
                     .Include(t => t.TransactionItems)
                         .ThenInclude(ti => ti.Book)
                     .FirstOrDefaultAsync(t => t.Id == id);
-            } 
+            }
             else if (User.IsInRole("NormalUser"))
             {
-                var userId = GetLoggedInUserId();
-
                 if (id == -1)
                 {
                     transaction = await _context.Transactions
+                        .Include(t => t.User)
                         .Include(t => t.TransactionItems)
                             .ThenInclude(ti => ti.Book)
                         .FirstOrDefaultAsync(t =>
-                        t.UserId == userId &&
-                        t.Status == "Unfinalized"); // todo change this
-                } else
+                            t.UserId == userId &&
+                            t.Status == TransactionStatus.UnFinalized);
+                }
+                else
                 {
                     transaction = await _context.Transactions
+                        .Include(t => t.User)
                         .Include(t => t.TransactionItems)
                             .ThenInclude(ti => ti.Book)
                         .FirstOrDefaultAsync(t =>
-                        t.UserId == userId &&
-                        t.Id == id);
+                            t.UserId == userId &&
+                            t.Id == id);
                 }
             }
 
-            TransactionViewModel model = new TransactionViewModel();
+            TransactionViewModel? model = null;
 
             if (transaction != null)
             {
-                model.Transaction = transaction;
-                model.TransactionItems = transaction?.TransactionItems;
-                model.Books = transaction?.TransactionItems?.Select(ti => ti.Book).ToList();
-            } else
-            {
-                TempData["NoActiveTransaction"] = "شما در حال حاضر هیچ امانت فعالی ندارید!";
-                // todo make this better
+                var items = new List<TransactionItemViewModel>();
+                foreach (var item in transaction.TransactionItems)
+                {
+                    var itemViewModel = new TransactionItemViewModel
+                    {
+                        Id = item.Id,
+                        BookTitle = item.Book.Title,
+                        Quantity = item.Quantity,
+                        Description = item.Book.Description,
+                        BookCoverPath = item.Book.CoverPath
+                    };
+
+                    items.Add(itemViewModel);
+                }
+
+                model = new TransactionViewModel(transaction.User.NationalId, transaction.Status)
+                {
+                    Id = transaction.Id,
+                    TransactionDate = transaction.TransactionDate,
+                    Status = transaction.Status,
+                    Items = items
+                };
             }
 
             return View(model);
@@ -103,23 +133,24 @@ namespace Library.Controllers
         [Authorize(policy: "NormalUser")]
         public async Task<IActionResult> AddBookToTransaction(int bookId, int quantity)
         {
-            // todo make this check for max quantity
-
+            var maxQuantity = 2;
+            if (quantity > maxQuantity)
+            {
+                return RedirectToAction("BookList", "Books");
+            }
 
             var userId = GetLoggedInUserId();
 
             var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(t =>
                 t.UserId == userId &&
-                t.Status == "Unfinalized"); // todo change this
+                t.Status == TransactionStatus.UnFinalized);
 
             if (transaction == null)
             {
                 transaction = new Transaction
                 {
                     UserId = userId,
-                    TransactionDate = DateTime.Now, // todo do something with this
-                    Status = "Unfinalized"
                 };
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
@@ -139,7 +170,8 @@ namespace Library.Controllers
                     TransactionId = transaction.Id
                 };
                 _context.TransactionItems.Add(transactionItem);
-            } else
+            }
+            else
             {
                 transactionItem.Quantity += quantity;
                 _context.TransactionItems.Update(transactionItem);
@@ -148,8 +180,7 @@ namespace Library.Controllers
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "کتاب به سبد امانت اضافه شد!"; // todo change this
-            return RedirectToAction("BookList", "Books"); // todo maybe change this to go back where we were?
+            return RedirectToAction("BookList", "Books");
         }
 
         [Authorize(policy: "NormalUser")]
@@ -160,20 +191,18 @@ namespace Library.Controllers
             var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(t =>
                 t.UserId == userId &&
-                t.Status == "Unfinalized");
+                t.Status == TransactionStatus.UnFinalized);
 
             if (transaction == null)
             {
-                TempData["ErrorMessage"] = "No transaction to finalize."; //todo change this
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.Status = "PendingApproval";
+            transaction.Status = TransactionStatus.PendingApproval;
 
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Transaction Finalized!"; // todo change this
             return RedirectToAction("TransactionList", "Transactions");
         }
 
@@ -186,15 +215,13 @@ namespace Library.Controllers
 
             if (transaction == null)
             {
-                TempData["ErrorMessage"] = "No transaction with id: " + id; // todo change this?
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.Status = "Approved"; 
+            transaction.Status = TransactionStatus.Approved;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Transaction Approved!"; //todo change this?
             return RedirectToAction("TransactionList", "Transactions");
         }
 
@@ -207,18 +234,16 @@ namespace Library.Controllers
 
             if (transaction == null)
             {
-                TempData["ErrorMessage"] = "No transaction with id: " + id; // todo change this?
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.Status = "Rejected";
+            transaction.Status = TransactionStatus.Rejected;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Transaction Rejected!"; // todo change this?
             return RedirectToAction("TransactionList", "Transactions");
         }
-        
+
         [Authorize(policy: "BookKeeper")]
         public async Task<IActionResult> ReturnTransaction(int id)
         {
@@ -228,17 +253,16 @@ namespace Library.Controllers
 
             if (transaction == null)
             {
-                TempData["ErrorMessage"] = "No transaction with id: " + id; // todo change this?
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
-            transaction.Status = "Returned";
+            transaction.Status = TransactionStatus.Returned;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Transaction Rejected!"; // todo change this?
             return RedirectToAction("TransactionList", "Transactions");
         }
+
         private int GetLoggedInUserId()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Library.ViewModels.AddBookViewModel
+
+@{
     ViewData["Title"] = "افزودن کتاب";
 }
 
@@ -24,26 +26,26 @@
         border-radius: 10px;
     }
 
-    .add-book-form h3 {
-        font-family: "Lalezar", sans-serif;
-        font-size: 3rem;
-        font-weight: 300;
-        text-align: center;
-        border-bottom: 1px solid #DC5F00;
-        align-self: center;
-    }
+        .add-book-form h3 {
+            font-family: "Lalezar", sans-serif;
+            font-size: 3rem;
+            font-weight: 300;
+            text-align: center;
+            border-bottom: 1px solid #DC5F00;
+            align-self: center;
+        }
 
-    .add-book-form div {
-        display: flex;
-        flex-direction: column;
-    }
+        .add-book-form div {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .add-book-form input, .add-book-form textarea {
-        border-radius: 4px;
-        border: 1px solid gray;
-        padding: 0.5rem;
-        resize: none;
-    }
+        .add-book-form input, .add-book-form textarea {
+            border-radius: 4px;
+            border: 1px solid gray;
+            padding: 0.5rem;
+            resize: none;
+        }
 
     .file-input {
         display: none;
@@ -91,32 +93,37 @@
         transition: all ease-in-out 200ms;
     }
 
-    .add-book-form button:hover {
-        background-color: #DC5F00;
-        color: white;
-        transition: all ease-in-out 50ms;
-    }
+        .add-book-form button:hover {
+            background-color: #DC5F00;
+            color: white;
+            transition: all ease-in-out 50ms;
+        }
 </style>
+
 <form asp-action="AddBook" asp-controller="Books" class="add-book-form" method="post" enctype="multipart/form-data">
     <h3>افزودن کتاب</h3>
+
     <div>
         <label for="Title">نام کتاب</label>
-        <input type="text" id="Title" name="Title" required />
+        <input type="text" id="Title" name="Title" value="@Model.Title" required />
+        <span class="text-danger">@ViewData.ModelState["Title"]?.Errors[0]?.ErrorMessage</span>
     </div>
 
     <div>
         <label for="Description">توضیحات</label>
-        <textarea id="Description" name="Description" required rows="6"></textarea>
+        <textarea id="Description" name="Description" required rows="6">@Model.Description</textarea>
+        <span class="text-danger">@ViewData.ModelState["Description"]?.Errors[0]?.ErrorMessage</span>
     </div>
 
     <div>
         <label for="Author">نویسنده</label>
-        <input type="text" id="Author" name="Author" required />
+        <input type="text" id="Author" name="Author" value="@Model.Author" required />
+        <span class="text-danger">@ViewData.ModelState["Author"]?.Errors[0]?.ErrorMessage</span>
     </div>
 
     <div>
         <label for="Cover">تصویر جلد</label>
-        <input type="file" id="Cover" class="file-input" name="CoverImage" accept="image/*" required />
+        <input type="file" id="Cover" class="file-input" name="CoverImage" accept="image/*" />
         <div class="file-container">
             <label for="Cover" class="custom-file-label">انتخاب تصویر</label>
             <span id="file-name">فایلی انتخاب نشده</span>
@@ -125,7 +132,8 @@
 
     <div>
         <label for="TotalQuantity">تعداد موجودی</label>
-        <input type="number" id="TotalQuantity" name="TotalQuantity" />
+        <input type="number" id="TotalQuantity" name="TotalQuantity" value="@Model.TotalQuantity" />
+        <span class="text-danger">@ViewData.ModelState["TotalQuantity"]?.Errors[0]?.ErrorMessage</span>
     </div>
 
     <button type="submit">اضافه کردن</button>

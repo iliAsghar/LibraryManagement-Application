@@ -1,4 +1,5 @@
 using Library.Models;
+using Library.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -17,17 +18,21 @@ namespace Library.Controllers
 
         public IActionResult Index()
         {
+            var viewName = GetViewForRole();
+            return View(viewName);
+        }
+
+        private string GetViewForRole()
+        {
             if (User.IsInRole("Admin"))
             {
-                return View("AdminIndex");
+                return "AdminIndex";
             }
-
             else if (User.IsInRole("BookKeeper"))
             {
-                return View("BookKeeperIndex");
+                return "BookKeeperIndex";
             }
-
-            return View("NormalUserIndex");
+            return "NormalUserIndex";
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

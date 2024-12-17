@@ -99,50 +99,54 @@
     .book-title {
         white-space: nowrap;
     }
+
+    .cover-image {
+        display: block;
+        width: 60px;
+        height: auto;
+        border-radius: 3px;
+        margin-inline: auto;
+    }
+
 </style>
 
-<h2 class="title-list">لیست کتاب ها</h2>
-<table>
-    <thead>
-        <tr>
-            <th>عنوان</th>
-            <th>نویسنده</th>
-            <th>توضیحات</th>
-            <th>تصویر جلد</th>
-            <th>تعداد موجودی کتاب</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var book in Model)
-        {
-            <tr>
-                <td class="book-title">@book.Title</td>
-                <td>@book.Author</td>
-                <td>@book.Description</td>
-                <td>
-                    @if (!string.IsNullOrEmpty(book.CoverPath))
-                    {
-                        <img src="@book.CoverPath" alt="@book.Title" style="display: block; width: 60px; height: auto; border-radius: 3px; margin-inline: auto;" />
-                    }
-                    else
-                    {
-                        <span>تصویری یافت نشد!</span>
-                    }
-                </td>
-                <td>@book.TotalQuantity</td>
+<main>
+    <h2 class="title-list">لیست کتاب ها</h2>
 
+    <table>
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>نویسنده</th>
+                <th>توضیحات</th>
+                <th>تصویر جلد</th>
+                <th>تعداد موجودی کتاب</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td class="book-title">@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Description</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(book.CoverPath))
+                        {
+                            <img src="@book.CoverPath" alt="@book.Title" class="cover-image" />
+                        }
+                        else
+                        {
+                            <span>تصویری یافت نشد!</span>
+                        }
+                    </td>
+                    <td>@book.TotalQuantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>
 
 @{
     var alertMessage = TempData["AlertMessage"] as string;
-}
-
-@if (!string.IsNullOrEmpty(alertMessage))
-{
-    <script>
-        alert('کتاب جدید با موفقیت اضافه شد!');
-    </script>
 }

@@ -1,4 +1,6 @@
-﻿namespace Library.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Library.Models
 {
     public class Book
     {
@@ -8,6 +10,6 @@
         public required string Author { get; set; }
         public string? CoverPath { get; set; }
         public required int TotalQuantity { get; set; }
-        public List<TransactionItem>? TransactionItems { get; set; }
+        public List<TransactionItem>? TransactionItems { get; set; } = new List<TransactionItem>();
     }
 }
