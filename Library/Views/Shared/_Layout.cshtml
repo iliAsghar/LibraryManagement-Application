@@ -20,27 +20,24 @@
             <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
 
             
-            @if (User.HasClaim("Role","Admin"))
+            @if (User.IsInPolicy("AdminPolicy"))
             {
                 <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
                 <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
-                <li><a onclick="window.location='@Url.Action("","Transactions")';">کاربر ها</a></li>
-            }
-            
-            @if (User.HasClaim("Role", "BookKeeper"))
-            {
-                <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
-                <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
-                <li><a onclick="window.location='@Url.Action("","Transactions")';">کاربر ها</a></li>
+                <li><a onclick="window.location='@Url.Action("","Users")';">کاربر ها</a></li>
             }
 
-            @if (User.HasClaim("Role", "NormalUser"))
+            @if (User.IsInPolicy("BookKeeperPolicy"))
+            {
+                <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
+                <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
+            }
+
+            @if (User.IsInPolicy("NormalUserPolicy"))
             {
                 <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
                 <li><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
-                <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
             }
-
             <li><a onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
         </ul>
 
