@@ -23,14 +23,13 @@
             {
                 <li><a onclick="window.location='@Url.Action("","Books")';">کاربرها</a></li>
             }
-            @if (ViewBag.UserRole == "BookKeeper")
 
+            @if (ViewBag.UserRole == "BookKeeper")
             {
                 <li><a onclick="window.location='@Url.Action("","Users")';">اعضا</a></li>
             }
 
-            @if (ViewBag.UserRole == "NormalUser")
-
+            @if (ViewBag.UserRole == "User")
             {
                 <li><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
             }
