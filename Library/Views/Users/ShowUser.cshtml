@@ -1,5 +1,101 @@
 ﻿@{
 }
+<style>
+    .user-details {
+        font-family: "Vazir", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 55rem;
+        margin: 2rem auto;
+    }
+
+    .title-user-details {
+        font-family: "Lalezar", sans-serif;
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+
+    .user-details-table {
+        width: 100%;
+        background-color: white;
+        border-radius: 10px;
+        border-collapse: collapse;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        direction: rtl;
+        margin-bottom: 2rem;
+    }
+
+        .user-details-table th, .user-details-table td {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            text-align: right;
+        }
+
+        .user-details-table th {
+            background-color: #DC5F00;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .user-details-table td {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .user-details-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    .actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        color: white;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .edit-btn {
+        background-color: #007bff;
+    }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+
+    .delete-btn {
+        background-color: #dc3545;
+    }
+
+        .delete-btn:hover {
+            background-color: #a71d2a;
+        }
+
+    .back-btn {
+        background-color: #6c757d;
+    }
+
+        .back-btn:hover {
+            background-color: #495057;
+        }
+
+</style>
 
 <div class="user-details">
     <h2>جزئیات کاربر</h2>
