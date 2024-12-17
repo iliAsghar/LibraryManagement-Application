@@ -19,26 +19,23 @@
         <ul class="nav-list">
             <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
 
-            
             @if (User.IsInRole("Admin"))
             {
-                <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
-                <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
-                <li><a onclick="window.location='@Url.Action("","Users")';">کاربر ها</a></li>
+                <li><a onclick="window.location='@Url.Action("","Books")';">کاربرها</a></li>
             }
 
-            @if (User.IsInRole("BookKeeper"))
+            @if(User.IsInRole("BookKeeper"))
             {
-                <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
-                <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
+                <li><a onclick="window.location='@Url.Action("","Users")';">اعضا</a></li>
             }
 
             @if (User.IsInRole("User"))
             {
-                <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
                 <li><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
             }
 
+            <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
+            <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
             <li><a onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
         </ul>
 
