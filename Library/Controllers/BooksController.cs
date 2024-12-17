@@ -22,8 +22,7 @@ namespace Library.Controllers
             _context = context;
         }
 
-        [Authorize(policy: "NoramlUser")]
-        [Authorize(policy: "BookKeeper")]
+        [Authorize]
         public IActionResult BookList()
         {
             var books = _context.Books.ToList();

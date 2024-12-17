@@ -21,7 +21,7 @@ namespace Library.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "User, BookKeeper")]
+        [Authorize]
         public async Task<IActionResult> TransactionList()
         {
             IQueryable<Transaction> transactions;
@@ -61,8 +61,7 @@ namespace Library.Controllers
             return View(transactionViewModels);
         }
 
-        [Authorize(policy: "NormalUser")]
-        [Authorize(policy: "BookKeeper")]
+        [Authorize]
         public async Task<IActionResult> ShowTransaction(int id)
         {
             var userId = GetLoggedInUserId();
