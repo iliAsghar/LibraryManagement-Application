@@ -19,17 +19,19 @@
         <ul class="nav-list">
             <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
 
-            @if (User.IsInRole("Admin"))
+            @if (User.Claims.Any(c => c.Type == "Role" && c.Value == "Admin"))
             {
                 <li><a onclick="window.location='@Url.Action("","Books")';">کاربرها</a></li>
             }
-
-            @if(User.IsInRole("BookKeeper"))
+            @{
+                var a = User.Claims.Any(c => c.Type == "Role" && c.Value == "Admin");
+            }
+            @if (true)
             {
                 <li><a onclick="window.location='@Url.Action("","Users")';">اعضا</a></li>
             }
 
-            @if (User.IsInRole("User"))
+            @if (User.Claims.Any(c => c.Type == "Role" && c.Value == "NormalUser"))
             {
                 <li><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
             }

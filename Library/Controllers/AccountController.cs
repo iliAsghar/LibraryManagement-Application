@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly MyDBContext _context;
 
@@ -104,7 +104,7 @@ namespace Library.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim("Role", user.Role)
+                new Claim("Role", user.Role),
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

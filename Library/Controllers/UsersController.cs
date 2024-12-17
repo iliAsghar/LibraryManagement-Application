@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace Library.Controllers
 {
     [Authorize]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly ILogger<UsersController> _logger;
         private readonly MyDBContext _context;

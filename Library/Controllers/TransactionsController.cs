@@ -10,7 +10,7 @@ using System.Security.Claims;
 namespace Library.Controllers
 {
     [Authorize]
-    public class Transactions : Controller
+    public class Transactions : BaseController
     {
         private readonly ILogger<Transactions> _logger;
         private readonly MyDBContext _context;

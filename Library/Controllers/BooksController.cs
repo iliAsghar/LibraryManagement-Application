@@ -11,7 +11,7 @@ using Library.ViewModels;
 namespace Library.Controllers
 {
     [Authorize]
-    public class BooksController : Controller
+    public class BooksController : BaseController
     {
         private readonly ILogger<BooksController> _logger;
         private readonly MyDBContext _context;
