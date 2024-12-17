@@ -38,6 +38,7 @@ namespace Library.Controllers
 
             UserViewModel model = new UserViewModel()
             {
+                Id = user.Id,
                 NationalId = user.NationalId,
                 Name = user.Name,
                 LastName = user.Lastname,

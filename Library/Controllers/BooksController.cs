@@ -54,8 +54,20 @@ namespace Library.Controllers
         }
 
         [Authorize(Policy = "BookKeeper")]
+        public IActionResult AddBook()
+        {
+            return View(new AddBookViewModel());
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "BookKeeper")]
         public async Task<IActionResult> AddBook(AddBookViewModel model, IFormFile coverImage)
         {
+            if (coverImage == null || coverImage.Length <= 0)
+            {
+                ModelState.AddModelError("CoverPath", "تصویر جلد الزامی است!");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -69,32 +81,29 @@ namespace Library.Controllers
                 TotalQuantity = model.TotalQuantity
             };
 
-            if (coverImage != null && coverImage.Length > 0)
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+
+            if (!Directory.Exists(uploadPath))
             {
-                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-
-                if (!Directory.Exists(uploadPath))
-                {
-                    Directory.CreateDirectory(uploadPath);
-                }
-
-                var uniqueFileName = $"{Guid.NewGuid()}-{coverImage.FileName}";
-
-                var filePath = Path.Combine(uploadPath, uniqueFileName);
-
-                if (!IsValidImage(coverImage))
-                {
-                    ModelState.AddModelError("CoverImage", "فایل باید یک تصویر باشد!");
-                    return View(model);
-                }
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await coverImage.CopyToAsync(fileStream);
-                }
-
-                book.CoverPath = "/images/" + uniqueFileName;
+                Directory.CreateDirectory(uploadPath);
             }
+
+            var uniqueFileName = $"{Guid.NewGuid()}-{coverImage.FileName}";
+
+            var filePath = Path.Combine(uploadPath, uniqueFileName);
+
+            if (!IsValidImage(coverImage))
+            {
+                ModelState.AddModelError("CoverImage", "فایل باید یک تصویر باشد!");
+                return View(model);
+            }
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await coverImage.CopyToAsync(fileStream);
+            }
+
+            book.CoverPath = "/images/" + uniqueFileName;
 
             _context.Books.Add(book);
             await _context.SaveChangesAsync();

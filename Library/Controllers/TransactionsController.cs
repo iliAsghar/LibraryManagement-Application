@@ -29,6 +29,7 @@ namespace Library.Controllers
             if (User.IsInRole("BookKeeper"))
             {
                 transactions = _context.Transactions
+                    .Include(t => t.User)
                     .Include(t => t.TransactionItems)
                         .ThenInclude(ti => ti.Book);
             }
@@ -38,6 +39,7 @@ namespace Library.Controllers
 
                 transactions = _context.Transactions
                     .Where(t => t.UserId == userId)
+                    .Include(t => t.User)
                     .Include(t => t.TransactionItems)
                         .ThenInclude(ti => ti.Book);
             }
@@ -70,6 +72,7 @@ namespace Library.Controllers
             if (User.IsInRole("BookKeeper"))
             {
                 transaction = await _context.Transactions
+                    .Include(t => t.User)
                     .Include(t => t.TransactionItems)
                         .ThenInclude(ti => ti.Book)
                     .FirstOrDefaultAsync(t => t.Id == id);

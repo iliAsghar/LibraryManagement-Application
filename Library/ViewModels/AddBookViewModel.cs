@@ -7,17 +7,17 @@ namespace Library.ViewModels
         [MaxLength(30)]
         [Display(Name = "نام کتاب")]
         [Required(ErrorMessage = "عنوان کتاب الزامی است!")]
-        public required string Title { get; set; }
+        public string? Title { get; set; }
 
         [MaxLength(100)]
         [Display(Name = "توضیحات")]
         [Required(ErrorMessage = "توضیحات کتاب الزامی است!")]
-        public required string Description { get; set; }
+        public string? Description { get; set; }
 
         [MaxLength(30)]
         [Display(Name = "نام نویسنده")]
         [Required(ErrorMessage = "نام نویسنده الزامی است!")]
-        public required string Author { get; set; }
+        public string? Author { get; set; }
 
         [Display(Name = "تصویر جلد")]
         public string? CoverPath { get; set; }

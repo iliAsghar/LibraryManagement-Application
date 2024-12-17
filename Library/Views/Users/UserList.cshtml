@@ -31,6 +31,7 @@
         padding: 1rem;
         border: 1px solid #ddd;
         direction: rtl !important;
+        text-align: center;
     }
 
     tbody tr:hover {
@@ -88,35 +89,18 @@
             <th>نام</th>
             <th>نام خانوادگی</th>
             <th>پست الکترونیک</th>
-            <th> سطح کاربر</th>
-
         </tr>
     </thead>
     <tbody>
         @foreach (var member in Model)
         {
-            <tr>
+            <tr onclick="window.location.href='@Url.Action("ShowUser", "Users", new { id = member.Id })'" style="cursor: pointer;">
                 <td>@member.NationalId</td>
                 <td>@member.Name</td>
                 <td>@member.Lastname</td>
                 <td>@member.Email</td>
-                <td>
-                    @member.Role
-                    @if (User.HasClaim("Role", "Admin"))
-                    {
-                        <form method="post" action="">
-                            <button type="submit" class="add-to-transaction-btn">تغییر سطح دسترسی</button>
-                        </form>
-                    }
-                </td>
             </tr>
         }
-
-        <tr onclick="window.location='/Users/AddMember';" class="add-member-row">
-            <td class="add-member-btn" colspan="4">
-                <a>افزودن عضو جدید</a>
-            </td>
-        </tr>
 
         <tr style=" background-color: #818185;">
             <td style="padding: 0.25rem" colspan="4"> </td>

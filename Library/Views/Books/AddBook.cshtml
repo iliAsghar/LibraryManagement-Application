@@ -106,19 +106,19 @@
     <div>
         <label for="Title">نام کتاب</label>
         <input type="text" id="Title" name="Title" value="@Model.Title" required />
-        <span class="text-danger">@ViewData.ModelState["Title"]?.Errors[0]?.ErrorMessage</span>
+        <span class="text-danger" asp-validation-for="Title"></span>
     </div>
 
     <div>
         <label for="Description">توضیحات</label>
         <textarea id="Description" name="Description" required rows="6">@Model.Description</textarea>
-        <span class="text-danger">@ViewData.ModelState["Description"]?.Errors[0]?.ErrorMessage</span>
+        <span class="text-danger" asp-validation-for="Description"></span>
     </div>
 
     <div>
         <label for="Author">نویسنده</label>
         <input type="text" id="Author" name="Author" value="@Model.Author" required />
-        <span class="text-danger">@ViewData.ModelState["Author"]?.Errors[0]?.ErrorMessage</span>
+        <span class="text-danger" asp-validation-for="Author"></span>
     </div>
 
     <div>
@@ -128,12 +128,13 @@
             <label for="Cover" class="custom-file-label">انتخاب تصویر</label>
             <span id="file-name">فایلی انتخاب نشده</span>
         </div>
+        <span class="text-danger" asp-validation-for="CoverPath"></span>
     </div>
 
     <div>
         <label for="TotalQuantity">تعداد موجودی</label>
         <input type="number" id="TotalQuantity" name="TotalQuantity" value="@Model.TotalQuantity" />
-        <span class="text-danger">@ViewData.ModelState["TotalQuantity"]?.Errors[0]?.ErrorMessage</span>
+        <span class="text-danger" asp-validation-for="TotalQuantity"></span>
     </div>
 
     <button type="submit">اضافه کردن</button>
