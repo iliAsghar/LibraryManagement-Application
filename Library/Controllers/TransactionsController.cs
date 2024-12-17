@@ -45,8 +45,23 @@ namespace Library.Controllers
 
             var transactionList = await transactions.ToListAsync();
 
-            return View(transactionList);
+            var transactionViewModels = transactionList.Select(t => new TransactionViewModel(
+                t.User.NationalId,
+                t.Status)
+            {
+                Id = t.Id,
+                TransactionDate = t.TransactionDate,
+                Items = t.TransactionItems.Select(ti => new TransactionItemViewModel
+                {
+                    Description = ti.Book?.Description,
+                    BookTitle = ti.Book?.Title,
+                    Quantity = ti.Quantity
+                }).ToList()
+            }).ToList();
+
+            return View(transactionViewModels);
         }
+
 
         [Authorize(policy: "NormalUser")]
         [Authorize(policy: "BookKeeper")]
@@ -67,26 +82,24 @@ namespace Library.Controllers
                 if (id == -1)
                 {
                     transaction = await _context.Transactions
-                        .Include (t => t.User)
+                        .Include(t => t.User)
                         .Include(t => t.TransactionItems)
-                            .ThenInclude (ti => ti.Book)
+                            .ThenInclude(ti => ti.Book)
                         .FirstOrDefaultAsync(t =>
-                        t.UserId == userId &&
-                        t.Status == TransactionStatus.UnFinalized);
+                            t.UserId == userId &&
+                            t.Status == TransactionStatus.UnFinalized);
                 }
                 else
                 {
                     transaction = await _context.Transactions
                         .Include(t => t.User)
                         .Include(t => t.TransactionItems)
-                            .ThenInclude (ti => ti.Book)
+                            .ThenInclude(ti => ti.Book)
                         .FirstOrDefaultAsync(t =>
-                        t.UserId == userId &&
-                        t.Id == id);
+                            t.UserId == userId &&
+                            t.Id == id);
                 }
             }
-
-            TransactionItemViewModel? itemModel = null;
 
             TransactionViewModel? model = null;
 
@@ -100,15 +113,18 @@ namespace Library.Controllers
                         Id = item.Id,
                         BookTitle = item.Book.Title,
                         Quantity = item.Quantity,
-                        Description = item.Book.Description
+                        Description = item.Book.Description,
+                        BookCoverPath = item.Book.CoverPath
                     };
 
                     items.Add(itemViewModel);
                 }
 
-
                 model = new TransactionViewModel(transaction.User.NationalId, transaction.Status)
                 {
+                    Id = transaction.Id,
+                    TransactionDate = transaction.TransactionDate,
+                    Status = transaction.Status,
                     Items = items
                 };
             }

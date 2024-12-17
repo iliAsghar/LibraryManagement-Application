@@ -54,12 +54,20 @@ namespace Library.Controllers
         }
 
         [Authorize(Policy = "BookKeeper")]
-        public async Task<IActionResult> AddBook(Book book, IFormFile coverImage)
+        public async Task<IActionResult> AddBook(AddBookViewModel model, IFormFile coverImage)
         {
             if (!ModelState.IsValid)
             {
-                return View(book);
+                return View(model);
             }
+
+            var book = new Book
+            {
+                Title = model.Title,
+                Description = model.Description,
+                Author = model.Author,
+                TotalQuantity = model.TotalQuantity
+            };
 
             if (coverImage != null && coverImage.Length > 0)
             {
@@ -70,14 +78,14 @@ namespace Library.Controllers
                     Directory.CreateDirectory(uploadPath);
                 }
 
-                var uniqueFileName = $"{book.Id}-{book.Title}{Path.GetExtension(coverImage.FileName)}";
+                var uniqueFileName = $"{Guid.NewGuid()}-{coverImage.FileName}";
 
                 var filePath = Path.Combine(uploadPath, uniqueFileName);
 
                 if (!IsValidImage(coverImage))
                 {
                     ModelState.AddModelError("CoverImage", "فایل باید یک تصویر باشد!");
-                    return View(book);
+                    return View(model);
                 }
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -94,6 +102,7 @@ namespace Library.Controllers
             TempData["AlertMessage"] = "کتاب جدید با موفقیت ثبت شد!";
             return RedirectToAction("Index", "Books");
         }
+
 
         private bool IsValidImage(IFormFile file)
         {
