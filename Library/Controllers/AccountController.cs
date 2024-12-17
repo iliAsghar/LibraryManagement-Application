@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         private readonly MyDBContext _context;
 
