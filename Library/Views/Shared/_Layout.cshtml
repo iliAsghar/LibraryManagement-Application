@@ -21,12 +21,12 @@
 
             @if (ViewBag.UserRole == "Admin")
             {
-                <li><a onclick="window.location='@Url.Action("","Books")';">کاربرها</a></li>
+                <li><a onclick="window.location='@Url.Action("UserList","Users")';">کاربرها</a></li>
             }
 
             @if (ViewBag.UserRole == "BookKeeper")
             {
-                <li><a onclick="window.location='@Url.Action("","Users")';">اعضا</a></li>
+                <li><a onclick="window.location='@Url.Action("MemberList","Users")';">اعضا</a></li>
             }
 
             @if (ViewBag.UserRole == "User")
@@ -38,16 +38,6 @@
             <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
             <li><a onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
         </ul>
-
-
-        @*<ul class="nav-list">
-          <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
-          <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
-          <li><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
-          <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
-          <li><a onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
-        </ul>
-        *@
     </header>
 
     <main>

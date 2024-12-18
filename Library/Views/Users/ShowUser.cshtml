@@ -1,6 +1,4 @@
-﻿@{
-}
-<style>
+﻿<style>
     body {
         font-family: "Vazirmatn", sans-serif;
         background-color: #f4f4f4;
@@ -130,8 +128,22 @@
     </table>
 
     <div class="actions">
+        @*
         <a href="/Users/Edit/@Model.Id" class="btn btn-primary">ویرایش اطلاعات</a>
-        <a href="/Users/Delete/@Model.Id" class="btn btn-danger" onclick="return confirm('آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟');">حذف کاربر</a>
+
+        <a href="/Users/Delete/@Model.Id" class="btn btn-danger"
+           onclick="return confirm('آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟');">
+            حذف کاربر
+        </a>
+        *@
+
+        <a href="javascript:void(0)"
+           class="btn btn-success"
+           onclick="window.location.href='@Url.Action("PromoteToBookKeeper", "Users", new { id = Model.Id })';">
+            ارتقا به کتابدار
+        </a>
+
         <a href="/Users" class="btn btn-secondary">بازگشت به لیست کاربران</a>
     </div>
+
 </div>

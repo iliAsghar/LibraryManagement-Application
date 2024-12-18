@@ -103,7 +103,7 @@ namespace Library.Controllers
                 .Where(u => u.Role == "User")
                 .ToList();
 
-            ViewData["ViewType"] = "MemberList";
+            ViewData["Title"] = "اعضا";
             return View("UserList", members);
         }
 
@@ -114,7 +114,7 @@ namespace Library.Controllers
                 .Where(u => u.Role == "BookKeeper")
                 .ToList();
 
-            ViewData["ViewType"] = "AdminList";
+            ViewData["Title"] = "کتابدار ها";
             return View("UserList", bookkeepers);
         }
 
@@ -125,7 +125,7 @@ namespace Library.Controllers
                 .Where(u => u.Role == "User" || u.Role == "BookKeeper")
                 .ToList();
 
-            ViewData["ViewType"] = "UserList";
+            ViewData["Title"] = "کاربران";
             return View("UserList", users);
         }
 

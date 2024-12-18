@@ -56,46 +56,6 @@
         margin-top: 2rem;
     }
 
-    .quantity-input {
-        width: 50px;
-        text-align: center;
-    }
-
-    .add-to-transaction-btn {
-        width: 100%;
-        padding: 0.5rem 1rem;
-        background-color: #DC5F00;
-        color: white;
-        border: none;
-        border-radius: 0 0 5px 5px;
-        cursor: pointer;
-        font-size: 0.9rem;
-    }
-
-        .add-to-transaction-btn:hover {
-            background-color: #b94d00;
-        }
-
-    .quantity-input {
-        width: 100%;
-        text-align: center;
-        padding: 0.3rem;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 5px 5px 0 0;
-        outline: none;
-        transition: all 0.3s ease;
-    }
-
-        .quantity-input:hover {
-            border-color: #DC5F00;
-        }
-
-        .quantity-input:focus {
-            border-color: #b94d00;
-            box-shadow: 0 0 5px rgba(220, 95, 0, 0.5);
-        }
-
     .book-title {
         white-space: nowrap;
     }
@@ -108,6 +68,19 @@
         margin-inline: auto;
     }
 
+    .add-book-row {
+        background-color: #f0f0f0 !important
+    }
+
+    .add-book-btn {
+        text-align: center;
+        padding: .5rem;
+        cursor: pointer;
+    }
+
+        .add-book-btn:hover {
+            background-color: #e0e0e0;
+        }
 </style>
 
 <main>
@@ -143,6 +116,16 @@
                     <td>@book.TotalQuantity</td>
                 </tr>
             }
+            @if (ViewBag.UserRole == "BookKeeper" || ViewBag.UserRole == "Admin")
+            {
+                <tr onclick="window.location.href='@Url.Action("AddBook", "Books")'" class="add-book-row">
+                    <td class="add-book-btn" colspan="5" style="text-align: center;">
+                        <a>افزودن کتاب جدید</a>
+                </tr>
+            }
+            <tr style=" background-color: #818185;">
+                <td style="padding: 0.25rem" colspan="5"> </td>
+            </tr>
         </tbody>
     </table>
 </main>

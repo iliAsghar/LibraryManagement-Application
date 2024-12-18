@@ -1,8 +1,4 @@
-﻿@{
-    ViewData["Title"] = "لیست اعضا";
-}
-
-<style>
+﻿<style>
     main {
         font-family: "Vazir", sans-serif;
         background-color: #f4f4f4;
@@ -70,18 +66,8 @@
     }
 </style>
 
-@if (ViewData["ViewType"] as string == "UserList")
-    {
-        <h2>لیست کاربرهای </h2>
-    }
-    else if (ViewData["ViewType"] as string == "MemberList")
-    {
-        <h2>لیست اعضا</h2>
-    }
-    else if (ViewData["ViewType"] as string == "BookKeeperList")
-    {
-        <h2>لیست کتابدار ها</h2>
-    }
+<h2>لیست @ViewData["Title"]</h2>
+
 <table>
     <thead>
         <tr>
@@ -89,21 +75,23 @@
             <th>نام</th>
             <th>نام خانوادگی</th>
             <th>پست الکترونیک</th>
+            <th>نقش</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var member in Model)
+        @foreach (var item in Model)
         {
-            <tr onclick="window.location.href='@Url.Action("ShowUser", "Users", new { id = member.Id })'" style="cursor: pointer;">
-                <td>@member.NationalId</td>
-                <td>@member.Name</td>
-                <td>@member.Lastname</td>
-                <td>@member.Email</td>
+            <tr onclick="window.location.href='@Url.Action("ShowUser", "Users", new { id = item.Id })'" style="cursor: pointer;">
+                <td>@item.NationalId</td>
+                <td>@item.Name</td>
+                <td>@item.Lastname</td>
+                <td>@item.Email</td>
+                <td>@item.Role</td>
             </tr>
         }
 
         <tr style=" background-color: #818185;">
-            <td style="padding: 0.25rem" colspan="4"> </td>
+            <td style="padding: 0.25rem" colspan="5"> </td>
         </tr>
     </tbody>
     
