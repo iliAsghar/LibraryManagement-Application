@@ -56,21 +56,16 @@ namespace Library.Controllers
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == id);
 
-            if (user == null)
+            if (user == null || user.Role == "BookKeeper")
             {
-                return View(user);
-            }
-
-            if (user.Role == "BookKeeper")
-            {
-                return View(user);
+                return RedirectToAction("ShowUser", "Users", new { id });
             }
 
             user.Role = "BookKeeper";
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return View(user);
+            return RedirectToAction("ShowUser", "Users", new { id });
         }
 
         [Authorize(Policy = "Admin")]
@@ -79,21 +74,16 @@ namespace Library.Controllers
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == id);
 
-            if (user == null)
+            if (user == null || user.Role == "User")
             {
-                return View(user);
-            }
-
-            if (user.Role == "User")
-            {
-                return View(user);
+                return RedirectToAction("ShowUser", "Users", new { id });
             }
 
             user.Role = "User";
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return View(user);
+            return RedirectToAction("ShowUser", "Users", new { id });
         }
 
         [Authorize(Policy = "BookKeeper")]

@@ -24,11 +24,11 @@ namespace Library.Controllers
 
         private string GetViewForRole()
         {
-            if (User.IsInRole("Admin"))
+            if (GetUserRole() == "Admin")
             {
                 return "AdminIndex";
             }
-            else if (User.IsInRole("BookKeeper"))
+            else if (GetUserRole() == "BookKeeper")
             {
                 return "BookKeeperIndex";
             }

@@ -117,7 +117,7 @@
     {
         <p style="color: red;">@TempData["NoActiveTransaction"] - <a class="inline-link">کتاب انتخاب کنید...</a></p>
     }
-    else if (Model == null || Model.Items == null || !Model.Items.Any())
+    else if (Model == null || Model.Items == null || Model.Items.Count == 0)
     {
         <p>هیچ امانتی یافت نشد.</p>
     }
@@ -144,7 +144,7 @@
         </ul>
 
         <form method="post" action="/Transactions/FinalizeTransaction">
-            <input type="hidden" name="transactionId" value="@Model.TransactionId" />
+            <input type="hidden" name="transactionId" value="@Model.Id" />
             <button type="submit"
                     class="finalize-button"
              ?

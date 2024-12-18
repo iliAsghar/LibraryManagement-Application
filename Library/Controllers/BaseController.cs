@@ -16,7 +16,7 @@ public class BaseController : Controller
     }
 
     // Example: Get the user's role from claims
-    private string GetUserRole()
+    public string GetUserRole()
     {
         return User.Claims.ElementAtOrDefault(2).Value;
     }

@@ -143,6 +143,12 @@
             ارتقا به کتابدار
         </a>
 
+        <a href="javascript:void(0)"
+           class="btn btn-success"
+           onclick="window.location.href='@Url.Action("DemoteToMember", "Users", new { id = Model.Id })';">
+            تغییر به عضو عادی
+        </a>
+
         <a href="/Users" class="btn btn-secondary">بازگشت به لیست کاربران</a>
     </div>
 

@@ -26,7 +26,7 @@ namespace Library.Controllers
         {
             IQueryable<Transaction> transactions;
 
-            if (User.IsInRole("BookKeeper"))
+            if (GetUserRole() == "BookKeeper")
             {
                 transactions = _context.Transactions
                     .Include(t => t.User)
@@ -54,8 +54,9 @@ namespace Library.Controllers
                 TransactionDate = t.TransactionDate,
                 Items = t.TransactionItems.Select(ti => new TransactionItemViewModel
                 {
-                    Description = ti.Book?.Description,
                     BookTitle = ti.Book?.Title,
+                    Description = ti.Book?.Description,
+                    Author = ti.Book?.Author,
                     Quantity = ti.Quantity
                 }).ToList()
             }).ToList();
@@ -69,7 +70,7 @@ namespace Library.Controllers
             var userId = GetLoggedInUserId();
             Transaction? transaction = null;
 
-            if (User.IsInRole("BookKeeper"))
+            if (GetUserRole() == "Admin")
             {
                 transaction = await _context.Transactions
                     .Include(t => t.User)
@@ -77,7 +78,7 @@ namespace Library.Controllers
                         .ThenInclude(ti => ti.Book)
                     .FirstOrDefaultAsync(t => t.Id == id);
             }
-            else if (User.IsInRole("NormalUser"))
+            else if (GetUserRole() == "User")
             {
                 if (id == -1)
                 {
@@ -112,8 +113,9 @@ namespace Library.Controllers
                     {
                         Id = item.Id,
                         BookTitle = item.Book.Title,
-                        Quantity = item.Quantity,
                         Description = item.Book.Description,
+                        Author = item.Book.Author,
+                        Quantity = item.Quantity,
                         BookCoverPath = item.Book.CoverPath
                     };
 
