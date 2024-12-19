@@ -1,6 +1,6 @@
 ﻿<style>
     body {
-        font-family: "Vazirmatn", sans-serif;
+        font-family: "Vazir", sans-serif;
         background-color: #f4f4f4;
         margin: 0;
         padding: 0;
@@ -12,56 +12,74 @@
         justify-content: flex-start;
         align-items: center;
         padding: 2rem;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin: 2rem auto;
+        width: 90%;
+        max-width: 800px;
+    }
+
+    h2 {
+        font-family: "Lalezar", sans-serif;
+        font-size: 2.5rem;
+        color: #DC5F00;
+        margin-bottom: 2rem;
     }
 
     table {
-        width: min(55rem, 100%);
+        width: 100%;
         background-color: white;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-collapse: collapse;
         overflow: hidden;
         direction: rtl;
-        margin-top: 1.5rem;
     }
 
-    th, td {
-        padding: 1rem;
-        border: 1px solid #ddd;
-        text-align: right;
-    }
-
-    th {
-        font-weight: bold;
-        font-size: 1.2rem;
-        white-space: nowrap;
+    thead {
         background-color: #DC5F00;
         color: white;
         text-align: center;
     }
 
-    td {
+    th, td {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        direction: rtl !important;
         font-size: 1rem;
-        color: #333;
     }
 
     tbody tr:hover {
         background-color: #f1f1f1;
     }
 
+    th {
+        font-weight: bold;
+        font-size: 1.2rem;
+        white-space: nowrap;
+    }
+
+    td {
+        color: #333;
+    }
+
     .actions {
         display: flex;
         gap: 1rem;
-        margin-top: 1rem;
+        margin-top: 2rem;
+        justify-content: center;
     }
 
     .btn {
-        padding: 0.5rem 1rem;
+        padding: 0.8rem 2rem;
         border-radius: 5px;
         font-size: 1rem;
         text-decoration: none;
         color: white;
         text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s ease-in-out;
     }
 
     .btn-primary {
@@ -71,6 +89,7 @@
 
         .btn-primary:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
         }
 
     .btn-danger {
@@ -80,6 +99,17 @@
 
         .btn-danger:hover {
             background-color: #a71d2a;
+            transform: scale(1.05);
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: scale(1.05);
         }
 
     .btn-secondary {
@@ -89,54 +119,68 @@
 
         .btn-secondary:hover {
             background-color: #495057;
+            transform: scale(1.05);
         }
 
     .title-list {
         font-family: "Lalezar", sans-serif;
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        color: #333;
+        font-size: 3rem;
+        margin-bottom: .5rem;
+        margin-top: 2rem;
     }
+
+    .add-book-btn {
+        text-align: center;
+        padding: .5rem;
+        cursor: pointer;
+        font-size: 1.1rem;
+        color: #DC5F00;
+        transition: all 0.3s ease;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+        .add-book-btn:hover {
+            background-color: #DC5F00;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .add-book-btn a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .add-book-btn:active {
+            transform: scale(1);
+        }
+
 </style>
 
 <div class="user-details">
     <h2>جزئیات کاربر</h2>
     <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ایمیل</th>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>کد ملی</th>
+                <th>نقش</th>
+            </tr>
+        </thead>
         <tbody>
-            <
             <tr>
-                <th>ایمیل:</th>
                 <td>@Model.Email</td>
-            </tr>
-            <tr>
-                <th>نام:</th>
                 <td>@Model.Name</td>
-            </tr>
-            <tr>
-                <th>نام خانوادگی:</th>
                 <td>@Model.LastName</td>
-            </tr>
-            <tr>
-                <th>کد ملی:</th>
                 <td>@Model.NationalId</td>
-            </tr>
-            <tr>
-                <th>نقش:</th>
                 <td>@Model.Role</td>
             </tr>
         </tbody>
     </table>
 
     <div class="actions">
-        @*
-        <a href="/Users/Edit/@Model.Id" class="btn btn-primary">ویرایش اطلاعات</a>
-
-        <a href="/Users/Delete/@Model.Id" class="btn btn-danger"
-           onclick="return confirm('آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟');">
-            حذف کاربر
-        </a>
-        *@
-
         <a href="javascript:void(0)"
            class="btn btn-success"
            onclick="window.location.href='@Url.Action("PromoteToBookKeeper", "Users", new { id = Model.Id })';">
@@ -151,5 +195,4 @@
 
         <a href="/Users" class="btn btn-secondary">بازگشت به لیست کاربران</a>
     </div>
-
 </div>

@@ -5,98 +5,107 @@
 }
 
 <style>
-    main {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        background-color: #f4f4f4;
-    }
-
     .add-book-form {
         font-family: "Vazir", sans-serif;
-        width: min(50rem, 100%);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 1rem;
-        gap: 1rem;
-        margin-inline: auto;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         background-color: white;
         border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        width: min(40rem, 100%);
+        margin: 2rem auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
     }
 
         .add-book-form h3 {
             font-family: "Lalezar", sans-serif;
-            font-size: 3rem;
-            font-weight: 300;
+            font-size: 2rem;
+            color: #DC5F00;
             text-align: center;
-            border-bottom: 1px solid #DC5F00;
-            align-self: center;
+            margin-bottom: 1rem;
         }
 
-        .add-book-form div {
-            display: flex;
-            flex-direction: column;
+        .add-book-form label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
-        .add-book-form input, .add-book-form textarea {
-            border-radius: 4px;
-            border: 1px solid gray;
-            padding: 0.5rem;
+        .add-book-form input[type="text"],
+        .add-book-form textarea,
+        .add-book-form input[type="file"],
+        .add-book-form input[type="number"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .add-book-form textarea {
             resize: none;
         }
 
-    .file-input {
-        display: none;
-    }
+        .add-book-form .file-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-    .file-container {
-        display: flex;
-        align-items: center;
-        border: 1px solid gray;
-        border-radius: 4px;
-        overflow: hidden;
-        flex-direction: row-reverse !important;
-    }
+        .add-book-form .custom-file-label {
+            background-color: #f4f4f4;
+            padding: 0.8rem 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            text-align: center;
+            flex-grow: 1;
+            transition: background-color 0.3s ease, color 0.3s ease; /* انیمیشن برای هاور */
+        }
 
-    .custom-file-label, .file-info span {
-        width: 50%;
-        padding: 0.5rem;
-        text-align: center;
-        cursor: pointer;
-    }
+            .add-book-form .custom-file-label:hover {
+                background-color: #DC5F00; /* رنگ پس‌زمینه در هاور */
+                color: white; /* تغییر رنگ متن */
+            }
 
-    .custom-file-label {
-        background-color: #f9f9f9;
-        color: #333;
-        border-right: 1px solid gray;
-    }
+        .add-book-form #file-name {
+            color: #666;
+            font-size: 0.9rem;
+        }
 
-    .file-container span {
-        width: 50%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding-inline: 1rem;
-        color: #878787;
-    }
+        .add-book-form input[type="number"] {
+            max-width: 100px;
+        }
 
-    .add-book-form button {
-        margin-top: 1rem;
-        border: none;
-        border-radius: 5px;
-        background-color: white;
-        padding: 0.5rem 1rem;
-        font-size: 1.25rem;
-        background-color: #e6e6e6;
-        transition: all ease-in-out 200ms;
-    }
-
-        .add-book-form button:hover {
+        .add-book-form button {
             background-color: #DC5F00;
             color: white;
-            transition: all ease-in-out 50ms;
+            padding: 0.8rem 3rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            align-self: center;
+            width: 100%; 
+            max-width: none;
+        }
+
+            .add-book-form button:hover {
+                background-color: #b94b00;
+            }
+
+        .add-book-form .text-danger {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .add-book-form input[type="file"] {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
         }
 </style>
 
@@ -123,17 +132,17 @@
 
     <div>
         <label for="Cover">تصویر جلد</label>
-        <input type="file" id="Cover" class="file-input" name="CoverImage" accept="image/*" />
         <div class="file-container">
             <label for="Cover" class="custom-file-label">انتخاب تصویر</label>
             <span id="file-name">فایلی انتخاب نشده</span>
+            <input type="file" id="Cover" name="CoverImage" accept="image/*" />
         </div>
         <span class="text-danger" asp-validation-for="CoverPath"></span>
     </div>
 
     <div>
         <label for="TotalQuantity">تعداد موجودی</label>
-        <input type="number" id="TotalQuantity" name="TotalQuantity" value="@Model.TotalQuantity" />
+        <input type="number" id="TotalQuantity" name="TotalQuantity" value="@Model.TotalQuantity" min="1" oninput="if(this.value < 1) this.value = 1;" />
         <span class="text-danger" asp-validation-for="TotalQuantity"></span>
     </div>
 
@@ -144,5 +153,11 @@
     document.getElementById('Cover').addEventListener('change', function () {
         const fileName = this.files[0]?.name || 'فایلی انتخاب نشده';
         document.getElementById('file-name').textContent = fileName;
+    });
+
+    document.getElementById('TotalQuantity').addEventListener('input', function () {
+        if (this.value < 1) {
+            this.value = 1;
+        }
     });
 </script>

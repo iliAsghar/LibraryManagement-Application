@@ -1,7 +1,93 @@
 ﻿@{
     ViewData["Title"] = "جزئیات کتاب";
 }
-@model Library.ViewModels.BookViewModel
+<style>
+    .book-details {
+        font-family: "Vazir", sans-serif;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        width: min(40rem, 100%);
+        margin: 2rem auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        direction: rtl;
+    }
+
+        .book-details h1 {
+            font-family: "Lalezar", sans-serif;
+            font-size: 2.5rem;
+            color: #DC5F00;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+    .book-info h2 {
+        font-family: "Lalezar", sans-serif;
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .book-info p {
+        font-size: 1rem;
+        color: #555;
+        margin: 0.5rem 0;
+    }
+
+        .book-info p strong {
+            color: #333;
+        }
+
+    .book-cover {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+        .book-cover img {
+            max-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+    .book-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .btn {
+        font-family: "Vazir", sans-serif;
+        background-color: #DC5F00;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #b94b00;
+        }
+
+    .quantity-input {
+        padding: 0.6rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        max-width: 80px;
+        text-align: center;
+    }
+</style>
 
 <div class="book-details">
     <h1>جزئیات کتاب</h1>
@@ -15,7 +101,7 @@
         @if (!string.IsNullOrEmpty(Model.CoverPath))
         {
             <div class="book-cover">
-                <img src="@Url.Content(Model.CoverPath)" alt="@Model.Title" style="max-width: 200px;" />
+                <img src="@Url.Content(Model.CoverPath)" alt="@Model.Title" />
             </div>
         }
         else
@@ -25,11 +111,24 @@
     </div>
 
     <div class="book-actions">
-        <a href="/Books" class="btn btn-secondary">بازگشت</a>
+        <a href="/Books" class="btn">بازگشت</a>
         <form method="post" action="/transactions/AddBookToTransaction">
             <input type="hidden" name="bookId" value="@Model.Id" />
             <input type="number" name="quantity" class="quantity-input" value="1" min="1" />
-            <button type="submit" class="add-to-transaction-btn">اضافه کردن</button>
+            @if (ViewBag.UserRole == "User")
+            {
+            <button type="submit" class="btn">اضافه کردن</button>
+            }
+            @if (ViewBag.UserRole == "Admin")
+            {
+                <button type="submit" class="btn">تغییر تعداد موجودی</button>
+
+            }
+            @if (ViewBag.UserRole == "BookKeeper")
+            {
+                <button type="submit" class="btn">تغییر تعداد موجودی</button>
+
+            }
         </form>
     </div>
 </div>
