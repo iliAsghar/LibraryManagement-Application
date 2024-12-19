@@ -87,6 +87,15 @@
         max-width: 80px;
         text-align: center;
     }
+
+    .disabled {
+        cursor: not-allowed;
+        background-color: #373A40;
+        color: #fff; 
+        opacity: 0.6; 
+        pointer-events: none; 
+    }
+
 </style>
 
 <div class="book-details">
@@ -115,20 +124,38 @@
         <form method="post" action="/transactions/AddBookToTransaction">
             <input type="hidden" name="bookId" value="@Model.Id" />
             <input type="number" name="quantity" class="quantity-input" value="1" min="1" />
-            @if (ViewBag.UserRole == "User")
+            @if (Model.TotalQuantity == 0)
             {
-            <button type="submit" class="btn">اضافه کردن</button>
+                @if (ViewBag.UserRole == "User")
+                {
+                    <button type="submit" class="btn disabled">اضافه کردن</button>
+                }
+                @if (ViewBag.UserRole == "Admin")
+                {
+                    <button type="submit" class="btn disabled">تغییر تعداد موجودی</button>
+                }
+                @if (ViewBag.UserRole == "BookKeeper")
+                {
+                    <button type="submit" class="btn disabled">تغییر تعداد موجودی</button>
+                }
             }
-            @if (ViewBag.UserRole == "Admin")
+            @if (Model.TotalQuantity != 0)
             {
-                <button type="submit" class="btn">تغییر تعداد موجودی</button>
+                @if (ViewBag.UserRole == "User")
+                {
+                    <button type="submit" class="btn">اضافه کردن</button>
+                }
+                @if (ViewBag.UserRole == "Admin")
+                {
+                    <button type="submit" class="btn">تغییر تعداد موجودی</button>
+                }
+                @if (ViewBag.UserRole == "BookKeeper")
+                {
+                    <button type="submit" class="btn">تغییر تعداد موجودی</button>
+                }
+            }
 
-            }
-            @if (ViewBag.UserRole == "BookKeeper")
-            {
-                <button type="submit" class="btn">تغییر تعداد موجودی</button>
 
-            }
         </form>
     </div>
 </div>
