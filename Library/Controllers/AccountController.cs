@@ -66,12 +66,10 @@ namespace Library.Controllers
                 return View(model);
             }
 
-            string hashedPassword = model.Password;
-
             var newMember = new User
             {
                 Email = model.Email,
-                Password = hashedPassword,
+                Password = model.Password,
                 Name = model.Name,
                 Lastname = model.LastName,
                 NationalId = model.NationalId,
@@ -101,11 +99,11 @@ namespace Library.Controllers
             }
 
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim("Role", user.Role),
-            };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim("Role", user.Role),
+                };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
