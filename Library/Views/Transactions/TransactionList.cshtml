@@ -122,12 +122,16 @@
             <th>کتاب ها</th>
             <th>تاریخ تراکنش</th>
             <th>وضعیت</th>
+            @if (User.HasClaim("Role", "BookKeeper"))
+            {
+                <th>کد ملی کاربر</th>
+            }
         </tr>
     </thead>
     <tbody>
         @foreach (var transaction in Model)
         {
-            <tr onclick="window.location.href='/transactions/showtransaction/@transaction.Id'" style="cursor: pointer;">
+            <tr onclick="window.location.href='@Url.Action("ShowTransaction", "Transactions", new { id = transaction.Id })';">
                 <td>@transaction.Id</td>
                 <td>
                     <ul>
@@ -141,7 +145,7 @@
                 <td>
                     @if (transaction.Status == Library.Models.TransactionStatus.UnFinalized)
                     {
-                        <p> نهایی نشدهه</p>
+                        <p> نهایی نشده</p>
                     }
                     else if (transaction.Status == Library.Models.TransactionStatus.PendingApproval)
                     {

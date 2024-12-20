@@ -70,7 +70,7 @@ namespace Library.Controllers
             var userId = GetLoggedInUserId();
             Transaction? transaction = null;
 
-            if (GetUserRole() == "Admin")
+            if (GetUserRole() == "BookKeeper")
             {
                 transaction = await _context.Transactions
                     .Include(t => t.User)
@@ -137,11 +137,11 @@ namespace Library.Controllers
         [Authorize(policy: "NormalUser")]
         public async Task<IActionResult> AddBookToTransaction(int bookId, int quantity)
         {
-            var maxQuantity = 2;
-            if (quantity > maxQuantity)
-            {
-                return RedirectToAction("BookList", "Books");
-            }
+            //var maxQuantity = 2;
+            //if (quantity > maxQuantity)
+            //{
+            //    return RedirectToAction("BookList", "Books");
+            //}
 
             var userId = GetLoggedInUserId();
 
@@ -181,6 +181,13 @@ namespace Library.Controllers
                 _context.TransactionItems.Update(transactionItem);
             }
 
+            var book = await _context.Books
+                .FirstOrDefaultAsync(b => 
+                b.Id == bookId);
+
+            book.TotalQuantity = book.TotalQuantity - quantity;
+
+            _context.Books.Update(book);
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 

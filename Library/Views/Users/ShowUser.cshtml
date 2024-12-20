@@ -156,7 +156,6 @@
         }
 
 </style>
-
 <div class="user-details">
     <h2>جزئیات کاربر</h2>
     <table class="table table-striped">
@@ -180,19 +179,73 @@
         </tbody>
     </table>
 
+    <h2>تراکنش‌ها</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>تاریخ تراکنش</th>
+                <th>تعداد آیتم‌ها</th>
+                <th>جزئیات آیتم‌ها</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.Transactions)
+            {
+                <tr>
+                    <td>@transaction.TransactionDate.ToShortDateString()</td>
+                    <td>@transaction.TransactionItems.Count</td>
+                    <td>
+                        <ul>
+                            @foreach (var item in transaction.TransactionItems)
+                            {
+                                <li>@item.Book.Title - تعداد: @item.Quantity</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
     <div class="actions">
-        <a href="javascript:void(0)"
-           class="btn btn-success"
-           onclick="window.location.href='@Url.Action("PromoteToBookKeeper", "Users", new { id = Model.Id })';">
-            ارتقا به کتابدار
-        </a>
+        @if (ViewBag.UserRole == "Admin")
+        {
+            @if (Model.Role == "User")
+            {
+                <a href="javascript:void(0)"
+                   class="btn btn-success"
+                   onclick="window.location.href='@Url.Action("PromoteToBookKeeper", "Users", new { id = Model.Id })';"
+                @Model.Role= ="BookKeeper" ? disabled>
+                    ارتقا به کتابدار
+                </a>
 
-        <a href="javascript:void(0)"
-           class="btn btn-success"
-           onclick="window.location.href='@Url.Action("DemoteToMember", "Users", new { id = Model.Id })';">
-            تغییر به عضو عادی
-        </a>
+                <a href="javascript:void(0)"
+                   class="btn btn-success disabled"
+                   onclick="window.location.href='@Url.Action("DemoteToMember", "Users", new { id = Model.Id })';">
+                    تغییر به عضو عادی
+                </a>
+            }
 
-        <a href="/Users" class="btn btn-secondary">بازگشت به لیست کاربران</a>
+            @if (Model.Role == "BookKeeper")
+            {
+                <a href="javascript:void(0)"
+                   class="btn btn-success disabled"
+                   onclick="window.location.href='@Url.Action("PromoteToBookKeeper", "Users", new { id = Model.Id })';"
+                @Model.Role= ="BookKeeper" ? disabled>
+                    ارتقا به کتابدار
+                </a>
+
+                <a href="javascript:void(0)"
+                   class="btn btn-success"
+                   onclick="window.location.href='@Url.Action("DemoteToMember", "Users", new { id = Model.Id })';">
+                    تغییر به عضو عادی
+                </a>
+            }
+        }
+        @if(ViewBag.UserRole == "Admin") {
+            <a onclick="window.location.href='@Url.Action("UserList", "Users")';" class="btn btn-secondary">بازگشت به لیست کاربران</a>
+        } else {
+            <a onclick="window.location.href='@Url.Action("MemberList", "Users")';" class="btn btn-secondary">بازگشت به لیست اعضا</a>
+        }
     </div>
 </div>

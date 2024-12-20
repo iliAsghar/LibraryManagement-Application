@@ -130,14 +130,6 @@
                 {
                     <button type="submit" class="btn disabled">اضافه کردن</button>
                 }
-                @if (ViewBag.UserRole == "Admin")
-                {
-                    <button type="submit" class="btn disabled">تغییر تعداد موجودی</button>
-                }
-                @if (ViewBag.UserRole == "BookKeeper")
-                {
-                    <button type="submit" class="btn disabled">تغییر تعداد موجودی</button>
-                }
             }
             @if (Model.TotalQuantity != 0)
             {
@@ -145,14 +137,11 @@
                 {
                     <button type="submit" class="btn">اضافه کردن</button>
                 }
-                @if (ViewBag.UserRole == "Admin")
-                {
-                    <button type="submit" class="btn">تغییر تعداد موجودی</button>
-                }
-                @if (ViewBag.UserRole == "BookKeeper")
-                {
-                    <button type="submit" class="btn">تغییر تعداد موجودی</button>
-                }
+            }
+
+            @if (ViewBag.UserRole == "Admin")
+            {
+                <button type="submit" class="btn">تغییر تعداد موجودی</button>
             }
 
 
