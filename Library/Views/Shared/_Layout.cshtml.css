@@ -107,3 +107,37 @@ footer {
     background-color: #686D76;
     color: white;
 }
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: #F4F4F4;
+    border-radius: 25px;
+    border: 1px solid #DC5F00;
+    padding: 0.25rem 1rem;
+    width: 300px;
+}
+
+.search-bar input {
+    width: 100%;
+    border: none;
+    outline: none !important;
+    font-size: 0.9rem;
+    font-family: "Vazirmatn", sans-serif;
+    background: transparent;
+    color: #373A40;
+    box-shadow: none !important;
+}
+
+    .search-bar input::placeholder {
+        color: #A5A5A5;
+    }
+
+    .search-bar .search-icon {
+        position: absolute;
+        left: 10px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: #373A40;
+    }
