@@ -39,10 +39,11 @@ namespace Library.Controllers
 
             UserViewModel model = new UserViewModel()
             {
-                NationalId = user.NationalId,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
                 Name = user.Name,
                 LastName = user.Lastname,
-                Email = user.Email,
+                NationalId = user.NationalId,
                 Role = user.Role,
                 Transactions = user.Transactions
             };
