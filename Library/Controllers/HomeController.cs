@@ -38,11 +38,11 @@ namespace Library.Controllers
                     Title = "اطلاعات تماس موجود نیست",
                     Description = "",
                     Address = "",
-                    PhoneNumber = null,
+                    PhoneNumber = "",
                     Email = ""
                 };
 
-                return View(emptyModel);
+                return View("Contact/Contact", emptyModel);
             }
 
             ContactViewModel model = new ContactViewModel
@@ -54,7 +54,7 @@ namespace Library.Controllers
                 Email = contactInfo.Email
             };
 
-            return View(model);
+            return View("Contact/Contact", model);
         }
 
 
@@ -77,7 +77,7 @@ namespace Library.Controllers
                 Email = contactInfo.Email
             };
 
-            return View(model);
+            return View("Contact/EditContact", model);
         }
 
         [HttpPost]
@@ -86,7 +86,7 @@ namespace Library.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View("Contact/EditContact", model);
             }
 
             var contactInfo = await _context.Contacts.FirstOrDefaultAsync();
