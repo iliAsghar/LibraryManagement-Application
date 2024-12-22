@@ -4,45 +4,133 @@
     ViewData["Title"] = "ویرایش اطلاعات تماس";
 }
 
-<h2>ویرایش اطلاعات تماس</h2>
+<div class="edit-contact-form">
+    <h2>ویرایش اطلاعات تماس</h2>
 
-<form asp-action="EditContact" method="post">
-    <div class="form-group">
-        <label for="Title">عنوان</label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
+    <form asp-action="EditContact" method="post">
+        <div class="form-group">
+            <label for="Title">عنوان</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label for="Description">توضیحات</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label for="Description">توضیحات</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label for="Address">آدرس</label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label for="Address">آدرس</label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label for="PhoneNumber">شماره تلفن</label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label for="PhoneNumber">شماره تلفن</label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label for="Email">ایمیل</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label for="Email">ایمیل</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
 
-    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
-    <a asp-action="Contact" class="btn btn-secondary">لغو</a>
-</form>
+        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+        <a asp-action="Contact" class="btn btn-secondary">لغو</a>
+    </form>
+</div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<style>
+    /* فرم ویرایش */
+    .edit-contact-form {
+        font-family: "Vazir", sans-serif;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        width: min(40rem, 100%);
+        margin: 2rem auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .edit-contact-form h2 {
+        font-family: "Lalezar", sans-serif;
+        font-size: 2rem;
+        color: #DC5F00;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .form-group textarea {
+        resize: none;
+    }
+
+    .form-group .text-danger {
+        color: red;
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        padding: 0.8rem 2rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        text-decoration: none;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s ease-in-out;
+        margin-top: 1rem;
+        width: 100%;
+        max-width: none;
+    }
+
+    .btn-primary {
+        background-color: #DC5F00;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #b94b00;
+        transform: scale(1.05);
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #495057;
+        transform: scale(1.05);
+    }
+</style>
