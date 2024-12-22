@@ -26,7 +26,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>تاریخ تراکنش</th>
+                        <th>تاریخ نهایی سازی</th>
                         <th>تعداد آیتم‌ها</th>
                         <th>جزئیات آیتم‌ها</th>
                     </tr>
@@ -35,7 +35,7 @@
                     @foreach (var transaction in Model.Transactions)
                     {
                         <tr>
-                            <td>@transaction.TransactionDate.ToShortDateString()</td>
+                            <td>@(transaction.RequestDate == default(DateTime) ? "-" : transaction.RequestDate.ToString("yyyy/MM/dd"))</td>
                             <td>@transaction.TransactionItems.Count</td>
                             <td>
                                 <ul>

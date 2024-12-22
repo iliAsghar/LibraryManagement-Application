@@ -51,7 +51,9 @@ namespace Library.Controllers
                 t.Status)
             {
                 Id = t.Id,
-                TransactionDate = t.TransactionDate,
+                RequestDate = t.RequestDate,
+                DeliverDate = t.DeliverDate,
+                ReturnDate = t.ReturnDate,
                 Items = t.TransactionItems.Select(ti => new TransactionItemViewModel
                 {
                     BookTitle = ti.Book?.Title,
@@ -125,7 +127,9 @@ namespace Library.Controllers
                 model = new TransactionViewModel(transaction.User.NationalId, transaction.Status)
                 {
                     Id = transaction.Id,
-                    TransactionDate = transaction.TransactionDate,
+                    RequestDate = transaction.RequestDate,
+                    DeliverDate = transaction.DeliverDate,
+                    ReturnDate = transaction.ReturnDate,
                     Status = transaction.Status,
                     Items = items
                 };
@@ -218,6 +222,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
+            transaction.RequestDate = DateTime.Now;
             transaction.Status = TransactionStatus.PendingApproval;
 
             _context.Transactions.Update(transaction);
@@ -238,6 +243,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
+            transaction.DeliverDate = DateTime.Now;
             transaction.Status = TransactionStatus.Approved;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
@@ -276,6 +282,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
+            transaction.ReturnDate = DateTime.Now;
             transaction.Status = TransactionStatus.Returned;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();

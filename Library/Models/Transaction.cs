@@ -6,7 +6,9 @@ namespace Library.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public DateTime TransactionDate { get; set; }
+        public DateTime RequestDate { get; set; }
+        public DateTime DeliverDate { get; set; }
+        public DateTime ReturnDate { get; set; }
         public TransactionStatus Status { get; set; }
         public User? User { get; set; }
         public List<TransactionItem> TransactionItems { get; set; }
@@ -14,7 +16,6 @@ namespace Library.Models
 
         public Transaction() 
         {
-            TransactionDate = DateTime.Now;
             Status = TransactionStatus.UnFinalized;
             TransactionItems = new List<TransactionItem>();
         }

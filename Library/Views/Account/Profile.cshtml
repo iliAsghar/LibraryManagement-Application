@@ -27,7 +27,7 @@
                 <thead>
                     <tr>
                         <th>شماره تراکنش</th>
-                        <th>تاریخ</th>
+                        <th>تاریخ نهایی سازی</th>
                         <th>جزئیات کتاب</th>
                     </tr>
                 </thead>
@@ -36,7 +36,7 @@
                     {
                         <tr>
                             <td>@transaction.Id</td>
-                            <td>@transaction.TransactionDate.ToShortDateString()</td>
+                            <td>@(transaction.RequestDate == default(DateTime) ? "-" : transaction.RequestDate.ToString("yyyy/MM/dd"))</td>
                             <td>
                                 <ul>
                                     @foreach (var item in transaction.TransactionItems)
