@@ -122,9 +122,9 @@
         <tbody>
             @foreach (var book in Model)
             {
-                <tr onclick="window.location.href='@Url.Action("ShowBook", "Books", new { id = book.Id })'" style="cursor: pointer;">
+                <tr onclick="window.location='@Url.Action("ShowBook", "Books", new { id = book.Id })'" style="cursor: pointer;">
                     <td class="book-title">@book.Title</td>
-                    <td onclick="window.location.href='@Url.Action("Search", "Books", new { query = book.Autor })'">@book.Author</td>
+                    <td>@book.Author</td>
                     <td>@book.Description</td>
                     <td>
                         @if (!string.IsNullOrEmpty(book.CoverPath))

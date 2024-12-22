@@ -14,7 +14,7 @@
         align-items: center;
         gap: 2rem;
         direction: rtl;
-        max-width: 1200px; /* Set a maximum width for larger screens */
+        max-width: 1200px;
     }
 
     .book-info {
@@ -161,7 +161,6 @@
 </style>
 
 <div class="book-details">
-    <!-- Book Info Section (Middle part) -->
     @if (!string.IsNullOrEmpty(Model.CoverPath))
     {
         <div class="book-cover">
@@ -175,7 +174,7 @@
     <div class="book-info">
         <h1>جزئیات کتاب</h1>
         <h2>@Model.Title</h2>
-        <p onclick="window.location.href='(@Url.Action("Search", "Books", new { query = Model.Author }))'"><strong>نویسنده:</strong> @Model.Author </p>
+        <p style="cursor: pointer;" onclick="window.location='@Url.Action("Search", "Books", new { query = Model.Author })'"><strong>نویسنده:</strong> @Model.Author </p>
         <p><strong>توضیحات:</strong> @Model.Description</p>
         <p><strong>تعداد موجودی:</strong> @Model.TotalQuantity</p>
         <a href="/Books" class="btn">بازگشت</a>
@@ -184,12 +183,10 @@
     </div>
     
 
-    <!-- Book Actions Section (Right side) -->
     <div class="book-actions">
         <form method="post" action="/transactions/AddBookToTransaction">
             <input type="hidden" name="bookId" value="@Model.Id" />
 
-            <!-- Input for quantity -->
             <input type="number" name="quantity" class="quantity-input" value="0" min="0" />
 
             @if (Model.TotalQuantity == 0)
