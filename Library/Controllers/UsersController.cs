@@ -23,7 +23,6 @@ namespace Library.Controllers
         [Authorize(Policy = "BookKeeper")]
         public async Task<ActionResult> ShowUser(int id)
         {
-
             var user = await _context.Users
                 .Where(u => u.Id == id)
                 .Include(u => u.Transactions)
