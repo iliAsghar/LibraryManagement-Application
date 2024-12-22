@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Controllers
 {
-    public class DashboardController : BaseController
+    public class AdminsController : BaseController
     {
         private readonly MyDBContext _context;
 
-        public DashboardController(MyDBContext context) : base(context)
+        public AdminsController(MyDBContext context) : base(context)
         {
             _context = context;
         }
