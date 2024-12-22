@@ -58,7 +58,7 @@ namespace Library.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(policy: "Admin")]
         public async Task<IActionResult> EditContact()
         {
             var contactInfo = await _context.Contacts.FirstOrDefaultAsync();
@@ -81,8 +81,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [ValidateAntiForgeryToken]
+        [Authorize(policy:"Admin")]
         public async Task<IActionResult> EditContact(EditContactViewModel model)
         {
             if (!ModelState.IsValid)
