@@ -60,12 +60,22 @@ namespace Library.Controllers
                 return RedirectToAction("ShowUser", "Users", new { id });
             }
 
+            var hasTransactions = await _context.Transactions
+                .AnyAsync(t => t.UserId == user.Id);  
+
+            if (hasTransactions)
+            {
+                TempData["ErrorMessage"] = "کاربر نمیتواند ارتقا یابد زیرا که تراکنش دارد.";
+                return RedirectToAction("ShowUser", "Users", new { id });
+            }
+
             user.Role = "BookKeeper";
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("ShowUser", "Users", new { id });
         }
+
 
         [Authorize(Policy = "Admin")]
         public async Task<ActionResult> DemoteToMember(int id)
