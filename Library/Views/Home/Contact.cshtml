@@ -1,0 +1,53 @@
+﻿@model ContactViewModel
+
+@{
+    ViewData["Title"] = "تماس با ما";
+}
+
+<div class="contact-main">
+    <h2>@Model.Title</h2>
+
+    @if (string.IsNullOrWhiteSpace(Model.Description) &&
+    string.IsNullOrWhiteSpace(Model.Address) &&
+    string.IsNullOrWhiteSpace(Model.PhoneNumber) &&
+    string.IsNullOrWhiteSpace(Model.Email))
+    {
+        <p>هیچ اطلاعات تماسی موجود نیست.</p>
+
+        @if (ViewBag.IsAdmin)
+        {
+            <a asp-action="EditContact" class="btn btn-primary">
+                افزودن اطلاعات تماس
+            </a>
+        }
+    }
+    else
+    {
+        <div class="contact-detail">
+            <strong>توضیحات:</strong>
+            <p>@Model.Description</p>
+        </div>
+
+        <div class="contact-detail">
+            <strong>آدرس:</strong>
+            <p>@Model.Address</p>
+        </div>
+
+        <div class="contact-detail">
+            <strong>شماره تلفن:</strong>
+            <p>@Model.PhoneNumber</p>
+        </div>
+
+        <div class="contact-detail">
+            <strong>ایمیل:</strong>
+            <p>@Model.Email</p>
+        </div>
+
+        @if (ViewBag.UserRole == "Admin")
+        {
+            <a asp-action="EditContact" class="btn btn-secondary">
+                ویرایش اطلاعات تماس
+            </a>
+        }
+    }
+</div>
