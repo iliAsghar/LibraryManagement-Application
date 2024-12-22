@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "داشبورد";
+}
+
+<h1>داشبورد</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">تعداد کاربران</h5>
+                    <p class="card-text">@ViewBag.UserCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">تعداد کتاب‌ها</h5>
+                    <p class="card-text">@ViewBag.BookCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">تعداد تراکنش‌ها</h5>
+                    <p class="card-text">@ViewBag.TransactionCount</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
