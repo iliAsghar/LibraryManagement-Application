@@ -125,7 +125,9 @@
     {
         <p><span>شماره امانت:</span> @Model.Id</p>
         <p><span>وضعیت:</span> @(Model.Status)</p>
-        <p><span>تاریخ شروع امانت:</span> @(Model.TransactionDate.ToString("yyyy/MM/dd")) </p>
+        <td> <span>تاریخ نهایی سازی:</span> @(Model.RequestDate == default(DateTime) ? "-" : Model.RequestDate.ToString("yyyy/MM/dd"))</td>
+        <td> <span>تاریخ تحویل کتاب ها:</span> @(Model.DeliverDate == default(DateTime) ? "-" : Model.DeliverDate.ToString("yyyy/MM/dd"))</td>
+        <td> <span>تاریخ برگشت کتاب ها</span> @(Model.ReturnDate == default(DateTime) ? "-" : Model.ReturnDate.ToString("yyyy/MM/dd"))</td>
 
         <h2>لیست کتاب‌ها</h2>
         <ul>

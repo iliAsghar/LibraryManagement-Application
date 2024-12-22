@@ -120,7 +120,9 @@
         <tr>
             <th>شماره امانت</th>
             <th>کتاب ها</th>
-            <th>تاریخ تراکنش</th>
+            <th>تاریخ نهایی سازی</th>
+            <th>تاریخ تحویل کتاب ها</th>
+            <th>تاریخ برگشت کتاب ها</th>
             <th>وضعیت</th>
             @if (User.HasClaim("Role", "BookKeeper"))
             {
@@ -141,7 +143,11 @@
                         }
                     </ul>
                 </td>
-                <td>@transaction.TransactionDate?.ToString("yyyy/MM/dd")</td>
+
+                <td>@(transaction.RequestDate == default(DateTime) ? "-" : transaction.RequestDate.ToString("yyyy/MM/dd"))</td>
+                <td>@(transaction.DeliverDate == default(DateTime) ? "-" : transaction.DeliverDate.ToString("yyyy/MM/dd"))</td>
+                <td>@(transaction.ReturnDate == default(DateTime) ? "-" : transaction.ReturnDate.ToString("yyyy/MM/dd"))</td>
+
                 <td>
                     @if (transaction.Status == Library.Models.TransactionStatus.UnFinalized)
                     {
