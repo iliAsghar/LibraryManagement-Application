@@ -15,5 +15,6 @@ namespace Library.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionItem> TransactionItems { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Contact> AdminControllers { get; set; }
     }
 }
