@@ -124,7 +124,7 @@
             {
                 <tr onclick="window.location.href='@Url.Action("ShowBook", "Books", new { id = book.Id })'" style="cursor: pointer;">
                     <td class="book-title">@book.Title</td>
-                    <td>@book.Author</td>
+                    <td onclick="window.location.href='@Url.Action("Search", "Books", new { query = book.Autor })'">@book.Author</td>
                     <td>@book.Description</td>
                     <td>
                         @if (!string.IsNullOrEmpty(book.CoverPath))
