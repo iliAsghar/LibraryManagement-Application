@@ -1,52 +1,135 @@
-﻿@model Library.ViewModels.UserViewModel
+﻿<main>
+    <h1 class="title-list">پروفایل کاربر: @Model.Name @Model.LastName</h1>
 
-@{
-    ViewData["Title"] = "User Profile";
-}
+    <section class="user-details">
+        <h2>اطلاعات شخصی</h2>
+        <div class="profile-info">
+            <!-- تصویر کاربر -->
+            <div class="profile-picture">
+                <img src="~/images/user-placeholder.png" alt="عکس کاربر" />
+            </div>
+            <!-- اطلاعات شخصی -->
+            <div class="personal-info">
+                <p><strong>نام:</strong> @Model.Name @Model.LastName</p>
+                <p><strong>ایمیل:</strong> @Model.Email</p>
+                <p><strong>کد ملی:</strong> @Model.NationalId</p>
+                <p><strong>نقش:</strong> @Model.Role</p>
+            </div>
+        </div>
+    </section>
 
-<h2>@Model.Name @Model.LastName's Profile</h2>
-
-<div>
-    <h4>Personal Information</h4>
-    <p><strong>Name:</strong> @Model.Name @Model.LastName</p>
-    <p><strong>Email:</strong> @Model.Email</p>
-    <p><strong>National ID:</strong> @Model.NationalId</p>
-    <p><strong>Role:</strong> @Model.Role</p>
-</div>
-
-@if (Model.Transactions != null && Model.Transactions.Any())
-{
-    <div>
-        <h4>Transaction History</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Transaction ID</th>
-                    <th>Date</th>
-                    @*<th>Total Amount</th>*@
-                    <th>Book</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var transaction in Model.Transactions)
-                {
+    @if (Model.Transactions != null && Model.Transactions.Count>0)
+    {
+        <section class="user-details">
+            <h2>تاریخچه تراکنش‌ها</h2>
+            <table>
+                <thead>
                     <tr>
-                        <td>@transaction.Id</td>
-                        <td>@transaction.TransactionDate</td>
-                        @*<td>@transaction.TotalAmount</td>*@
-                        <td>
-                            @foreach (var item in transaction.TransactionItems)
-                            {
-                                <p>@item.Book.Title</p>
-                            }
-                        </td>
+                        <th>شماره تراکنش</th>
+                        <th>تاریخ</th>
+                        <th>جزئیات کتاب</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-else
-{
-    <p>No transactions available.</p>
-}
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model.Transactions)
+                    {
+                        <tr>
+                            <td>@transaction.Id</td>
+                            <td>@transaction.TransactionDate.ToShortDateString()</td>
+                            <td>
+                                <ul>
+                                    @foreach (var item in transaction.TransactionItems)
+                                    {
+                                        <li>@item.Book.Title - تعداد: @item.Quantity</li>
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    }
+    else
+    {
+        <p>تراکنشی موجود نیست.</p>
+    }
+</main>
+
+<style>
+    main {
+        font-family: "Vazir", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .user-details {
+        width: min(55rem, 100%);
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+        padding: 1rem;
+        font-size: 1rem;
+        direction: rtl;
+    }
+
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .profile-picture img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+        border: 3px solid #DC5F00;
+    }
+
+    .personal-info p {
+        font-size: 1rem;
+        margin: 0.5rem 0;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-collapse: collapse;
+        overflow: hidden;
+        direction: rtl;
+    }
+
+    thead {
+        background-color: #DC5F00;
+        color: white;
+        text-align: center;
+    }
+
+    th, td {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    th {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    td {
+        font-size

@@ -17,6 +17,7 @@
           <h1 class="title">سامانه مدیریت کتابخوانهء <span>بخوان</span></h1>
         </a>
         <ul class="nav-list">
+            <li><a onclick="window.location='@Url.Action("Profile","Account")';">پروفایل</a></li>
             <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
 
             @if (ViewBag.UserRole == "Admin")
