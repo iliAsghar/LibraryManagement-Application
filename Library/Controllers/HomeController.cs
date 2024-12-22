@@ -1,4 +1,4 @@
-using Library.Data;
+﻿using Library.Data;
 using Library.Models;
 using Library.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -28,15 +28,23 @@ namespace Library.Controllers
 
         public async Task<IActionResult> Contact()
         {
-            var contactInfo = await _context.Contacts
-                .FirstOrDefaultAsync();
+            var contactInfo = await _context.Contacts.FirstOrDefaultAsync();
 
             if (contactInfo == null)
             {
-                return NotFound();
+                ContactViewModel emptyModel = new ContactViewModel
+                {
+                    Title = "اطلاعات تماس موجود نیست",
+                    Description = "",
+                    Address = "",
+                    PhoneNumber = null,
+                    Email = ""
+                };
+
+                return View(emptyModel);
             }
 
-            ContactViewModel model = new ContactViewModel()
+            ContactViewModel model = new ContactViewModel
             {
                 Title = contactInfo.Title,
                 Description = contactInfo.Description,
@@ -47,6 +55,59 @@ namespace Library.Controllers
 
             return View(model);
         }
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditContact()
+        {
+            var contactInfo = await _context.Contacts.FirstOrDefaultAsync();
+
+            if (contactInfo == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditContactViewModel
+            {
+                Title = contactInfo.Title,
+                Description = contactInfo.Description,
+                Address = contactInfo.Address,
+                PhoneNumber = contactInfo.PhoneNumber,
+                Email = contactInfo.Email
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditContact(EditContactViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var contactInfo = await _context.Contacts.FirstOrDefaultAsync();
+
+            if (contactInfo == null)
+            {
+                return NotFound();
+            }
+
+            contactInfo.Title = model.Title;
+            contactInfo.Description = model.Description;
+            contactInfo.Address = model.Address;
+            contactInfo.PhoneNumber = model.PhoneNumber;
+            contactInfo.Email = model.Email;
+
+            _context.Contacts.Update(contactInfo);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Contact");
+        }
+
 
         private string GetViewForRole()
         {
