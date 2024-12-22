@@ -4,11 +4,9 @@
     <section class="user-details">
         <h2>اطلاعات شخصی</h2>
         <div class="profile-info">
-            <!-- تصویر کاربر -->
             <div class="profile-picture">
-                <img src="~/images/user-placeholder.png" alt="عکس کاربر" />
+                <img src="@ViewBag.UserPfpPath" alt="عکس کاربر" />
             </div>
-            <!-- اطلاعات شخصی -->
             <div class="personal-info">
                 <p><strong>نام:</strong> @Model.Name @Model.LastName</p>
                 <p><strong>ایمیل:</strong> @Model.Email</p>

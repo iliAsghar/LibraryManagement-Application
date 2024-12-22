@@ -15,7 +15,7 @@ namespace Library.Controllers
         private readonly ILogger<Transactions> _logger;
         private readonly MyDBContext _context;
 
-        public Transactions(ILogger<Transactions> logger, MyDBContext context)
+        public Transactions(ILogger<Transactions> logger, MyDBContext context) : base(context)
         {
             _logger = logger;
             _context = context;

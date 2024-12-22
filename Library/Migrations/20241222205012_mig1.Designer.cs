@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20241222173413_mig1")]
+    [Migration("20241222205012_mig1")]
     partial class mig1
     {
         /// <inheritdoc />
@@ -171,6 +171,9 @@ namespace Library.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PfpPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("PhoneNumber")

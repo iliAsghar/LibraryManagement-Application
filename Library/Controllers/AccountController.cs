@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly MyDBContext _context;
 
-        public AccountController(MyDBContext context)
+        public AccountController(MyDBContext context) : base(context)
         {
             _context = context;
         }
@@ -45,13 +45,14 @@ namespace Library.Controllers
                 LastName = user.Lastname,
                 NationalId = user.NationalId,
                 Role = user.Role,
+                PfpPath = user.PfpPath,
                 Transactions = user.Transactions
             };
 
             return View(model);
         }
 
-        public IActionResult Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model, IFormFile profilePicture)
         {
             if (!ModelState.IsValid)
             {
@@ -76,6 +77,30 @@ namespace Library.Controllers
                 NationalId = model.NationalId,
                 Role = "User"
             };
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            var uniqueFileName = $"{Guid.NewGuid()}-{profilePicture.FileName}";
+
+            var filePath = Path.Combine(uploadPath, uniqueFileName);
+
+            if (!IsValidImage(profilePicture))
+            {
+                ModelState.AddModelError("CoverImage", "فایل باید یک تصویر باشد!");
+                return View(model);
+            }
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await profilePicture.CopyToAsync(fileStream);
+            }
+
+            newMember.PfpPath = "/images/" + uniqueFileName;
 
             _context.Users.Add(newMember);
             _context.SaveChanges();
@@ -129,6 +154,13 @@ namespace Library.Controllers
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());
             return userId;
+        }
+        private bool IsValidImage(IFormFile file)
+        {
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var extension = Path.GetExtension(file.FileName).ToLower();
+
+            return allowedExtensions.Contains(extension);
         }
 
     }

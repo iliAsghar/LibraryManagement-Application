@@ -13,7 +13,7 @@ namespace Library.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly MyDBContext _context;
 
-        public HomeController(ILogger<HomeController> logger, MyDBContext context)
+        public HomeController(ILogger<HomeController> logger, MyDBContext context) : base(context)
         {
             _logger = logger;
             _context = context;

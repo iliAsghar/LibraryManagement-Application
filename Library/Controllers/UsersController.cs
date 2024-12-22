@@ -14,7 +14,7 @@ namespace Library.Controllers
         private readonly ILogger<UsersController> _logger;
         private readonly MyDBContext _context;
 
-        public UsersController(ILogger<UsersController> logger, MyDBContext context)
+        public UsersController(ILogger<UsersController> logger, MyDBContext context) : base(context)
         {
             _logger = logger;
             _context = context;
@@ -44,6 +44,7 @@ namespace Library.Controllers
                 LastName = user.Lastname,
                 NationalId = user.NationalId,
                 Role = user.Role,
+                PfpPath = user.PfpPath,
                 Transactions = user.Transactions
             };
 

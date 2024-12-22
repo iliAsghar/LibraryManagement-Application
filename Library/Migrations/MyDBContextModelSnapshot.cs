@@ -170,6 +170,9 @@ namespace Library.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PfpPath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");
 

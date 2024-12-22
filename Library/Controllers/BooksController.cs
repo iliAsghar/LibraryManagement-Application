@@ -16,7 +16,7 @@ namespace Library.Controllers
         private readonly ILogger<BooksController> _logger;
         private readonly MyDBContext _context;
 
-        public BooksController(ILogger<BooksController> logger, MyDBContext context)
+        public BooksController(ILogger<BooksController> logger, MyDBContext context) :base(context)
         {
             _logger = logger;
             _context = context;
