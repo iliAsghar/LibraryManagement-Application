@@ -8,7 +8,6 @@ using System.Diagnostics;
 
 namespace Library.Controllers
 {
-    [Authorize]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,11 +19,13 @@ namespace Library.Controllers
             _context = context;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var viewName = GetViewForRole();
             return View(viewName);
         }
+
 
         public async Task<IActionResult> Contact()
         {

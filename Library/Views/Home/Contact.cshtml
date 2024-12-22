@@ -1,6 +1,4 @@
-﻿@model ContactViewModel
-
-@{
+﻿@{
     ViewData["Title"] = "تماس با ما";
 }
 
@@ -14,7 +12,7 @@
     {
         <p>هیچ اطلاعات تماسی موجود نیست.</p>
 
-        @if (ViewBag.IsAdmin)
+        @if (ViewBag.UserRole == "Admin")
         {
             <a asp-action="EditContact" class="btn btn-primary">
                 افزودن اطلاعات تماس
