@@ -2,33 +2,97 @@
     ViewData["Title"] = "داشبورد";
 }
 
-<h1>داشبورد</h1>
+<h1 class="dashboard-title">داشبورد</h1>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">تعداد کاربران</h5>
-                    <p class="card-text">@ViewBag.UserCount</p>
-                </div>
+<div class="dashboard-container">
+    <div class="dashboard-row">
+        <div class="dashboard-card bg-item">
+            <div class="card-body">
+                <h5 class="card-title">تعداد کاربران</h5>
+                <p class="card-text">@ViewBag.UserCount</p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">تعداد کتاب‌ها</h5>
-                    <p class="card-text">@ViewBag.BookCount</p>
-                </div>
+        <div class="dashboard-card bg-item">
+            <div class="card-body">
+                <h5 class="card-title">تعداد کتاب‌ها</h5>
+                <p class="card-text">@ViewBag.BookCount</p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">تعداد تراکنش‌ها</h5>
-                    <p class="card-text">@ViewBag.TransactionCount</p>
-                </div>
+        <div class="dashboard-card bg-item">
+            <div class="card-body">
+                <h5 class="card-title">تعداد تراکنش‌ها</h5>
+                <p class="card-text">@ViewBag.TransactionCount</p>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .dashboard-title {
+        font-family: "Lalezar", sans-serif;
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: #333;
+    }
+
+    .dashboard-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        background-color: #f4f4f4;
+    }
+
+    .dashboard-row {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+        max-width: 55rem;
+    }
+
+    .dashboard-card {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        color: white;
+        padding: 1rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .dashboard-card:hover {
+        transform: scale(1.05);
+    }
+
+    .bg-item {
+        background-color: #DC5F00;
+    }
+
+    .bg-success {
+        background-color: #DC5F00;
+    }
+
+    .bg-warning {
+        background-color: #DC5F00;
+        color: #333;
+    }
+
+    .card-body {
+        font-size: 1.2rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        font-size: 1.2rem;
+    }
+</style>

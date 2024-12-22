@@ -39,6 +39,7 @@
             @if (ViewBag.UserRole == "Admin")
             {
                 <li><a onclick="window.location='@Url.Action("UserList","Users")';">کاربرها</a></li>
+                <li><a onclick="window.location='@Url.Action("Index","Admins")';">داشبورد</a></li>
             }
 
             @if (ViewBag.UserRole == "BookKeeper")
