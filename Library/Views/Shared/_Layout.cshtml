@@ -16,6 +16,22 @@
         <a onclick="window.location='@Url.Action("","Home")';" class="main-title">
           <h1 class="title">سامانه مدیریت کتابخوانهء <span>بخوان</span></h1>
         </a>
+
+        <div class="search-bar">
+            <form action="@Url.Action("Search", "Books")" method="get" class="d-flex align-items-center">
+                <input type="text"
+                       id="searchQuery"
+                       name="query"
+                       placeholder="جستجوی کتاب..."
+                       autocomplete="off" 
+                       class="form-control"/>
+                <button type="submit" class="btn search-icon">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+            <div id="searchResultsPopup" class="popup-results"></div>
+        </div>
+
         <ul class="nav-list">
             <li><a onclick="window.location='@Url.Action("Profile","Account")';">پروفایل</a></li>
             <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
@@ -53,6 +69,106 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://kit.fontawesome.com/81541dc3f8.js" crossorigin="anonymous"></script>
+    <style>
+
+        .popup-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            /*    border: 1px solid #ccc;*/
+            background: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+            z-index: 1000;
+            margin-top: 0.5rem;
+            color: black;
+        }
+
+        .no-results {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: #A5A5A5;
+            text-align: center;
+        }
+
+        .result-item {
+            display: flex;
+            padding: 0.5rem 1rem !important;
+            gap: 1.5rem;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            color: black !important;
+        }
+
+            .result-item:hover {
+                background-color: #f9f9f9;
+            }
+
+            .result-item img {
+                width: 50px;
+                height: 75px;
+                object-fit: cover;
+                border-radius: 4px;
+            }
+
+            .result-item div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .result-item a {
+                font-family: "Vazirmatn", sans-serif;
+                font-size: 0.85rem;
+                font-weight: 600;
+                text-decoration: none;
+                margin-top: 0.25rem;
+            }
+
+            .result-item p {
+                font-size: 0.75rem;
+                margin: 0;
+            }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('#searchQuery').on('input', function () {
+                let query = $(this).val().trim();
+                if (query.length > 2) {
+                    $.ajax({
+                        url: '/Books/Search',
+                        data: { query: query, isPopup: true },
+                        success: function (response) {
+                            let popup = $('#searchResultsPopup');
+                            popup.empty();
+                            if (response.results && response.results.length > 0) {
+                                response.results.forEach(book => {
+                                    popup.append(`
+                                        <div class="result-item" onclick="window.location='@Url.Action("ShowBook", "Books")?id=${book.id}';">
+                                            <img src="${book.coverPath}" />
+                                            <div>
+                                                <p>${book.title}</p>
+                                                <p>by ${book.author}</p>
+                                            </div>
+                                        </div>
+                                    `);
+                                });
+                            } else {
+                                popup.append('<div class="no-results">No results found</div>');
+                            }
+                        }
+                    });
+                } else {
+                    $('#searchResultsPopup').empty();
+                }
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

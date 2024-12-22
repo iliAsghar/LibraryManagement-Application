@@ -71,7 +71,7 @@
         text-align: center;
     }
 
-    .btn {
+    .btn-thing {
         font-family: "Vazir", sans-serif;
         background-color: #DC5F00;
         color: white;
@@ -196,20 +196,20 @@
             {
                 @if (ViewBag.UserRole == "User")
                 {
-                    <button type="submit" class="btn disabled">اضافه کردن</button>
+                    <button type="submit" class="btn-thing btn disabled">اضافه کردن</button>
                 }
             }
             @if (Model.TotalQuantity != 0)
             {
                 @if (ViewBag.UserRole == "User")
                 {
-                    <button type="submit" class="btn">اضافه کردن</button>
+                    <button type="submit" class="btn-thing btn">اضافه کردن</button>
                 }
             }
 
             @if (ViewBag.UserRole == "BookKeeper")
             {
-                <button type="submit" class="btn">تغییر تعداد موجودی</button>
+                <button type="submit" class="btn-thing btn">تغییر تعداد موجودی</button>
             }
         </form>
     </div>

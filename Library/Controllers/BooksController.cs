@@ -23,9 +23,18 @@ namespace Library.Controllers
         }
 
         [Authorize]
-        public IActionResult BookList()
+        public IActionResult BookList(List<Book> filteredBooks = null)
         {
-            var books = _context.Books.ToList();
+            var books = new List<Book>();
+
+            if (filteredBooks != null)
+            {
+                books = filteredBooks.ToList();
+                ViewData["IsSearchResult"] = "True";
+            } else
+            {
+                books = _context.Books.ToList();
+            }
             return View(books);
         }
 
@@ -112,6 +121,49 @@ namespace Library.Controllers
             return RedirectToAction("Index", "Books");
         }
 
+        public async Task<IActionResult> Search(string query, string advancedFilter = null, bool isPopup = false)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                if (isPopup)
+                {
+                    return Json(new { results = new List<object>() });
+                }
+                return View("SearchResults", new List<Book>());
+            }
+
+            var booksQuery = _context.Books.AsQueryable();
+
+            booksQuery = booksQuery.Where(book =>
+                EF.Functions.Like(book.Title, $"%{query}%") ||
+                EF.Functions.Like(book.Author, $"%{query}%") ||
+                EF.Functions.Like(book.Description, $"%{query}%"));
+
+            if (!string.IsNullOrEmpty(advancedFilter))
+            {
+                booksQuery = booksQuery.Where(book => book.TotalQuantity > 0);
+            }
+
+            if (isPopup)
+            {
+                var topResults = await booksQuery
+                    .Take(3)
+                    .Select(book => new
+                    {
+                        book.Id,
+                        book.Title,
+                        book.Author,
+                        book.CoverPath
+                    })
+                    .ToListAsync();
+
+                return Json(new { results = topResults });
+            }
+
+            var searchResults = await booksQuery.ToListAsync();
+
+            return View("BookList", searchResults);
+        }
 
         private bool IsValidImage(IFormFile file)
         {
