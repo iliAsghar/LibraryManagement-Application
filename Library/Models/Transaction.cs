@@ -10,6 +10,7 @@ namespace Library.Models
         public TransactionStatus Status { get; set; }
         public User? User { get; set; }
         public List<TransactionItem> TransactionItems { get; set; }
+        public int ItemCount => TransactionItems?.Sum(item => item.Quantity) ?? 0;
 
         public Transaction() 
         {

@@ -137,33 +137,45 @@ namespace Library.Controllers
         [Authorize(policy: "NormalUser")]
         public async Task<IActionResult> AddBookToTransaction(int bookId, int quantity)
         {
-            //var maxQuantity = 2;
-            //if (quantity > maxQuantity)
-            //{
-            //    return RedirectToAction("BookList", "Books");
-            //}
-
             var userId = GetLoggedInUserId();
 
             var transaction = await _context.Transactions
+                .Include(t => t.TransactionItems)
                 .FirstOrDefaultAsync(t =>
-                t.UserId == userId &&
-                t.Status == TransactionStatus.UnFinalized);
+                    t.UserId == userId &&
+                    t.Status == TransactionStatus.UnFinalized);
 
             if (transaction == null)
             {
                 transaction = new Transaction
                 {
                     UserId = userId,
+                    TransactionItems = new List<TransactionItem>()
                 };
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
             }
 
-            var transactionItem = await _context.TransactionItems
-                .FirstOrDefaultAsync(t =>
-                t.TransactionId == transaction.Id &&
-                t.BookId == bookId);
+            var currentItemCount = transaction.TransactionItems.Sum(i => i.Quantity);
+
+            if (currentItemCount + quantity > 5)
+            {
+                return RedirectToAction("BookList", "Books");
+            }
+
+            var transactionItem = transaction.TransactionItems
+                .FirstOrDefault(t => t.BookId == bookId);
+
+            if (transactionItem != null && transactionItem.Quantity + quantity > 2)
+            {
+                return RedirectToAction("BookList", "Books");
+            }
+
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+            if (book == null || book.TotalQuantity < quantity)
+            {
+                return RedirectToAction("BookList", "Books");
+            }
 
             if (transactionItem == null)
             {
@@ -181,11 +193,7 @@ namespace Library.Controllers
                 _context.TransactionItems.Update(transactionItem);
             }
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(b => 
-                b.Id == bookId);
-
-            book.TotalQuantity = book.TotalQuantity - quantity;
+            book.TotalQuantity -= quantity;
 
             _context.Books.Update(book);
             _context.Transactions.Update(transaction);
@@ -193,6 +201,7 @@ namespace Library.Controllers
 
             return RedirectToAction("BookList", "Books");
         }
+
 
         [Authorize(policy: "NormalUser")]
         public async Task<IActionResult> FinalizeTransaction()
