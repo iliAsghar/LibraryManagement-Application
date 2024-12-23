@@ -6,13 +6,13 @@ namespace Library.ViewModels
     {
         [MaxLength(100)]
         [EmailAddress]
-        [Display(Name = "ایمیل")]
+        [Display(Name = "ایمیل:")]
         [Required(ErrorMessage = "لطفا ایمیل را وارد کنید!")]
         public required string Email { get; set; }
 
         [MaxLength(50)]
         [DataType(DataType.Password)]
-        [Display(Name = "کلمه عبور")]
+        [Display(Name = "کلمه عبور:")]
         [Required(ErrorMessage = "لطفا رمز عبور خود را وارد کنید!")]
         public required string Password { get; set; }
 

@@ -65,10 +65,11 @@ namespace Library.Controllers
 
             if (contactInfo == null)
             {
-                return NotFound();
+                EditContactViewModel raw = new EditContactViewModel();
+                return View("Contact/EditContact", raw);
             }
 
-            var model = new EditContactViewModel
+            EditContactViewModel model = new EditContactViewModel
             {
                 Title = contactInfo.Title,
                 Description = contactInfo.Description,
@@ -84,25 +85,44 @@ namespace Library.Controllers
         [Authorize(policy:"Admin")]
         public async Task<IActionResult> EditContact(EditContactViewModel model)
         {
+
             if (!ModelState.IsValid)
             {
-                return View("Contact/EditContact", model);
+                return View(model);
             }
 
-            var contactInfo = await _context.OurContacts.FirstOrDefaultAsync();
+            var existingContact = _context.OurContacts
+                .FirstOrDefault();
 
-            if (contactInfo == null)
+            if (existingContact != null)
             {
-                return NotFound();
+                existingContact.Title = model.Title;
+                existingContact.Description = model.Description;
+                existingContact.Address = model.Address;
+                existingContact.PhoneNumber = model.PhoneNumber;
+                existingContact.Email = model.Email;    
+
+
+
+
+
+                _context.OurContacts.Update(existingContact);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Contact");
             }
 
-            contactInfo.Title = model.Title;
-            contactInfo.Description = model.Description;
-            contactInfo.Address = model.Address;
-            contactInfo.PhoneNumber = model.PhoneNumber;
-            contactInfo.Email = model.Email;
+            var newContact = new OurContact
+            {
+                Email = model.Email,
+                Title = model.Title,
+                Address = model.Address,
+                PhoneNumber = model.PhoneNumber,
+                Description = model.Description,
 
-            _context.OurContacts.Update(contactInfo);
+            };
+
+
+            _context.OurContacts.Add(newContact);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Contact");
