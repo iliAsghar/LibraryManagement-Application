@@ -10,59 +10,53 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <header>
-        <a onclick="window.location='@Url.Action("","Home")';" class="main-title">
-          <h1 class="title">سامانه مدیریت کتابخوانهء <span>بخوان</span></h1>
+    <header class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" onclick="window.location='@Url.Action("","Home")';">
+            <h1 class="title">سامانه مدیریت کتابخوانهء <span>بخوان</span></h1>
         </a>
 
-        <div class="search-bar">
-            <form action="@Url.Action("Search", "Books")" method="get" class="d-flex align-items-center">
-                <input type="text"
-                       id="searchQuery"
-                       name="query"
-                       placeholder="جستجوی کتاب..."
-                       autocomplete="off" 
-                       class="form-control"/>
-                <button type="submit" class="btn search-icon">
-                    <i class="fa fa-search"></i>
-                </button>
-            </form>
-            <div id="searchResultsPopup" class="popup-results"></div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link profilestyle" onclick="window.location='@Url.Action("Profile","Account")';">
+                        <p>@ViewBag.UserFullName</p>
+                        <img src="@ViewBag.UserPfpPath" alt="پروفایل" class="profile-image" />
+                    </a>
+                </li>
+                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
+
+                @if (ViewBag.UserRole == "Admin")
+                {
+                    <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("UserList","Users")';">کاربرها</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("Index","Admins")';">داشبورد</a></li>
+                }
+
+                @if (ViewBag.UserRole == "BookKeeper")
+                {
+                    <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("MemberList","Users")';">اعضا</a></li>
+                }
+
+                @if (ViewBag.UserRole == "User")
+                {
+                    <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
+                }
+
+                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("Contact","Home")';">تماس با ما</a></li>
+                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
+            </ul>
         </div>
-
-        <ul class="nav-list">
-            <li >
-                <a class="profilestyle" onclick="window.location='@Url.Action("Profile","Account")';">
-                    <p>@ViewBag.UserFullName</p>
-                    <img src="@ViewBag.UserPfpPath" alt="پروفایل" class="profile-image" />
-                </a>
-            </li>
-            <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
-
-            @if (ViewBag.UserRole == "Admin")
-            {
-                <li><a onclick="window.location='@Url.Action("UserList","Users")';">کاربرها</a></li>
-                <li><a onclick="window.location='@Url.Action("Index","Admins")';">داشبورد</a></li>
-            }
-
-            @if (ViewBag.UserRole == "BookKeeper")
-            {
-                <li><a onclick="window.location='@Url.Action("MemberList","Users")';">اعضا</a></li>
-            }
-
-            @if (ViewBag.UserRole == "User")
-            {
-                <li><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
-            }
-
-            <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
-            <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
-            <li><a onclick="window.location='@Url.Action("Contact","Home")';">تماس با ما</a></li>
-            <li><a onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
-        </ul>
     </header>
+
 
     <main>
         @RenderBody()
