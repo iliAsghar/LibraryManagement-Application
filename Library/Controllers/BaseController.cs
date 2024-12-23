@@ -24,6 +24,8 @@ public class BaseController : Controller
             ViewBag.UserClaims = User.Claims.ToList();
 
             ViewBag.UserPfpPath = GetUserPfpPath();
+
+            ViewBag.UserFullName = GetUserFullName();
         }
     }
 
@@ -47,5 +49,18 @@ public class BaseController : Controller
     public string GetUserRole()
     {
         return User.Claims.ElementAtOrDefault(2)?.Value;
+    }
+
+    private string GetUserFullName()
+    {
+        if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            var userId = GetLoggedInUserId();
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            var userFullName = user?.Name + " " + user?.Lastname;
+            return userFullName;
+        }
+        return null;
     }
 }
