@@ -71,10 +71,11 @@ namespace Library.Controllers
             var newMember = new User
             {
                 Email = model.Email,
-                Password = model.Password,
                 Name = model.Name,
                 Lastname = model.LastName,
                 NationalId = model.NationalId,
+                PhoneNumber= model.PhoneNumber,
+                Password = model.Password,
                 Role = "User"
             };
 
