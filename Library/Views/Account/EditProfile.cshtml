@@ -1,0 +1,149 @@
+﻿@model Library.ViewModels.EditProfileViewModel
+
+@{
+    ViewData["Title"] = "ویرایش پروفایل";
+}
+
+<style>
+
+    .edit-form {
+        font-family: "Vazir", sans-serif;
+        width: min(40rem, 100%);
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        margin-inline: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        border-radius: 10px;
+    }
+
+        .edit-form h1 {
+            font-family: "Lalezar", sans-serif;
+            font-size: 3rem;
+            font-weight: 300;
+            text-align: center;
+            border-bottom: 1px solid #DC5F00;
+        }
+
+        .edit-form h4 {
+            font-size: 1.5rem;
+            text-align: center;
+            color: #333;
+        }
+
+        .edit-form hr {
+            border: 0;
+            border-top: 1px solid #DC5F00;
+        }
+
+        .edit-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .edit-form label {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .edit-form input[type="text"],
+        .edit-form input[type="password"],
+        .edit-form input[type="email"],
+        .edit-form input[type="checkbox"] {
+            border-radius: 4px;
+            border: 1px solid gray;
+            padding: 0.5rem;
+            font-size: 1rem;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .edit-form input[type="submit"] {
+            border: none;
+            border-radius: 5px;
+            background-color: white;
+            padding: 0.5rem 1rem;
+            font-size: 1.25rem;
+            background-color: #e6e6e6;
+            transition: all ease-in-out 200ms;
+            cursor: pointer;
+            color: black;
+        }
+
+            .edit-form input[type="submit"]:hover {
+                background-color: #DC5F00;
+                color: white;
+                transition: all ease-in-out 50ms;
+            }
+
+        .edit-form .text-danger {
+            font-size: 0.875rem;
+            color: #ff4d4d;
+        }
+
+
+    .form-group.other {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+        .form-group.other a {
+            display: inline-block;
+            cursor: pointer;
+            transition: all ease-in-out 200ms;
+        }
+
+            .form-group.other a:hover {
+                color: #DC5F00;
+                transform: scale(1.06);
+                transition: all ease-in-out 50ms;
+            }
+</style>
+
+<form asp-action="EditProfile" method="post" enctype="multipart/form-data" class="edit-form">
+    <h1>ویرایش پروفایل</h1>
+    <hr />
+
+    <div class="form-group">
+        <label for="@Model.Email">ایمیل:</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Name">نام:</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="LastName">نام خانوادگی:</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="PhoneNumber">شماره تلفن:</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="NationalId">کد ملی:</label>
+        <input asp-for="NationalId" class="form-control" />
+        <span asp-validation-for="NationalId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="profilePicture">عکس پروفایل:</label>
+        <input type="file" name="profilePicture" class="form-control-file" />
+        <span class="text-danger">@ViewData["FileUploadError"]</span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="ذخیره تغییرات" class="btn btn-primary" />
+    </div>
+</form>

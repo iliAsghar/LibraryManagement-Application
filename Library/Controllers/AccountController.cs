@@ -150,6 +150,92 @@ namespace Library.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        public IActionResult EditProfile()
+        {
+            var userId = GetLoggedInUserId();
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditProfileViewModel
+            {
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Name = user.Name,
+                LastName = user.Lastname,
+                NationalId = user.NationalId,
+                PfpPath = user.PfpPath
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model, IFormFile? profilePicture)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userId = GetLoggedInUserId();
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Email = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Name = model.Name;
+            user.Lastname = model.LastName;
+            user.NationalId = model.NationalId;
+
+            if (profilePicture != null)
+            {
+                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                var uniqueFileName = $"{Guid.NewGuid()}-{profilePicture.FileName}";
+                var filePath = Path.Combine(uploadPath, uniqueFileName);
+
+                if (!IsValidImage(profilePicture))
+                {
+                    ModelState.AddModelError("PfpPath", "فایل باید یک تصویر باشد!");
+                    return View(model);
+                }
+
+                if (!string.IsNullOrEmpty(user.PfpPath))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", user.PfpPath.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(fileStream);
+                }
+
+                user.PfpPath = "/images/" + uniqueFileName;
+            }
+
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            return RedirectToAction("Profile");
+        }
+
         private int GetLoggedInUserId()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());
