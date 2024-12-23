@@ -112,6 +112,50 @@
     input[type=number] {
         -moz-appearance: textfield;
 }
+
+    .form-group {
+        font-family: "Vazir", sans-serif;
+    }
+
+    .file-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .custom-file-label {
+        background-color: #f4f4f4;
+        padding: 0.8rem 1rem;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        text-align: center;
+        flex-grow: 1;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .custom-file-label:hover {
+            background-color: #DC5F00;
+            color: white;
+        }
+
+    #profile-file-name {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    input[type="file"] {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .text-danger {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
 </style>
 
 <form asp-action="EditProfile" method="post" enctype="multipart/form-data" class="edit-form">
@@ -150,9 +194,20 @@
 
     <div class="form-group">
         <label for="profilePicture">عکس پروفایل:</label>
-        <input type="file" name="profilePicture" class="form-control-file" />
+        <div class="file-container">
+            <label for="profilePicture" class="custom-file-label">انتخاب تصویر</label>
+            <span id="profile-file-name">فایلی انتخاب نشده</span>
+            <input type="file" id="profilePicture" name="profilePicture" class="form-control-file" accept="image/*" />
+        </div>
         <span class="text-danger">@ViewData["FileUploadError"]</span>
     </div>
+
+    <script>
+        document.getElementById('profilePicture').addEventListener('change', function () {
+            const fileName = this.files[0]?.name || 'فایلی انتخاب نشده';
+            document.getElementById('profile-file-name').textContent = fileName;
+        });
+    </script>
 
     <div class="form-group">
         <input type="submit" value="ذخیره تغییرات" class="btn btn-primary" />
