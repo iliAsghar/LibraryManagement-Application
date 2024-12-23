@@ -1,0 +1,12 @@
+﻿<div>
+    <h1>Email Verification</h1>
+    <form asp-action="Verify" method="post">
+        <div>
+            <label for="token">Enter Verification Token:</label>
+            <input type="text" id="token" name="Token" required />
+        </div>
+        <div>
+            <button type="submit">Verify</button>
+        </div>
+    </form>
+</div>

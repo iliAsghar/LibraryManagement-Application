@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Mail;
+using System.Net;
 
 namespace Library.Controllers
 {
@@ -74,8 +76,10 @@ namespace Library.Controllers
                 Name = model.Name,
                 Lastname = model.LastName,
                 NationalId = model.NationalId,
-                PhoneNumber= model.PhoneNumber,
+                PhoneNumber = model.PhoneNumber,
                 Password = model.Password,
+                IsEmailVerified = false,
+                Token = "",
                 Role = "User"
             };
 
@@ -142,7 +146,13 @@ namespace Library.Controllers
 
             HttpContext.SignInAsync(principal, properties);
 
-            return RedirectToAction("Index", "Home");
+            if(user.IsEmailVerified)
+            {
+                return RedirectToAction("Index", "Home");
+            } else
+            {
+                return RedirectToAction("VerifyEmail");
+            }
         }
 
         public IActionResult Logout()
@@ -235,6 +245,115 @@ namespace Library.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Profile");
+        }
+
+        public async Task<IActionResult> VerifyEmail()
+        {
+            var user = _context.Users
+                .Where(u => u.Id == GetLoggedInUserId())
+                .FirstOrDefault();
+
+            await GenerateAndSendToken(user.NationalId);
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyEmail(string token)
+        {
+            var user = await _context.Users
+                        .Where(u => u.Id == GetLoggedInUserId())
+                        .FirstOrDefaultAsync();
+
+            if (Verify(token) == true)
+            {
+                user.IsEmailVerified = true;
+                _context.Users.Update(user);
+                _context.SaveChanges();
+            } else
+            {
+                return View();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> ForgotPassword(string userNId)
+        {
+            await GenerateAndSendToken(userNId);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string userNId, string token, string newPass)
+        {
+            var user = await _context.Users
+                .Where(u => u.NationalId == userNId)
+                .FirstOrDefaultAsync();
+
+            if(Verify(token))
+            {
+                user.Password = newPass;
+                _context.Users.Update(user) ;
+                _context.SaveChangesAsync();
+                return View();
+            } 
+
+            return View();
+        }
+
+        private static readonly Random _random = new Random();
+
+        public async Task GenerateAndSendToken(string userNId)
+        {
+            var user = await _context.Users
+                        .Where(u => u.NationalId == userNId)
+                        .FirstOrDefaultAsync();
+            string resetToken = _random.Next(1000, 9999).ToString();
+            user.Token = resetToken;
+            user.TokenExpiration = DateTime.Now.AddHours(1);
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            var emailText = "Here's your Token: " + resetToken;
+            SendEmail(user.Email, "User Token", emailText);
+        }
+
+        public bool Verify(string token)
+        {
+            var user = _context.Users
+                .FirstOrDefault(u => u.Token == token);
+
+            if (user != null && user.TokenExpiration > DateTime.Now)
+            {
+                user.IsEmailVerified = true;
+                _context.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void SendEmail(string toEmail, string subject, string body)
+        {
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("Bekhan.Manager@gmail.com", "lhyq zlro zmer htxb"),
+                EnableSsl = true
+            };
+
+            MailMessage mailMessage = new MailMessage
+            {
+                From = new MailAddress("Bekhan.Manager@gmail.com", "Bekhan"),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
+
+            mailMessage.To.Add(toEmail);
+
+            smtpClient.Send(mailMessage);
         }
 
         private int GetLoggedInUserId()

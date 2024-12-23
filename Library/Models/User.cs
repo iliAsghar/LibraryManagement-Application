@@ -13,7 +13,9 @@ namespace Library.Models
         public required string NationalId { get; set; }
         public required string Role { get; set; }
         public string? PfpPath { get; set; }
-
+        public string? Token { get; set; }
+        public bool IsEmailVerified { get; set; }
+        public DateTime? TokenExpiration { get; set; }
         public List<Transaction>? Transactions { get; set; }
     }
 }

@@ -17,6 +17,21 @@
             <h1 class="title">سامانه مدیریت کتابخوانهء <span>بخوان</span></h1>
         </a>
 
+        <div class="search-bar">
+            <form action="@Url.Action("Search", "Books")" method="get" class="d-flex align-items-center">
+                <input type="text"
+                       id="searchQuery"
+                       name="query"
+                       placeholder="جستجوی کتاب..."
+                       autocomplete="off"
+                       class="form-control" />
+                <button type="submit" class="btn search-icon">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+            <div id="searchResultsPopup" class="popup-results"></div>
+        </div>
+
         <ul class="nav-list" id="navList">
             <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
             @if (ViewBag.UserRole == "Admin")
