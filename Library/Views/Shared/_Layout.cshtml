@@ -10,53 +10,40 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <header class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" onclick="window.location='@Url.Action("","Home")';">
+    <header>
+        <a onclick="window.location='@Url.Action("","Home")';" class="main-title">
             <h1 class="title">سامانه مدیریت کتابخوانهء <span>بخوان</span></h1>
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link profilestyle" onclick="window.location='@Url.Action("Profile","Account")';">
-                        <p>@ViewBag.UserFullName</p>
-                        <img src="@ViewBag.UserPfpPath" alt="پروفایل" class="profile-image" />
-                    </a>
-                </li>
-                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
-
-                @if (ViewBag.UserRole == "Admin")
-                {
-                    <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("UserList","Users")';">کاربرها</a></li>
-                    <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("Index","Admins")';">داشبورد</a></li>
-                }
-
-                @if (ViewBag.UserRole == "BookKeeper")
-                {
-                    <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("MemberList","Users")';">اعضا</a></li>
-                }
-
-                @if (ViewBag.UserRole == "User")
-                {
-                    <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
-                }
-
-                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("Contact","Home")';">تماس با ما</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
-            </ul>
-        </div>
+        <ul class="nav-list" id="navList">
+            <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
+            @if (ViewBag.UserRole == "Admin")
+            {
+                <li><a onclick="window.location='@Url.Action("UserList","Users")';">کاربرها</a></li>
+                <li><a onclick="window.location='@Url.Action("Index","Admins")';">داشبورد</a></li>
+            }
+            @if (ViewBag.UserRole == "BookKeeper")
+            {
+                <li><a onclick="window.location='@Url.Action("MemberList","Users")';">اعضا</a></li>
+            }
+            @if (ViewBag.UserRole == "User")
+            {
+                <li class="hidden"><a onclick="window.location='@Url.Action("current","Transactions")';">کوله پشتی</a></li>
+            }
+            <li><a onclick="window.location='@Url.Action("","Transactions")';">امانت ها</a></li>
+            <li><a onclick="window.location='@Url.Action("","Books")';">کتاب ها</a></li>
+            <li class="hidden"><a onclick="window.location='@Url.Action("Contact","Home")';">تماس با ما</a></li>
+            <li>
+                <a class="profilestyle" onclick="window.location='@Url.Action("Profile","Account")';">
+                    <img src="@ViewBag.UserPfpPath" alt="پروفایل" class="profile-image" />
+                    <p class="hidden">@ViewBag.UserFullName</p>
+                </a>
+            </li>
+            <li><a onclick="window.location='@Url.Action("Logout","Account")';">خروج</a></li>
+        </ul>
     </header>
-
 
     <main>
         @RenderBody()
@@ -76,7 +63,6 @@
             top: 100%;
             left: 0;
             right: 0;
-            /*    border: 1px solid #ccc;*/
             background: white;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -133,6 +119,55 @@
                 font-size: 0.75rem;
                 margin: 0;
             }
+
+         .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .nav-list li {
+            padding: 5px 10px;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .nav-toggle {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+            font-size: 1.2rem;
+            background: none;
+            border: none;
+            color: white;
+        }
+
+        .nav-toggle:focus {
+            outline: none;
+        }
+
+        .hidden {
+            display: block;
+        }
+
+        @@media (max-width: 768px) {
+            header {
+                display: flex;
+                flex-direction: column !important;
+                justify-content: center;
+            }
+
+            .hidden {
+                display: none !important
+            }
+        }
 
     </style>
     <script>
