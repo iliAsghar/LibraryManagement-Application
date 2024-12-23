@@ -42,7 +42,6 @@ ul {
     margin: 0;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .main-title {
     cursor: pointer;
 }
@@ -86,6 +85,9 @@ header {
         cursor: pointer;
         transition: all ease-in-out 200ms;
         font-weight:500;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
         .nav-list li:hover {
@@ -141,3 +143,24 @@ footer {
         font-size: 1.2rem;
         color: #373A40;
     }
+
+.profile-image {
+    width: 40px;
+    height: 40px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    cursor: pointer; 
+    border: 2px solid #ddd;
+    transition: border-color 0.3s ease;
+}
+
+    .profile-image:hover {
+        border-color: #DC5F00; 
+    }
+
+.profilestyle{
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}

@@ -33,7 +33,12 @@
         </div>
 
         <ul class="nav-list">
-            <li><a onclick="window.location='@Url.Action("Profile","Account")';">پروفایل</a></li>
+            <li >
+                <a class="profilestyle" onclick="window.location='@Url.Action("Profile","Account")';">
+                    <p>@ViewBag.UserFullName</p>
+                    <img src="@ViewBag.UserPfpPath" alt="پروفایل" class="profile-image" />
+                </a>
+            </li>
             <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
 
             @if (ViewBag.UserRole == "Admin")
