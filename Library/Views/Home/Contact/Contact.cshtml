@@ -43,10 +43,11 @@
 
         @if (ViewBag.UserRole == "Admin")
         {
-            <a asp-action="EditContact" class="btn btn-secondary">
+            <a asp-controller="Home" asp-action="EditContact" class="btn btn-secondary">
                 ویرایش اطلاعات تماس
             </a>
         }
+
     }
 </div>
 
