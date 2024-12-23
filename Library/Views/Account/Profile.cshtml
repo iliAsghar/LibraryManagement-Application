@@ -13,6 +13,7 @@
                 <p><strong>کد ملی:</strong> @Model.NationalId</p>
                 <p><strong>شماره تماس:</strong> @Model.PhoneNumber</p>
                 <p><strong>نقش:</strong> @Model.Role</p>
+                <a onclick="window.location='@Url.Action("EditProfile","Account")';">ویرایش اطلاعات</a>
             </div>
         </div>
     </section>
@@ -79,6 +80,8 @@
 
     .profile-info {
         display: flex;
+        gap: .75rem;
+        padding: .5rem;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -95,8 +98,15 @@
 
     .personal-info p {
         font-size: 1rem;
-        margin: 0.5rem 0;
         color: #333;
+    }
+
+    .personal-info a {
+        box-sizing: border-box !important;
+        cursor: pointer;
+        padding: .5rem 1.75rem;
+        background-color: #DC5F00;
+        border-radius: 7px;
     }
 
     table {
