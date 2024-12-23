@@ -110,7 +110,7 @@ namespace Library.Controllers
             _context.Users.Add(newMember);
             _context.SaveChanges();
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("VerifyEmail", new { userId = newMember.Id });
         }
 
         public IActionResult Login(LoginViewModel model)
@@ -151,7 +151,7 @@ namespace Library.Controllers
                 return RedirectToAction("Index", "Home");
             } else
             {
-                return RedirectToAction("VerifyEmail");
+                return RedirectToAction("VerifyEmail", new { userId = user.Id });
             }
         }
 
@@ -247,22 +247,18 @@ namespace Library.Controllers
             return RedirectToAction("Profile");
         }
 
-        public async Task<IActionResult> VerifyEmail()
+        public async Task<IActionResult> VerifyEmail(int userId)
         {
-            var user = _context.Users
-                .Where(u => u.Id == GetLoggedInUserId())
-                .FirstOrDefault();
-
-            await GenerateAndSendToken(user.NationalId);
-
-            return View();
+            await GenerateAndSendToken(userId);
+            ViewBag.UserId = userId;
+            return View(userId);
         }
 
         [HttpPost]
-        public async Task<IActionResult> VerifyEmail(string token)
+        public async Task<IActionResult> VerifyEmail(string token, int userId)
         {
             var user = await _context.Users
-                        .Where(u => u.Id == GetLoggedInUserId())
+                        .Where(u => u.Id == userId)
                         .FirstOrDefaultAsync();
 
             if (Verify(token) == true)
@@ -278,9 +274,9 @@ namespace Library.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> ForgotPassword(string userNId)
+        public async Task<IActionResult> ForgotPassword(int userId)
         {
-            await GenerateAndSendToken(userNId);
+            await GenerateAndSendToken(userId);
             return View();
         }
 
@@ -304,11 +300,12 @@ namespace Library.Controllers
 
         private static readonly Random _random = new Random();
 
-        public async Task GenerateAndSendToken(string userNId)
+        public async Task GenerateAndSendToken(int userId)
         {
             var user = await _context.Users
-                        .Where(u => u.NationalId == userNId)
+                        .Where(u => u.Id == userId)
                         .FirstOrDefaultAsync();
+
             string resetToken = _random.Next(1000, 9999).ToString();
             user.Token = resetToken;
             user.TokenExpiration = DateTime.Now.AddHours(1);
