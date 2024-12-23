@@ -14,47 +14,6 @@
         align-items: center;
     }
 
-    .filter-section {
-        width: min(55rem, 100%);
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1rem;
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1rem;
-        direction: rtl;
-    }
-
-        .filter-section label {
-            margin-right: 1rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .filter-section input[type="date"] {
-            padding: .5rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .filter-section button {
-            background-color: #DC5F00;
-            color: white;
-            padding: .5rem 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-            .filter-section button:hover {
-                background-color: #b94b00;
-            }
-
     table {
         width: min(55rem, 100%);
         background-color: white;
@@ -89,6 +48,7 @@
     td {
         font-size: 1rem;
         color: #333;
+        cursor: pointer;
     }
 
     .title-list {
@@ -178,7 +138,13 @@
         }
 
         <tr style="background-color: #818185;">
-            <td style="padding: 0.25rem" colspan="5"></td>
+            @if (ViewBag.Role == "BookKeeper")
+            {
+                <td style="padding: 0.25rem" colspan="7"></td>
+            } else
+            {
+                <td style="padding: 0.25rem" colspan="6"></td>
+            }
         </tr>
     </tbody>
 </table>

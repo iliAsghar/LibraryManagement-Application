@@ -10,7 +10,7 @@ namespace Library.ViewModels
 
         [Required(ErrorMessage = "شماره تماس اجباری است")]
         [Phone(ErrorMessage = "فرمت شماره تلفن صحیح نیست")]
-        public long PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "نام اجباری است")]
         public string Name { get; set; }

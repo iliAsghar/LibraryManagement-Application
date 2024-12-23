@@ -25,6 +25,12 @@ namespace Library.ViewModels
         [Required(ErrorMessage = "لطفا کد ملی خود را وارد کنید!")]
         public required string NationalId { get; set; }
 
+        [MaxLength(11)]
+        [Display(Name = "شماره تماس")]
+        [Required(ErrorMessage = "شماره تماس اجباری است")]
+        [Phone(ErrorMessage = "فرمت شماره تلفن صحیح نیست")]
+        public string PhoneNumber { get; set; }
+
         [MaxLength(50)]
         [DataType(DataType.Password)]
         [Display(Name = "کلمه عبور")]

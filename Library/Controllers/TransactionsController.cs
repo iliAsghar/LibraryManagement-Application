@@ -350,7 +350,7 @@ namespace Library.Controllers
         [Authorize(policy: "BookKeeper")]
         public IActionResult ReturnTransaction()
         {
-            return RedirectToAction("ReturnTransaction");
+            return View();
         }
 
         private int GetLoggedInUserId()
