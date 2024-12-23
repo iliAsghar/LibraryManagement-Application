@@ -14,7 +14,7 @@ namespace Library.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionItem> TransactionItems { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
-        public DbSet<Contact> AdminControllers { get; set; }
+        public DbSet<OurContact> OurContacts { get; set; }
+        public DbSet<OurContact> AdminControllers { get; set; }
     }
 }

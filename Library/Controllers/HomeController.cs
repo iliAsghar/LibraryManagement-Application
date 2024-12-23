@@ -29,7 +29,7 @@ namespace Library.Controllers
 
         public async Task<IActionResult> Contact()
         {
-            var contactInfo = await _context.Contacts.FirstOrDefaultAsync();
+            var contactInfo = await _context.OurContacts.FirstOrDefaultAsync();
 
             if (contactInfo == null)
             {
@@ -61,7 +61,7 @@ namespace Library.Controllers
         [Authorize(policy: "Admin")]
         public async Task<IActionResult> EditContact()
         {
-            var contactInfo = await _context.Contacts.FirstOrDefaultAsync();
+            var contactInfo = await _context.OurContacts.FirstOrDefaultAsync();
 
             if (contactInfo == null)
             {
@@ -89,7 +89,7 @@ namespace Library.Controllers
                 return View("Contact/EditContact", model);
             }
 
-            var contactInfo = await _context.Contacts.FirstOrDefaultAsync();
+            var contactInfo = await _context.OurContacts.FirstOrDefaultAsync();
 
             if (contactInfo == null)
             {
@@ -102,7 +102,7 @@ namespace Library.Controllers
             contactInfo.PhoneNumber = model.PhoneNumber;
             contactInfo.Email = model.Email;
 
-            _context.Contacts.Update(contactInfo);
+            _context.OurContacts.Update(contactInfo);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Contact");

@@ -1,6 +1,6 @@
 ﻿namespace Library.Models
 {
-    public class Contact
+    public class OurContact
     {
         public int Id { get; set; }
         public string Title { get; set; }
