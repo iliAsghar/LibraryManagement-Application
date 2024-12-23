@@ -90,7 +90,8 @@ namespace Library.Controllers
                             .ThenInclude(ti => ti.Book)
                         .FirstOrDefaultAsync(t =>
                             t.UserId == userId &&
-                            t.Status == TransactionStatus.UnFinalized);
+                            t.Status != TransactionStatus.Delivered &&
+                            t.Status != TransactionStatus.Returned);
                 }
                 else
                 {
@@ -145,9 +146,17 @@ namespace Library.Controllers
 
             var transaction = await _context.Transactions
                 .Include(t => t.TransactionItems)
+                .Where(t => t.Status != TransactionStatus.Returned &&
+                            t.Status != TransactionStatus.Rejected)
                 .FirstOrDefaultAsync(t =>
-                    t.UserId == userId &&
-                    t.Status == TransactionStatus.UnFinalized);
+                    t.UserId == userId);
+
+            if (transaction.Status == TransactionStatus.PendingApproval ||
+                transaction.Status == TransactionStatus.PendingDelivery ||
+                transaction.Status == TransactionStatus.Delivered)
+            {
+                return View("ShowTransaction", -1);
+            }
 
             if (transaction == null)
             {
@@ -253,7 +262,7 @@ namespace Library.Controllers
             transaction.ApproveDate = DateTime.Now;
             transaction.DeliverDate = DateTime.Now;
             //transaction.Status = TransactionStatus.PendingDelivery;
-            transaction.Status = TransactionStatus.Approved;
+            transaction.Status = TransactionStatus.Delivered;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
@@ -280,12 +289,15 @@ namespace Library.Controllers
             return RedirectToAction("TransactionList", "Transactions");
         }
 
+        [HttpPost]
         [Authorize(policy: "BookKeeper")]
-        public async Task<IActionResult> ReturnTransaction(int id)
+        public async Task<IActionResult> ConfirmReturnTransaction(int transactionId)
         {
             var transaction = await _context.Transactions
-                            .FirstOrDefaultAsync(t =>
-                            t.Id == id);
+                .Include(t => t.TransactionItems)
+                    .ThenInclude(ti => ti.Book)
+                .FirstOrDefaultAsync(t =>
+                t.Id == transactionId);
 
             if (transaction == null)
             {
@@ -294,10 +306,51 @@ namespace Library.Controllers
 
             transaction.ReturnDate = DateTime.Now;
             transaction.Status = TransactionStatus.Returned;
+            
+            foreach (var item in transaction.TransactionItems)
+            {
+                var book = item.Book;
+                book.TotalQuantity = book.TotalQuantity + item.Quantity;
+                _context.Books.Update(book);
+            }
+
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("TransactionList", "Transactions");
+        }
+
+        [HttpPost]
+        [Authorize(policy: "BookKeeper")]
+        public async Task<IActionResult> ReturnTransaction(string? userNId)
+        {
+            if (userNId != "")
+            {
+                var user = await _context.Users
+                    .Where(u => u.NationalId == userNId)
+                    .FirstOrDefaultAsync();
+
+                var currentTransaction = await _context.Transactions
+                    .Where(t => t.UserId == user.Id && t.Status == TransactionStatus.Delivered)
+                    .FirstOrDefaultAsync();
+
+                if (currentTransaction == null)
+                {
+                    ViewBag.Message = "No transactions found for the given user.";
+                }
+
+                ViewData["UserNId"] = user.NationalId;
+                return View("ShowTransaction", currentTransaction.Id);
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(policy: "BookKeeper")]
+        public IActionResult ReturnTransaction()
+        {
+            return RedirectToAction("ReturnTransaction");
         }
 
         private int GetLoggedInUserId()

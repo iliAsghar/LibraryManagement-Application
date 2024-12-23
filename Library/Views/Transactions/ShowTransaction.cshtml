@@ -163,7 +163,7 @@
         {
             
         }
-        @if (Model.Status == TransactionStatus.PendingApproval || Model.Status == TransactionStatus.Approved || Model.Status == TransactionStatus.Rejected)
+        @if (Model.Status == TransactionStatus.PendingApproval)
         {
 
             @if (ViewBag.UserRole == "Admin" || ViewBag.UserRole == "BookKeeper")
@@ -173,24 +173,29 @@
                     <button type="submit"
                             class="approve-button @(Model.Status != TransactionStatus.UnFinalized ? "disabled" : "")"
                             title="@(Model.Status != TransactionStatus.UnFinalized ? "این امانت قبلاً نهایی شده است" : "")">
-                        تایید کردن امانت
+                        تایید و تحویل
                     </button>
                 </form>
 
                 <form method="post" action="/Transactions/RejectTransaction">
                     <input type="hidden" name="transactionId" value="@Model.Id" />
                     <button type="submit"
-                            class="reject-button @(Model.Status != TransactionStatus.UnFinalized ? "disabled" : "")"
-                            title="@(Model.Status != TransactionStatus.UnFinalized ? "این امانت قبلاً نهایی شده است" : "")">
+                            class="reject-button">
                         رد کردن امانت
                     </button>
                 </form>
             }
-
         }
-        else
+
+        @if (Model.Status == TransactionStatus.Delivered)
         {
-            
+            <form method="post" action="/Transactions/ConfirmReturnTransaction">
+                <input type="hidden" name="transactionId" value="@Model.Id" />
+                <button type="submit"
+                        class="approve-button">
+                    بازگشت کتاب ها
+                </button>
+            </form>
         }
 
     }

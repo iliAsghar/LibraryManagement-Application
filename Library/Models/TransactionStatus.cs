@@ -13,11 +13,11 @@ namespace Library.Models
         [Description("در انتظار تحویل")]
         PendingDelivery,
 
+        [Description("امانت گرفته شده")]
+        Delivered,
+
         [Description("رد شده")]
         Rejected,
-
-        [Description("امانت گرفته شده")]
-        Approved,
 
         [Description("بازگشت خورده")]
         Returned

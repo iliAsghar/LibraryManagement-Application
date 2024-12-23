@@ -20,7 +20,7 @@
         <div class="panel-list">
 
             <div class="panel-list-item" onclick="window.location='@Url.Action("UserList", "Users")';">
-                <i class="fa-solid fa-user-plus"></i>
+                <i class="fa-solid fa-users"></i>
                 <p>لیست کاربرها</p>
             </div>
             
@@ -28,13 +28,11 @@
                 <i class="fa-solid fa-book"></i>
                 <p>افزودن کتاب</p>
             </div>
-            
-            @*
-            <div class="panel-list-item" onclick="window.location='@Url.Action("", "Transactions")';">
-            <i class="fa-solid fa-book"></i>
-            <p>تایید لیست انتظار</p>
-        </div>
-            *@
+
+            <div class="panel-list-item" onclick="window.location='@Url.Action("ReturnTransaction", "Transactions")';">
+                <i class="fa-solid fa-box-open"></i>
+                <p>بازگشت تراکنش</p>
+            </div>
         </div>
     </div>
 </div>

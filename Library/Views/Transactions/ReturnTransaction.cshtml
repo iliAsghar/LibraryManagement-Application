@@ -1,0 +1,18 @@
+﻿@model Library.Models.Transaction
+
+@{
+    ViewData["Title"] = "بازگشت امانت";
+}
+
+<h1>بازگشت امانت</h1>
+
+<div>
+    <form asp-action="ReturnTransaction" method="post">
+        <div class="form-group">
+            <label for="userNId">کد ملی کاربر:</label>
+            <input type="text" class="form-control" id="userNId" name="userNId"
+                   value="@ViewData["UserNId"]" placeholder="Enter User National ID" required />
+        </div>
+        <button type="submit" class="btn btn-primary">دریافت امانت فعال</button>
+    </form>
+</div>
