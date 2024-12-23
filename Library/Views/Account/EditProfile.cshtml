@@ -102,6 +102,16 @@
                 transform: scale(1.06);
                 transition: all ease-in-out 50ms;
             }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+}
 </style>
 
 <form asp-action="EditProfile" method="post" enctype="multipart/form-data" class="edit-form">
@@ -110,31 +120,31 @@
 
     <div class="form-group">
         <label for="@Model.Email">ایمیل:</label>
-        <input asp-for="Email" class="form-control" />
+        <input asp-for="Email" class="form-control" type="email" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label for="Name">نام:</label>
-        <input asp-for="Name" class="form-control" />
+        <input asp-for="Name" class="form-control" type="text" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label for="LastName">نام خانوادگی:</label>
-        <input asp-for="LastName" class="form-control" />
+        <input asp-for="LastName" class="form-control" type="text" />
         <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label for="PhoneNumber">شماره تلفن:</label>
-        <input asp-for="PhoneNumber" class="form-control" />
+        <input asp-for="PhoneNumber" class="form-control" type="number" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label for="NationalId">کد ملی:</label>
-        <input asp-for="NationalId" class="form-control" />
+        <input asp-for="NationalId" class="form-control" type="number" />
         <span asp-validation-for="NationalId" class="text-danger"></span>
     </div>
 

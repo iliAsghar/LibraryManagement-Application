@@ -191,10 +191,10 @@ namespace Library.Controllers
             }
 
             user.Email = model.Email;
-            user.PhoneNumber = model.PhoneNumber;
             user.Name = model.Name;
             user.Lastname = model.LastName;
             user.NationalId = model.NationalId;
+            user.PhoneNumber = model.PhoneNumber;
 
             if (profilePicture != null)
             {
