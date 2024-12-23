@@ -13,19 +13,15 @@ namespace Library.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Dashboard()
         {
-            // تعداد کاربران
             var userCount = _context.Users.Count();
 
-            // تعداد کتاب‌ها
             var bookCount = _context.Books.Count();
 
-            // تعداد تراکنش‌ها (بدون تراکنش‌های UnFinalized)
             var transactionCount = _context.Transactions
                                            .Count(t => t.Status != TransactionStatus.UnFinalized);
 
-            // ارسال اطلاعات به View
             ViewBag.UserCount = userCount;
             ViewBag.BookCount = bookCount;
             ViewBag.TransactionCount = transactionCount;
