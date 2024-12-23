@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Library.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Library.ViewModels
 {
@@ -21,6 +22,9 @@ namespace Library.ViewModels
 
         [Display(Name = "تصویر جلد")]
         public string? CoverPath { get; set; }
+
+        [Display(Name = "ژانر کتاب")]
+        public string Genre { get; set; }
 
 
         [Display(Name = "تعداد موجودی")]

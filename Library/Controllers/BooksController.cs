@@ -55,6 +55,7 @@ namespace Library.Controllers
                 Title = book.Title,
                 Description = book.Description,
                 Author = book.Author,
+                Genre = book.Genre,
                 CoverPath = book.CoverPath,
                 TotalQuantity = book.TotalQuantity
             };
@@ -87,6 +88,7 @@ namespace Library.Controllers
                 Title = model.Title,
                 Description = model.Description,
                 Author = model.Author,
+                Genre = model.Genre,
                 TotalQuantity = model.TotalQuantity
             };
 
@@ -137,7 +139,8 @@ namespace Library.Controllers
             booksQuery = booksQuery.Where(book =>
                 EF.Functions.Like(book.Title, $"%{query}%") ||
                 EF.Functions.Like(book.Author, $"%{query}%") ||
-                EF.Functions.Like(book.Description, $"%{query}%"));
+                EF.Functions.Like(book.Description, $"%{query}%") ||
+                EF.Functions.Like(book.Genre, $"%{query}%"));
 
             if (!string.IsNullOrEmpty(advancedFilter))
             {
@@ -153,6 +156,7 @@ namespace Library.Controllers
                         book.Id,
                         book.Title,
                         book.Author,
+                        book.Genre,
                         book.CoverPath
                     })
                     .ToListAsync();

@@ -113,25 +113,31 @@
     <h3>افزودن کتاب</h3>
 
     <div>
-        <label for="Title">نام کتاب</label>
+        <label for="Title">نام کتاب:</label>
         <input type="text" id="Title" name="Title" value="@Model.Title" required />
         <span class="text-danger" asp-validation-for="Title"></span>
     </div>
 
     <div>
-        <label for="Description">توضیحات</label>
+        <label for="Description">توضیحات:</label>
         <textarea id="Description" name="Description" required rows="6">@Model.Description</textarea>
         <span class="text-danger" asp-validation-for="Description"></span>
     </div>
 
     <div>
-        <label for="Author">نویسنده</label>
+        <label for="Author">نویسنده:</label>
         <input type="text" id="Author" name="Author" value="@Model.Author" required />
         <span class="text-danger" asp-validation-for="Author"></span>
     </div>
 
     <div>
-        <label for="Cover">تصویر جلد</label>
+        <label for="Genre">ژانر:</label>
+        <input type="text" id="Genre" name="Genre"" value="@Model.Genre" required />
+        <span class="text-danger" asp-validation-for="Genre"></span>
+    </div>
+
+    <div>
+        <label for="Cover">تصویر جلد:</label>
         <div class="file-container">
             <label for="Cover" class="custom-file-label">انتخاب تصویر</label>
             <span id="file-name">فایلی انتخاب نشده</span>
@@ -141,7 +147,7 @@
     </div>
 
     <div>
-        <label for="TotalQuantity">تعداد موجودی</label>
+        <label for="TotalQuantity">تعداد موجودی:</label>
         <input type="number" id="TotalQuantity" name="TotalQuantity" value="1" min="1"/>
         <span class="text-danger" asp-validation-for="TotalQuantity"></span>
     </div>

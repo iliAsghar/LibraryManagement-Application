@@ -115,6 +115,7 @@
                 <th>عنوان</th>
                 <th>نویسنده</th>
                 <th>توضیحات</th>
+                <th>ژانر</th>
                 <th>تصویر جلد</th>
                 <th>تعداد موجودی کتاب</th>
             </tr>
@@ -125,6 +126,7 @@
                 <tr onclick="window.location='@Url.Action("ShowBook", "Books", new { id = book.Id })'" style="cursor: pointer;">
                     <td class="book-title">@book.Title</td>
                     <td>@book.Author</td>
+                    <td>@book.Genre</td>
                     <td>@book.Description</td>
                     <td>
                         @if (!string.IsNullOrEmpty(book.CoverPath))
@@ -147,7 +149,7 @@
                 </tr>
             }
             <tr style=" background-color: #818185;">
-                <td style="padding: 0.25rem" colspan="5"> </td>
+                <td style="padding: 0.25rem" colspan="6"> </td>
             </tr>
         </tbody>
     </table>
