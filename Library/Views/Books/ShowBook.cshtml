@@ -186,8 +186,9 @@
     <div class="book-actions">
         <form method="post" action="/transactions/AddBookToTransaction">
             <input type="hidden" name="bookId" value="@Model.Id" />
+            <input type="number" name="quantity" class="quantity-input" value="0" min="0"
+            @(ViewBag.UserRole == "User" ? "max=\"2\"" : "") />
 
-            <input type="number" name="quantity" class="quantity-input" value="0" min="0" />
 
             @if (Model.TotalQuantity == 0)
             {

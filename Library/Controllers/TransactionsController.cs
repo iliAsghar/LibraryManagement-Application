@@ -197,8 +197,6 @@ namespace Library.Controllers
                 _context.TransactionItems.Update(transactionItem);
             }
 
-            book.TotalQuantity -= quantity;
-
             _context.Books.Update(book);
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
@@ -213,6 +211,8 @@ namespace Library.Controllers
             var userId = GetLoggedInUserId();
 
             var transaction = await _context.Transactions
+                .Include(t => t.TransactionItems)
+                    .ThenInclude(ti => ti.Book)
                 .FirstOrDefaultAsync(t =>
                 t.UserId == userId &&
                 t.Status == TransactionStatus.UnFinalized);
@@ -220,6 +220,13 @@ namespace Library.Controllers
             if (transaction == null)
             {
                 return RedirectToAction("TransactionList", "Transactions");
+            }
+
+            foreach (var item in transaction.TransactionItems)
+            {
+                var book = item.Book;
+                book.TotalQuantity -= item.Quantity;
+                _context.Books.Update(book);
             }
 
             transaction.RequestDate = DateTime.Now;
