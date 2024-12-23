@@ -151,13 +151,6 @@ namespace Library.Controllers
                 .FirstOrDefaultAsync(t =>
                     t.UserId == userId);
 
-            if (transaction.Status == TransactionStatus.PendingApproval ||
-                transaction.Status == TransactionStatus.PendingDelivery ||
-                transaction.Status == TransactionStatus.Delivered)
-            {
-                return View("ShowTransaction", -1);
-            }
-
             if (transaction == null)
             {
                 transaction = new Transaction
@@ -167,6 +160,14 @@ namespace Library.Controllers
                 };
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
+            } else
+            {
+                if (transaction.Status == TransactionStatus.PendingApproval ||
+                    transaction.Status == TransactionStatus.PendingDelivery ||
+                    transaction.Status == TransactionStatus.Delivered)
+                {
+                    return View("ShowTransaction", -1);
+                }
             }
 
             var currentItemCount = transaction.TransactionItems.Sum(i => i.Quantity);
