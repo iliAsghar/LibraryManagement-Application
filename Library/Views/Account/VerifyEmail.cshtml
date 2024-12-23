@@ -1,9 +1,10 @@
 ﻿<div class="edit-form">
     <h1>Email Verification</h1>
-    <form asp-action="Verify" method="post">
+    <form asp-action="VerifyEmail" method="post">
         <div class="form-group">
             <label for="token">Enter Verification Token:</label>
             <input type="text" id="token" name="Token" required />
+            <input type="hidden" id="userId" name="userId" value="@ViewBag.UserId" />
         </div>
         <div class="form-group">
             <input type="submit" value="Verify" />

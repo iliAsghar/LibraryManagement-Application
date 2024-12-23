@@ -4,7 +4,6 @@ using Library.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
@@ -126,6 +125,11 @@ namespace Library.Controllers
             if (user == null || !(model.Password == user.Password))
             {
                 ModelState.AddModelError("Email", "اطلاعات صحیح نیست!");
+                return View(model);
+            }
+
+            if (!user.IsEmailVerified)
+            {
                 return View(model);
             }
 
