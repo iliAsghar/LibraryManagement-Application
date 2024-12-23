@@ -7,6 +7,8 @@ namespace Library.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public DateTime RequestDate { get; set; }
+        public DateTime ApproveDate { get; set; }
+        public DateTime RejectDate { get; set; }
         public DateTime DeliverDate { get; set; }
         public DateTime ReturnDate { get; set; }
         public TransactionStatus Status { get; set; }

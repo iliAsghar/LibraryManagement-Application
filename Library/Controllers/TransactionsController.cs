@@ -250,7 +250,9 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
+            transaction.ApproveDate = DateTime.Now;
             transaction.DeliverDate = DateTime.Now;
+            //transaction.Status = TransactionStatus.PendingDelivery;
             transaction.Status = TransactionStatus.Approved;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
@@ -270,6 +272,7 @@ namespace Library.Controllers
                 return RedirectToAction("TransactionList", "Transactions");
             }
 
+            transaction.RejectDate = DateTime.Now;
             transaction.Status = TransactionStatus.Rejected;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();

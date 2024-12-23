@@ -10,6 +10,9 @@ namespace Library.Models
         [Description("در انتظار تایید")]
         PendingApproval,
 
+        [Description("در انتظار تحویل")]
+        PendingDelivery,
+
         [Description("رد شده")]
         Rejected,
 
