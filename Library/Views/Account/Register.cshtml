@@ -269,6 +269,12 @@
             position: absolute;
             z-index: -1;
         }
+
+        .form-group.other a:hover {
+            color: #DC5F00;
+            transform: scale(1.06);
+            transition: all ease-in-out 50ms;
+        }
     </style>
 </head>
 <body>
@@ -346,13 +352,8 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <div class="form-group mt-3">
-                <button type="submit" class="btn btn-primary btn-block">ثبت نام</button>
-            </div>
-
-            <div class="form-group other">
-                <p>اکانت دارید؟ <a onclick="window.location='@Url.Action("Login","Account")';">وارد شوید</a></p>
-            </div>
+            
+            <input type="submit" value="ورود" />
         </form>
     </main>
     <footer>
