@@ -186,8 +186,26 @@
     <div class="book-actions">
         <form method="post" action="/transactions/AddBookToTransaction">
             <input type="hidden" name="bookId" value="@Model.Id" />
-            <input type="number" name="quantity" class="quantity-input" value="0" min="0"
-            @(ViewBag.UserRole == "User" ? "max=\"2\"" : "") />
+            <input type="number" name="quantity" class="quantity-input" value="0" min="0" max="2" id="quantity-input" />
+
+            <script>
+                document.getElementById('quantity-input').addEventListener('input', function () {
+                    const input = this;
+                    const min = parseInt(input.min, 10);
+                    const max = parseInt(input.max, 10);
+                    const value = parseInt(input.value, 10);
+
+                    // Enforce min and max limits
+                    if (value > max) {
+                        input.value = max;
+                    } else if (value < min) {
+                        input.value = min;
+                    }
+                });
+            </script>
+
+
+
 
 
             @if (Model.TotalQuantity == 0)
