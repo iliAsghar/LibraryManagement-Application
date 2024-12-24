@@ -18,41 +18,44 @@
         </div>
     </section>
 
-    @if (Model.Transactions != null && Model.Transactions.Count>0)
+    @if(Model.Role == "User")
     {
-        <section class="user-details">
-            <h2>تاریخچه تراکنش‌ها</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>شماره تراکنش</th>
-                        <th>تاریخ نهایی سازی</th>
-                        <th>جزئیات کتاب</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var transaction in Model.Transactions)
-                    {
+         @if (Model.Transactions != null && Model.Transactions.Count>0)
+        {
+            <section class="user-details">
+                <h2>تاریخچه تراکنش‌ها</h2>
+                <table>
+                    <thead>
                         <tr>
-                            <td>@transaction.Id</td>
-                            <td>@(transaction.RequestDate == default(DateTime) ? "-" : transaction.RequestDate.ToString("yyyy/MM/dd"))</td>
-                            <td>
-                                <ul>
-                                    @foreach (var item in transaction.TransactionItems)
-                                    {
-                                        <li>@item.Book.Title - تعداد: @item.Quantity</li>
-                                    }
-                                </ul>
-                            </td>
+                            <th>شماره تراکنش</th>
+                            <th>تاریخ نهایی سازی</th>
+                            <th>جزئیات کتاب</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </section>
-    }
-    else
-    {
-        <p>تراکنشی موجود نیست.</p>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in Model.Transactions)
+                        {
+                            <tr>
+                                <td>@transaction.Id</td>
+                                <td>@(transaction.RequestDate == default(DateTime) ? "-" : transaction.RequestDate.ToString("yyyy/MM/dd"))</td>
+                                <td>
+                                    <ul>
+                                        @foreach (var item in transaction.TransactionItems)
+                                        {
+                                            <li>@item.Book.Title - تعداد: @item.Quantity</li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        }
+        else
+        {
+            <p>تراکنشی موجود نیست.</p>
+        }
     }
 </main>
 
