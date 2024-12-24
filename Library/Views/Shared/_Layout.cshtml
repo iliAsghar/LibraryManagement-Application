@@ -33,7 +33,6 @@
         </div>
 
         <ul class="nav-list" id="navList">
-            <li><a onclick="window.location='@Url.Action("","Home")';">صفحه اصلی</a></li>
             @if (ViewBag.UserRole == "Admin")
             {
                 <li><a onclick="window.location='@Url.Action("UserList","Users")';">کاربرها</a></li>

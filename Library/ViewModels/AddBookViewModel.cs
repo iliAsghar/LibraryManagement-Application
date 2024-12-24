@@ -10,7 +10,7 @@ namespace Library.ViewModels
         [Required(ErrorMessage = "عنوان کتاب الزامی است!")]
         public string? Title { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(500)]
         [Display(Name = "توضیحات")]
         [Required(ErrorMessage = "توضیحات کتاب الزامی است!")]
         public string? Description { get; set; }
