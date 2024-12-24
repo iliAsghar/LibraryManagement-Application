@@ -123,6 +123,22 @@ namespace Library.Controllers
             return RedirectToAction("Index", "Books");
         }
 
+        public async Task<IActionResult> EditBookQuantity(int bookId, int newQuantity)
+        {
+            var book = await _context.Books
+                .Where(b => b.Id == bookId)
+                .FirstOrDefaultAsync();
+
+            if (book != null)
+            {
+                book.TotalQuantity = newQuantity;
+                _context.Books.Update(book);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ShowBook", new { id = bookId });
+        }
+
         public async Task<IActionResult> Search(string query, string advancedFilter = null, bool isPopup = false)
         {
             if (string.IsNullOrWhiteSpace(query))

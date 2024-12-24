@@ -188,48 +188,62 @@
     
 
     <div class="book-actions">
-        <form method="post" action="/transactions/AddBookToTransaction">
-            <input type="hidden" name="bookId" value="@Model.Id" />
-            <input type="number" name="quantity" class="quantity-input" value="0" min="0" max="2" id="quantity-input" />
+        @if(ViewBag.UserRole == "Admin" || ViewBag.UserRole == "BookKeeper")
+        {
 
-            <script>
-                document.getElementById('quantity-input').addEventListener('input', function () {
-                    const input = this;
-                    const min = parseInt(input.min, 10);
-                    const max = parseInt(input.max, 10);
-                    const value = parseInt(input.value, 10);
+            <form method="post" asp-action="AddBookToTransaction" asp-controller="Books">
+                <input type="hidden" name="bookId" value="@Model.Id" />
+                <input type="number" name="quantity" class="quantity-input" value="0" min="0" max="2" id="quantity-input" />
 
-                    if (value > max) {
-                        input.value = max;
-                    } else if (value < min) {
-                        input.value = min;
-                    }
-                });
-            </script>
+                <script>
+                    document.getElementById('quantity-input').addEventListener('input', function () {
+                        const input = this;
+                        const min = parseInt(input.min, 10);
+                        const max = parseInt(input.max, 10);
+                        const value = parseInt(input.value, 10);
 
+                        if (value > max) {
+                            input.value = max;
+                        } else if (value < min) {
+                            input.value = min;
+                        }
+                    });
+                </script>
 
+                <button type="submit" class="btn-thing btn">تغییر تعداد موجودی</button>
+            </form>
 
+        } else {
 
+            <form method="post" asp-action="ChangeBookQuantity" asp-controller="Books">
+                (int bookId, int newQuantity)
 
-            @if (Model.TotalQuantity == 0)
-            {
-                @if (ViewBag.UserRole == "User")
+                <input type="hidden" name="bookId" value="@Model.Id" />
+                <input type="number" name="newQuantity" class="quantity-input" value="@Model.TotalQuantity" id="quantity-input" />
+
+                @if (Model.TotalQuantity == 0)
                 {
                     <button type="submit" class="btn-thing btn disabled">اضافه کردن</button>
                 }
-            }
-            @if (Model.TotalQuantity != 0)
-            {
-                @if (ViewBag.UserRole == "User")
+                @if (Model.TotalQuantity != 0)
                 {
                     <button type="submit" class="btn-thing btn">اضافه کردن</button>
                 }
-            }
 
-            @if (ViewBag.UserRole == "BookKeeper")
-            {
-                <button type="submit" class="btn-thing btn">تغییر تعداد موجودی</button>
-            }
-        </form>
+                <script>
+                    document.getElementById('quantity-input').addEventListener('input', function () {
+                        const input = this;
+                        const min = 0;
+                        const value = parseInt(input.value, 10);
+
+                        if (value > max) {
+                            input.value = max;
+                        } else if (value < min) {
+                            input.value = min;
+                        }
+                    });
+                </script>
+            </form>
+        }
     </div>
 </div>

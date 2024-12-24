@@ -1,8 +1,6 @@
-﻿using Library.Controllers;
-using Library.Data;
+﻿using Library.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Linq;
 using System.Security.Claims;
 
 public class BaseController : Controller
