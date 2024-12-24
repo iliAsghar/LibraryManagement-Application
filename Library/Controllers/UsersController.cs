@@ -84,7 +84,7 @@ namespace Library.Controllers
         {
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == id);
-
+            
             if (user == null || user.Role == "User")
             {
                 return RedirectToAction("ShowUser", "Users", new { id });
