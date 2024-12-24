@@ -126,8 +126,8 @@
                 <tr onclick="window.location='@Url.Action("ShowBook", "Books", new { id = book.Id })'" style="cursor: pointer;">
                     <td class="book-title">@book.Title</td>
                     <td>@book.Author</td>
-                    <td>@book.Genre</td>
                     <td>@book.Description</td>
+                    <td>@book.Genre</td>
                     <td>
                         @if (!string.IsNullOrEmpty(book.CoverPath))
                         {
