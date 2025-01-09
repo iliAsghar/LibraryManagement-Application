@@ -26,7 +26,7 @@ namespace Library.Controllers
         {
             IQueryable<Transaction> transactions;
 
-            if (GetUserRole() == "BookKeeper")
+            if (GetUserRole() == "BookKeeper" || GetUserRole() == "Admin")
             {
                 transactions = _context.Transactions
                     .Include(t => t.User)
@@ -72,7 +72,7 @@ namespace Library.Controllers
             var userId = GetLoggedInUserId();
             Transaction? transaction = null;
 
-            if (GetUserRole() == "BookKeeper")
+            if (GetUserRole() == "BookKeeper" || GetUserRole() == "Admin")
             {
                 transaction = await _context.Transactions
                     .Include(t => t.User)
@@ -262,7 +262,6 @@ namespace Library.Controllers
 
             transaction.ApproveDate = DateTime.Now;
             transaction.DeliverDate = DateTime.Now;
-            //transaction.Status = TransactionStatus.PendingDelivery;
             transaction.Status = TransactionStatus.Delivered;
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
@@ -318,7 +317,7 @@ namespace Library.Controllers
             _context.Transactions.Update(transaction);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("TransactionList", "Transactions");
+            return RedirectToAction("ShowTransaction", new { id = transaction.Id });
         }
 
         [HttpPost]
@@ -338,10 +337,11 @@ namespace Library.Controllers
                 if (currentTransaction == null)
                 {
                     ViewBag.Message = "No transactions found for the given user.";
+                    return View();
                 }
 
                 ViewData["UserNId"] = user.NationalId;
-                return View("ShowTransaction", currentTransaction.Id);
+                return RedirectToAction("ShowTransaction", new { id = currentTransaction.Id });
             }
 
             return View();

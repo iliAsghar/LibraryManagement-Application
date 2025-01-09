@@ -191,9 +191,9 @@
         @if(ViewBag.UserRole == "Admin" || ViewBag.UserRole == "BookKeeper")
         {
 
-            <form method="post" asp-action="AddBookToTransaction" asp-controller="Books">
+            <form method="post" asp-action="ChangeBookQuantity" asp-controller="Books">
                 <input type="hidden" name="bookId" value="@Model.Id" />
-                <input type="number" name="quantity" class="quantity-input" value="0" min="0" max="2" id="quantity-input" />
+                <input type="number" name="newQuantity" class="quantity-input" value="@Model.TotalQuantity" min="0" max="2" id="quantity-input" />
 
                 <script>
                     document.getElementById('quantity-input').addEventListener('input', function () {
@@ -215,11 +215,10 @@
 
         } else {
 
-            <form method="post" asp-action="ChangeBookQuantity" asp-controller="Books">
-                (int bookId, int newQuantity)
+            <form method="post" asp-action="AddBookToTransaction" asp-controller="Transactions">
 
                 <input type="hidden" name="bookId" value="@Model.Id" />
-                <input type="number" name="newQuantity" class="quantity-input" value="@Model.TotalQuantity" id="quantity-input" />
+                <input type="number" name="quantity" class="quantity-input" value="0" id="quantity-input" />
 
                 @if (Model.TotalQuantity == 0)
                 {
@@ -234,6 +233,7 @@
                     document.getElementById('quantity-input').addEventListener('input', function () {
                         const input = this;
                         const min = 0;
+                        const max = 2;
                         const value = parseInt(input.value, 10);
 
                         if (value > max) {
