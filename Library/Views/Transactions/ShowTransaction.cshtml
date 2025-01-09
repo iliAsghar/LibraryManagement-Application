@@ -117,7 +117,7 @@
     {
         <p style="color: red;">@TempData["NoActiveTransaction"] - <a class="inline-link">کتاب انتخاب کنید...</a></p>
     }
-    else if (Model == null || Model.Items == null || Model.Items.Count == 0)
+    else if (Model == null || (Model.Items != null && Model.Items.Count == 0))
     {
         <p>هیچ امانتی یافت نشد.</p>
     }
