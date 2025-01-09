@@ -1,26 +1,26 @@
-﻿using Library.Data;
-using Library.Models;
-using Library.ViewModels;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using System.Net.Mail;
-using System.Net;
+﻿using Library.Data; // Import database context
+using Library.Models; // Import models
+using Library.ViewModels; // Import view models
+using Microsoft.AspNetCore.Authentication; // For authentication
+using Microsoft.AspNetCore.Authentication.Cookies; // For cookie-based authentication
+using Microsoft.AspNetCore.Mvc; // For controller actions
+using System.Security.Claims; // For handling user claims
+using Microsoft.EntityFrameworkCore; // For database operations
+using Microsoft.AspNetCore.Authorization; // For authorization attributes
+using System.Net.Mail; // For email operations
+using System.Net; // For network configurations
 
 namespace Library.Controllers
 {
     public class AccountController : BaseController
     {
         private readonly MyDBContext _context;
-
+        // Constructor to initialize database context
         public AccountController(MyDBContext context) : base(context)
         {
             _context = context;
         }
-
+        // Display user profile
         [Authorize]
         public async Task<IActionResult> Profile()
         {
@@ -52,7 +52,7 @@ namespace Library.Controllers
 
             return View(model);
         }
-
+        // Register a new user and handle profile picture upload
         public async Task<IActionResult> Register(RegisterViewModel model, IFormFile profilePicture)
         {
             if (!ModelState.IsValid)
@@ -111,7 +111,7 @@ namespace Library.Controllers
 
             return RedirectToAction("VerifyEmail", new { userId = newMember.Id });
         }
-
+        // Handle user login
         public IActionResult Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -158,13 +158,13 @@ namespace Library.Controllers
                 return RedirectToAction("VerifyEmail", new { userId = user.Id });
             }
         }
-
+        // Log out the current user
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
         }
-
+        // Show profile edit form
         public IActionResult EditProfile()
         {
             var userId = GetLoggedInUserId();
@@ -187,7 +187,7 @@ namespace Library.Controllers
 
             return View(model);
         }
-
+        // Save updated profile details, including optional profile picture
         [HttpPost]
         public async Task<IActionResult> EditProfile(EditProfileViewModel model, IFormFile? profilePicture)
         {
@@ -250,14 +250,14 @@ namespace Library.Controllers
 
             return RedirectToAction("Profile");
         }
-
+        // Send email verification token
         public async Task<IActionResult> VerifyEmail(int userId)
         {
             await GenerateAndSendToken(userId);
             ViewBag.UserId = userId;
             return View(userId);
         }
-
+        // Verify the user's email using a token
         [HttpPost]
         public async Task<IActionResult> VerifyEmail(string token, int userId)
         {
@@ -277,13 +277,13 @@ namespace Library.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
+        // Start the password reset process
         public async Task<IActionResult> ForgotPassword(int userId)
         {
             await GenerateAndSendToken(userId);
             return View();
         }
-
+        // Reset the password using a token
         [HttpPost]
         public async Task<IActionResult> ResetPassword(string userNId, string token, string newPass)
         {
@@ -303,7 +303,7 @@ namespace Library.Controllers
         }
 
         private static readonly Random _random = new Random();
-
+        // Generate and send a token via email
         public async Task GenerateAndSendToken(int userId)
         {
             var user = await _context.Users
@@ -319,7 +319,7 @@ namespace Library.Controllers
             var emailText = "Here's your Token: " + resetToken;
             SendEmail(user.Email, "User Token", emailText);
         }
-
+        // Verify the token and update user status
         public bool Verify(string token)
         {
             var user = _context.Users
@@ -334,7 +334,7 @@ namespace Library.Controllers
 
             return false;
         }
-
+        // Send an email with the provided details
         public void SendEmail(string toEmail, string subject, string body)
         {
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
@@ -356,12 +356,13 @@ namespace Library.Controllers
 
             smtpClient.Send(mailMessage);
         }
-
+        // Get the currently logged-in user's ID
         private int GetLoggedInUserId()
         {
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());
             return userId;
         }
+        // Validate if a file is an acceptable image
         private bool IsValidImage(IFormFile file)
         {
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
