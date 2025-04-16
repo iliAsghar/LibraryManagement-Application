@@ -1,1 +1,1 @@
-hello world
+This is a library managment app
